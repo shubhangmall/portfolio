@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Analog to Digital Tracking Converter</title>
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" type="text/css" href="default.css" />
+
+    <style type="text/css">
+      .img-container {
+        max-width: 600px;
+      }
+
+      img {
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="nav-wrapper">
+      <!-- Link around dots-wrapper added after tutorial video -->
+      <a href="index.html">
+        <div class="dots-wrapper">
+          <div id="dot-1" class="browser-dot"></div>
+          <div id="dot-2" class="browser-dot"></div>
+          <div id="dot-3" class="browser-dot"></div>
+        </div>
+      </a>
+
+      <ul id="navigation">
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="main-container">
+      <br />
+
+      <div class="img-container">
+        <img src="images/adc.jpg" />
+      </div>
+
+      <h3>Analog to Digital Conversion: Tracking ADC 4-bit</h3>
+
+      <p>
+        This project was started in my sophomore year in college and helped
+        teach the importance of Analog to Digital (A to D) conversion.
+        <br />
+        <br />
+        The tracking ADC is one of the most common A to D converters as it is
+        useful in tracking slow changing signals.
+        <br />
+        <br />
+        I designed, simulated, implemented and tested a 4-bit tracking ADC using
+        common commercially available circuit elements and components.
+        <br />
+        <br />
+        The goal was to choose from the available components while meeting
+        design requirements and paying attention to overall project budget.
+        <br />
+        <br />
+        The simulation phase uses Multisim software taking an analog input in
+        the form of a triangular wave with a peak-to-peak value of 200 mV and DC
+        offset of 100 mV which is outputted as a digital signal using a logic
+        analyzer and tracked using an oscilloscope.
+        <br />
+        <br />
+        The implementation involved building the designed analog-digital circuit
+        on a breadboard and testing it using a data acquisition platform. The
+        digital output signal was demonstrated using Light Emitted Diodes
+        (LEDs).
+      </p>
+
+      <h5>Technologies and Concepts Used:</h5>
+      <ul>
+        <li>- Comparator - dual linear with CMOS, MOS, TTL</li>
+        <li>- Counter - 4-bit synchronous binary</li>
+        <li>- Clock Signal</li>
+        <li>- Digital to Analog Converter (DAC)</li>
+        <li>
+          Passive circuit elements - LEDs, resistors, capacitors, inductors,
+          transformers, etc.
+        </li>
+        <li>- Logic Chips - 74HC00N quad NAND gate</li>
+        <li>- Multisim simulation software</li>
+        <li>- myDAQ data acquisition platform</li>
+      </ul>
+
+      <h5>Tracking ADC Schematic</h5>
+      <div class="img-container">
+        <img src="images/adc-schem.jpg" />
+      </div>
+
+      <h5>Comparator</h5>
+      <div class="img-container">
+        <img src="images/comparator.jpg" />
+      </div>
+
+      <h5>4 Bit Counter</h5>
+      <div class="img-container">
+        <img src="images/counter.jpg" />
+      </div>
+
+      <h5>Oscilloscope</h5>
+      <div class="img-container">
+        <img src="images/oscillo.jpg" />
+      </div>
+
+      <h5>National Instruments myDAQ</h5>
+      <div class="img-container">
+        <img src="images/mydaq.jpg" />
+      </div>
+
+      <h5>LEDs</h5>
+      <div class="img-container">
+        <img src="images/led.jpg" />
+      </div>
+    </div>
+  </body>
+</html>
