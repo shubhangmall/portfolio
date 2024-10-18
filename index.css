@@ -35,7 +35,7 @@
   --line-height-small: 1.2;
 
   --black: #000;
-  --pink: #b12323;
+  --darkred: #b12323;
   --white: #f0e9f2;
   --white-1: #e5e5e6da;
 
@@ -149,7 +149,7 @@ h2::after {
   display: block;
   height: 2px;
   width: 10rem;
-  background: var(--pink);
+  background: var(--darkred);
   margin: var(--gutter-small) 0;
 }
 
@@ -200,7 +200,7 @@ a {
 
 button:focus,
 a:focus {
-  outline: 2px solid var(--pink);
+  outline: 2px solid var(--darkred);
 }
 
 body:not(.user-is-tabbing) button:focus,
@@ -209,7 +209,7 @@ body:not(.user-is-tabbing) a:focus {
 }
 
 .link:hover {
-  color: var(--pink);
+  color: var(--darkred);
 }
 
 .btn {
@@ -218,7 +218,7 @@ body:not(.user-is-tabbing) a:focus {
   padding: 1rem 4.2rem;
   text-decoration: none;
   color: inherit;
-  border: 1px solid var(--pink);
+  border: 1px solid var(--darkred);
   font-weight: 400;
 }
 
@@ -242,20 +242,20 @@ body:not(.user-is-tabbing) a:focus {
 .btn:hover::after,
 .btn:focus::after {
   right: 0;
-  background: var(--pink);
+  background: var(--darkred);
 }
 
-.btn--pink {
-  background: var(--pink);
+.btn--darkred {
+  background: var(--darkred);
   transition: all 0.2s;
 }
 
-.btn--pink::after {
+.btn--darkred::after {
   display: none;
 }
 
-.btn--pink:hover,
-.btn--pink:focus {
+.btn--darkred:hover,
+.btn--darkred:focus {
   background: transparent;
 }
 
@@ -265,7 +265,7 @@ body:not(.user-is-tabbing) a:focus {
   padding: 0.6rem;
   color: inherit;
   text-decoration: none;
-  border-bottom: 1px solid var(--pink);
+  border-bottom: 1px solid var(--darkred);
 }
 
 .link__text::after {
@@ -288,7 +288,7 @@ body:not(.user-is-tabbing) a:focus {
 .link__text:hover::after,
 .link__text:focus:after {
   right: 0;
-  background: var(--pink);
+  background: var(--darkred);
 }
 
 .link__text span {
@@ -307,7 +307,7 @@ body:not(.user-is-tabbing) a:focus {
   align-items: center;
   height: 5.5rem;
   width: 5.5rem;
-  background-color: var(--pink);
+  background-color: var(--darkred);
   border-radius: 50%;
   z-index: 10;
   visibility: hidden;
@@ -389,13 +389,13 @@ body:not(.user-is-tabbing) a:focus {
 }
 
 .nav__link:hover {
-  color: var(--pink);
+  color: var(--darkred);
 }
 
 .nav__link:hover::after {
   right: 0;
   height: 2px;
-  background: var(--pink);
+  background: var(--darkred);
 }
 
 /* --------------------------------------- */
@@ -549,8 +549,25 @@ body:not(.user-is-tabbing) a:focus {
   }
 }
 
+.about__photo {
+  width: 80%;
+  height: 80%;
+}
+
 .about__photo-container {
   margin-bottom: var(--gutter-normal);
+}
+
+@media (min-width: 901px) {
+  .about__photo {
+    width: 75%;
+    height: 80%;
+  }
+
+  .about__photo-container {
+    flex: 1;
+    margin: 0 var(--gutter-huge) 0 0;
+  }
 }
 
 @media (min-width: 901px) {
@@ -621,7 +638,7 @@ body:not(.user-is-tabbing) a:focus {
 }
 
 .cc-btn {
-  background-color: var(--pink);
+  background-color: var(--darkred);
   color: var(--white);
   font-family: var(--font-stack);
 }
@@ -633,5 +650,5 @@ body:not(.user-is-tabbing) a:focus {
 }
 
 .cc-link {
-  color: var(--pink);
+  color: var(--darkred);
 }
