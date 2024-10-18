@@ -48,7 +48,7 @@ window.addEventListener("load", function () {
         background: "#1d1d1d",
       },
       button: {
-        background: "#ff3258",
+        background: "#b12323",
       },
     },
     elements: {
