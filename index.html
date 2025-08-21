@@ -1,473 +1,1252 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <!-- Google Tag Manager -->
+    <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-5BB8W2X");
+    </script>
+    <!-- End Google Tag Manager -->
+    <script
+      type="module"
+      src="https://gradio.s3-us-west-2.amazonaws.com/5.34.2/gradio.js"
+    ></script>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="shortcut icon" type="image/png" href="./images/logo.jpg" />
+    <link rel="icon" type="image/png" href="./favicon.png" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
-  <title>
-    Shubhang Mall | A Software Developer based in California, USA.
-  </title>
+    <title>Personal Portfolio</title>
+    <meta content="" name="descriptison" />
+    <meta content="" name="keywords" />
 
-  <meta name="description" content="Add small description of yourslef.">
-  <meta name="keywords" content="Put your name, skills and some coding keywords" />
-  <link rel="stylesheet" href="index.css?v=2.2">
-</head>
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+      rel="stylesheet"
+    />
 
-<body>
+    <!-- Vendor CSS Files -->
+    <link
+      href="assets/vendor/bootstrap/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link href="assets/vendor/icofont/icofont.min.css" rel="stylesheet" />
+    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet" />
+    <link
+      href="assets/vendor/owl.carousel/assets/owl.carousel.min.css"
+      rel="stylesheet"
+    />
+    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet" />
+    <link href="assets/vendor/venobox/venobox.css" rel="stylesheet" />
 
-  <!-- ***** Header ***** -->
+    <!-- Template Main CSS File -->
+    <link href="assets/css/style.css" rel="stylesheet" />
 
-  <header class="header" role="banner" id="top">
-    <div class="row">
-      <nav class="nav" role="navigation">
-        <ul class="nav__items">
-          <li class="nav__item"><a href="#work" class="nav__link">Work</a></li>
-          <li class="nav__item"><a href="#clients" class="nav__link">Clients</a></li>
-          <li class="nav__item"><a href="#projects" class="nav__link">Projects</a></li>
-          <li class="nav__item">
-            <a href="#about" class="nav__link">About</a>
-          </li>
-          <li class="nav__item">
-            <a href="#contact" class="nav__link">Contact</a>
-          </li>
-        </ul>
-      </nav>
-    </div>
-    <div class="header__text-box row">
-      <div class="header__text">
-        <h1 class="heading-primary">
-          <span>Shubhang Mall</span>
-        </h1>
-        <p>Software Engineer in Bay Area, California</p>
-        <a href="#contact" class="btn btn--darkred">Get in touch</a>
-      </div>
-    </div>
-  </header>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-169007209-3"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
-  <main role="main">
+      gtag("config", "UA-169007209-3");
+    </script>
 
-    <!-- ***** Work ***** -->
+    <!-- =======================================================
+  * Template Name: Personal - v2.1.0
+  * Template URL: https://bootstrapmade.com/personal-free-resume-bootstrap-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+  </head>
 
-    <section class="work" id="work">
-      <div class="row">
-        <h2>Work Experience</h2>
-        <div class="work__boxes">
-          <div class="work__box">
-            <div class="work__text">
-              <h3>Senior Software Engineer</h3>
-              <h4>CoreLogic</h4>
-              <h5>June 2024* - Present</h5>
-              <h6>*Software Engineer, February 2023 - May 2024</h6>
-              <p>
-                CoreLogic unlocks value for the entire property ecosystem by empowering agents, lenders, carriers, and innovators with integrated solutions that optimize and elevate how they serve their end-customers.
-              </p>
-              <ul class="work__list">
-                <div>
-                <th>Digital Mortgage Platform</th>
-                  <ul>
-                    <li>Lender Experience</li>
-                    <li>Mortgage Collateral & Risk Solutions</li>
-                  </ul>
-                </div>
-                <div>
-                  <th>
-                     <a href=https://www.corelogic.com/press-releases/corelogic-unveils-integrated-digital-mortgage-platform-transforming-the-borrowers-journey/" target="_blank">
-                        Read more here
-                      </a>
-                  </th>
-                </div>
-              </ul>
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-5BB8W2X"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+      ></iframe
+    ></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <!-- ======= Header ======= -->
+    <header id="header" class="header-tops">
+      <div class="container">
+        <h1><a href="index.html">Shubhang Mall</a></h1>
+        <h2 style="color: #fff">
+          I am <span class="typing" style="color: #5ad4e2"></span>
+        </h2>
+        <nav class="nav-menu d-none d-lg-block">
+          <ul>
+            <li class="active">
+              <a href="#header"> <span>Home</span></a>
+            </li>
+            <li>
+              <a href="#about"><span>About</span></a>
+            </li>
+            <li>
+              <a href="#education"> <span>Education</span></a>
+            </li>
+            <li>
+              <a href="#experience"> <span>Experience</span></a>
+            </li>
+            <!--          <li><a href="#projects"> <span>Projects</span></a></li>-->
+            <li>
+              <a href="#portfolio"> <span>Projects</span></a>
+            </li>
+            <li>
+              <a href="#skills"> <span>Skills</span></a>
+            </li>
+            <li>
+              <a
+                href="https://drive.google.com/file/d/1_N-tTXATqUPkFXb7LZiTYhWtppFGP16u/view?usp=sharing"
+                target="_blank"
+              >
+                <span>Resume</span></a
+              >
+            </li>
+            <!-- <li><a href="#links"> <span>Resume & Links</span></a></li> -->
+            <li>
+              <a href="#contacts"> <span>Contact</span></a>
+            </li>
+          </ul>
+        </nav>
+        <!-- .nav-menu -->
 
-              <div class="work__links">
-                <a href=https://www.corelogic.com/" target="_blank" class="link__text">
-                  Visit Company Website <span>&rarr;</span>
-                </a>
-                <a href="https://www.corelogic.com/" title="Visit Site" target="_blank">
-                  <img src="./images/corelogic.svg" class="work__code" alt="Github">
-                </a>
-              </div>
-            </div>
-            <div class="work__image-box">
-              <img src="./images/corelogic.jpg" class="work__image" alt="Work 0" />
-            </div>
-          </div>
-
-          <div class="work__box">
-            <div class="work__text">
-              <h3>Technical Support Engineer Level 4</h3>
-              <h4>Roostify</h4>
-              <h5>July 2021 - February 2023*</h5>
-              <h6>*Acquired by CoreLogic</h6>
-              <p>
-                Accelerate the lending process, from lead to close, with an integrated digital experience.
-              </p>
-              <ul class="work__list">
-                <li>Ruby on Rails</li>
-                <li>JavaScript</li>
-                 <li>CoffeeScript</li>
-                <li>HTML (HAML)</li>
-                <li>Postman API (JSON)</li>
-                <li>Splunk</li>
-                <li>Git</li>
-                <li>JIRA</li>
-                <div>
-                <th>CRM</th>
-                  <ul>
-                    <li>Lending Tree</li>
-                    <li>Salesforce</li>
-                    <li>Velocify</li>
-                  </ul>
-                </div>
-                <div>
-                <th>Loan Originiation System</th>
-                  <ul>
-                    <li>BytePro</li>
-                    <li>Mortgage Cadence</li>
-                    <li>Encompass</li>
-                    <li>Black Knight</li>
-                  </ul>
-                </div>
-                <div>
-                <th>Credit Integration</th>
-                  <ul>
-                    <li>Equifax</li>
-                    <li>AccountChek</li>
-                  </ul>
-                </div>
-                <div>
-                <th>Verification & eSignature</th>
-                  <ul>
-                    <li>DocuSign</li>
-                    <li>ICE</li>
-                    <li>DocMagic</li>
-                    <li>Docutech</li>
-                  </ul>
-                </div>
-                <div>
-                <th>Data & Analytics</th>
-                  <ul>
-                    <li>Looker</li>
-                    <li>Snowflake</li>
-                    <li>New Relic</li>
-                  </ul>
-                </div>
-              </ul>
-
-              <div class="work__links">
-                <a href=https://www.roostify.com/" target="_blank" class="link__text">
-                  Visit Company Website <span>&rarr;</span>
-                </a>
-                <a href="https://www.roostify.com/" title="Visit Site" target="_blank">
-                  <img src="./images/roostify.svg" class="work__code" alt="Github">
-                </a>
-              </div>
-            </div>
-            <div class="work__image-box">
-              <img src="./images/roostify.jpg" class="work__image" alt="Project 0" />
-            </div>
-          </div>
-          
-          <div class="work__box">
-            <div class="work__text">
-              <h3>Software Developer</h3>
-              <h4>Robocart.ai</h4>
-              <h5>January 2021 - July 2021</h5>
-              <p>
-                An Airbnb type marketplace that uses distributed supply chain management of warehouse storage to sell products and services across North America.
-              </p>
-              <ul class="work__list">
-                <li>PHP Laravel</li>
-                <li>PostgreSQL</li>
-                <li>MongoDB</li>
-                <li>REST/SOAP API</li>
-                <li>Dockers</li>
-                <li>Jenkins</li>
-              </ul>
-
-              <div class="work__links">
-                <a href="https://robocart.ai/" target="_blank" class="link__text">
-                  Visit Website <span>&rarr;</span>
-                </a>
-                <a href="https://robocart.ai/" title="Visit Website" target="_blank">
-                  <img src="./images/robocart.png" class="work__code" alt="Github">
-                </a>
-              </div>
-            </div>
-            <div class="work__image-box">
-              <img src="./images/project.jpg" class="work__image" alt="Project 0" />
-            </div>
-          </div>
-
-          <div class="work__box">
-            <div class="work__text">
-              <h3>Software Developer</h3>
-              <h4>Longan Vision</h4>
-              <h5>September 2019 - December 2019</h5>
-              <p>
-                Firestream ENCQOR 5G: An ecosystem of smart products for first responders and emergency personnel.
-              </p>
-              <ul class="work__list">
-                <li>HTML</li>
-                <li>CSS</li>
-                <li>JavaScript</li>
-                <li>Python Flask</li>
-                <li>5G Network</li>
-                <div>
-                  <th>
-                     <a href=https://www.longanvision.com/products target="_blank">
-                        Read more here
-                      </a>
-                  </th>
-                </div>
-              </ul>
-
-              <div class="work__links">
-                <a href="https://www.longanvision.com" target="_blank" class="link__text">
-                  Visit Website <span>&rarr;</span>
-                </a>
-                <a href="https://www.longanvision.com" title="Visit Website" target="_blank">
-                  <img src="./images/longan.svg" class="work__code" alt="GitHub">
-                </a>
-              </div>
-            </div>
-            <div class="work__image-box">
-              <img src="./images/project1.jpg" class="work__image" alt="Project 1" />
-            </div>
-          </div>
-
-          <div class="work__box">
-            <div class="work__text">
-              <h3>Information Technology Consumer Solutions Delivery Analyst</h3>
-              <h4>Loblaw Companies Ltd.</h4>
-              <h5>May 2018 - August 2019</h5>
-              <h6>Co-op Internship</h6>
-              <p>
-                Largest Canadian food retailer that operates a diverse range of grocery stores, pharmacies, and general merchandise outlets.
-              </p>
-              <ul class="work__list">
-                <li>Vulnerability Management</li>
-                <li>Change Requests in ServiceNow</li>
-                <li>Incident Response</li>
-                <div>
-                    <th>Compliance</th>
-                    <ul>
-                        <li>OWASP Top 10</li>
-                        <li>NIST</li>
-                        <li>ISO/IEC 27001</li>
-                        <li>PCI DSS</li>
-                    </ul>
-                </div>
-                <div>
-                    <th>Security Scanning</th>
-                    <ul>
-                        <li>Qualys</li>
-                    </ul>
-                </div>
-            </ul>
-
-              <div class="work__links">
-                <a href="https://www.loblaw.ca" target="_blank" class="link__text">
-                  Visit Website <span>&rarr;</span>
-                </a>
-                <a href="https://www.loblaw.ca" title="Visit Website" target="_blank">
-                  <img src="./images/loblawlogo.png" class="work__code" alt="GitHub">
-                </a>
-              </div>
-            </div>
-            <div class="work__image-box">
-              <img src="./images/loblaw.png" class="work__image" alt="Project 1" />
-            </div>
-          </div>
+        <div class="social-links">
+          <a
+            href="https://www.linkedin.com/in/shubhangmall/"
+            target="_blank"
+            class="linkedin"
+            ><i class="bx bxl-linkedin"></i
+          ></a>
+          <a
+            href="https://github.com/shubhangmall"
+            target="_blank"
+            class="github"
+            ><i class="bx bxl-github"></i
+          ></a>
+          <a
+            href="mailto:shubhangmallcal20@gmail.com"
+            target="_blank"
+            class="google"
+            ><i class="bx bxl-google"></i
+          ></a>
         </div>
       </div>
-    </section>
+    </header>
+    <!-- End Header -->
 
-    <!-- ***** Clients ***** -->
-
-    <section class="client" id="clients">
-      <div class="row">
-        <h2>Clients</h2>
-        <div class="client__logos">
-          <img src="./images/chase.png" class="client__logo" alt="Company 1" />
-          <img src="./images/hsbc.png" class="client__logo" alt="Company 2" />
-          <img src="./images/td.png" class="client__logo" alt="Company 3" />
-          <img src="./images/guild.png" class="client__logo" alt="Company 4" />
-          <img src="./images/santander.png" class="client__logo" alt="Company 5" />
-          <img src="./images/msf.jpg" class="client__logo" alt="Company 6" />
-          <img src="./images/keller.png" class="client__logo" alt="Company 7" />
-          <img src="./images/frfcu.png" class="client__logo" alt="Company 8" />
-          <img src="./images/firstamerican.png" class="client__logo" alt="Company 9" />
-          <img src="./images/colonial.png" class="client__logo" alt="Company 10" />
-          <img src="./images/loblaw.png" class="client__logo" alt="Company 11" />
-          <img src="./images/pcf.png" class="client__logo" alt="Company 12" />
-          <img src="./images/accenture.png" class="client__logo" alt="Company 13" />
-          <img src="./images/deloitte.png" class="client__logo" alt="Company 14" />
-          <img src="./images/longan.png" class="client__logo" alt="Company 15" />
-          <img src="./images/ibm.png" class="client__logo" alt="Company 16" />
+    <!-- ======= About Section ======= -->
+    <section id="about" class="about">
+      <!-- ======= About Me ======= -->
+      <div class="about-me container">
+        <div class="section-title">
+          <h2>About</h2>
         </div>
-      </div>
-    </section>
 
-    <!-- ***** Projects ***** -->
-
-    <section class="projects" id="projects">
-      <div class="row">
-        <h2>Projects</h2>
-        <div class="work__boxes">
-          <div class="work__box">
-            <div class="work__text">
-              <h3>Expense Tracker</h3>
-              <p>
-                Utilizes CRUD operations with MERN stack to track expenses, income, and balance.
-              </p>
-              <ul class="work__list">
-                <li>MongoDB</li>
-                <li>Express</li>
-                <li>React</li>
-                <li>Node.js</li>
-              </ul>
-
-              <div class="work__links">
-                <a href="https://github.com/shubhangmall/MERN-JavaScript-ExpenseTracker" class="link__text">
-                  Visit Source Code <span>&rarr;</span>
-                </a>
-                <a href="https://github.com/shubhangmall/MERN-JavaScript-ExpenseTracker">
-                  <img src="./images/github.svg" class="work__code" title="View Source Code" alt="GitHub">
-                </a>
-              </div>
-            </div>
-            <div class="work__image-box">
-              <img src="./images/project2.jpg" class="work__image" alt="Project 1" />
-            </div>
+        <div class="row">
+          <div class="col-lg-4" data-aos="fade-right">
+            <img src="assets/img/profile.jpeg" class="img-fluid" alt="" />
           </div>
-
-          <div class="work__box">
-            <div class="work__text">
-              <h3>Weather App</h3>
-              <p>
-                A weather app that provides current temperature, short description, and the high/low for any city.
-              </p>
-              <ul class="work__list">
-                <li>HTML</li>
-                <li>CSS</li>
-                <li>Vanilla JS</li>
-                <li>Fetch API</li>
-                <li>REST API</li>
-              </ul>
-
-              <div class="work__links">
-                <a href="#" class="link__text">
-                  Visit Source Code <span>&rarr;</span>
-                </a>
-                <a href="https://github.com/shubhangmall/JavaScript-Weather-App">
-                  <img src="./images/github.svg" class="work__code" title="View Source Code" alt="GitHub">
-                </a>
-              </div>
-            </div>
-            <div class="work__image-box">
-              <img src="./images/project3.jpg" class="work__image" alt="Project 1" />
-            </div>
-          </div>
-
-          <div class="work__box">
-            <div class="work__text">
-              <h3>Calculator App</h3>
-              <p>
-                A simple, modern and fully functional calculator for mathematical operations.
-              </p>
-              <ul class="work__list">
-                <li>HTML</li>
-                <li>CSS</li>
-                <li>JavaScript ES6</li>
-                <li>Grid Box</li>
-                <li>Flex Box</li>
-              </ul>
-
-              <div class="work__links">
-                <a href="#" class="link__text">
-                  Visit Source Code <span>&rarr;</span>
-                </a>
-                <a href="https://github.com/shubhangmall/JavaScript-Calculator-App">
-                  <img src="./images/github.svg" class="work__code" title="View Source Code" alt="GitHub">
-                </a>
-              </div>
-            </div>
-            <div class="work__image-box">
-              <img src="./images/project4.jpg" class="work__image" alt="Project 1" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ***** About ***** -->
-
-    <section class="about" id="about">
-      <div class="row">
-        <h2>About Me</h2>
-        <div class="about__content">
-          <div class="about__text">
+          <div class="col-lg-8 pt-4 pt-lg-0 content" data-aos="fade-left">
             <p>
-              I am a software engineer and developer in the San Francisco Bay Area with 8+ years of experience. I have strong skills in full-stack development, cloud technology, microservices, client support, systems analysis, cybersecurity and working with a variety of high-profile clients. Dedicated to continuous professional development, I engage with cutting-edge technologies such as artificial intelligence, machine learning, and data-driven solutions. I am eager to collaborate on innovative projects that advance technological frontiers and build meaningful industry relationships.
+              I am a software engineer and developer in the San Francisco Bay
+              Area with 8+ years of experience. I have strong skills in
+              full-stack development, cloud technology, microservices, client
+              support, systems analysis, cybersecurity and working with a
+              variety of high-profile clients. Dedicated to continuous
+              professional development, I engage with cutting-edge technologies
+              such as artificial intelligence, machine learning, and data-driven
+              solutions. I am eager to collaborate on innovative projects that
+              advance technological frontiers and build meaningful industry
+              relationships.
             </p>
-            <a href="https://drive.google.com/drive/folders/1k0C01Rs_8nJ4PXoEJWemJZsGSA5xhNuT?usp=sharing" class="btn">My Resume</a>
+            <div class="row">
+              <div class="col-lg-6">
+                <ul>
+                  <li>
+                    <i class="icofont-rounded-right"></i>
+                    <strong>Birthday:</strong> 07 July 1996
+                  </li>
+                  <li>
+                    <i class="icofont-rounded-right"></i>
+                    <strong>Phone:</strong> +1 925-699-0367
+                  </li>
+                </ul>
+              </div>
+              <div class="col-lg-6">
+                <ul>
+                  <li>
+                    <i class="icofont-rounded-right"></i>
+                    <strong>Location:</strong> San Francisco Bay Area
+                  </li>
+                  <li>
+                    <i class="icofont-rounded-right"></i>
+                    <strong>Email:</strong> shubhangmall@hotmail.com
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End About Me -->
+
+      <!-- ======= Clients ======= -->
+      <div class="clients container">
+        <div class="section-title">
+          <h2>Clients</h2>
+        </div>
+
+        <div class="slider">
+          <div class="slide-track-1">
+            <div class="slide">
+              <img src="./assets/img/customers/frfcu.png" alt="" />
+            </div>
+            <div class="slide">
+              <img src="./assets/img/customers/firstamerican.png" alt="" />
+            </div>
+            <div class="slide">
+              <img src="./assets/img/customers/td.png" alt="" />
+            </div>
+            <div class="slide">
+              <img src="./assets/img/customers/deloitte.png" alt="" />
+            </div>
+            <div class="slide">
+              <img src="./assets/img/customers/accenture.png" alt="" />
+            </div>
+            <div class="slide">
+              <img src="./assets/img/customers/chase.png" alt="" />
+            </div>
+            <div class="slide">
+              <img src="./assets/img/customers/guild.png" alt="" />
+            </div>
+            <div class="slide">
+              <img src="./assets/img/customers/hsbc.png" alt="" />
+            </div>
+            <div class="slide">
+              <img src="./assets/img/customers/ibm.png" alt="" />
+            </div>
+            <div class="slide">
+              <img src="./assets/img/customers/keller.png" alt="" />
+            </div>
+            <div class="slide">
+              <img src="./assets/img/customers/loblawlogo.png" alt="" />
+            </div>
+            <div class="slide">
+              <img src="./assets/img/customers/longan.png" alt="" />
+            </div>
+            <div class="slide">
+              <img src="./assets/img/customers/pcf.png" alt="" />
+            </div>
+            <div class="slide">
+              <img src="./assets/img/customers/msf.png" alt="" />
+            </div>
+
+            <div class="slide">
+              <img src="./assets/img/customers/santander.png" alt="" />
+            </div>
+            <div class="slide">
+              <img src="./assets/img/customers/colonial.png" alt="" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Clients -->
+
+      <!-- ======= Interests ======= -->
+      <div class="interests container">
+        <div class="section-title">
+          <h2>Interests</h2>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-3 col-md-4">
+            <div class="icon-box">
+              <i class="ri-code-s-slash-fill" style="color: #ffbb2c"></i>
+              <h3>Full-Stack Software Development</h3>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-4 mt-4 mt-md-0">
+            <div class="icon-box">
+              <i class="ri-brain-line" style="color: #5578ff"></i>
+              <h3>Machine Learning</h3>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-4 mt-4 mt-md-0">
+            <div class="icon-box">
+              <i class="ri-database-2-line" style="color: #e80368"></i>
+              <h3>Data & Analytics</h3>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-4 mt-4 mt-lg-0">
+            <div class="icon-box">
+              <i class="ri-chat-ai-line" style="color: #1c7d32"></i>
+              <h3>Large Language Models</h3>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-4 mt-4">
+            <div class="icon-box">
+              <i class="ri-global-line" style="color: #28a745"></i>
+              <h3>Software Engineering</h3>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-4 mt-4">
+            <div class="icon-box">
+              <i class="ri-cloud-line" style="color: #f1081f"></i>
+              <h3>Cloud Architecture & DevOps</h3>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-4 mt-4">
+            <div class="icon-box">
+              <i class="ri-lock-password-line" style="color: #47aeff"></i>
+              <h3>Cybersecurity & Compliance</h3>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-4 mt-4">
+            <div class="icon-box">
+              <i class="ri-team-line" style="color: #ffc107"></i>
+              <h3>Technical Leadership & Support</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Interests -->
+    </section>
+    <!-- End About Section -->
+
+    <!-- ======= Education Section ======= -->
+    <section id="education" class="services">
+      <div class="container">
+        <div class="section-title">
+          <h2>Education</h2>
+        </div>
+        <div class="row">
+          <div
+            class="col-lg-12"
+            data-aos="fade-up"
+            style="display: inline-block"
+          >
+            <div
+              class="col-md-4 mt-4 mt-md-0 icon-box"
+              data-aos="fade-up"
+              data-aos-delay="100"
+              style="
+                padding: 0px 0px;
+                padding-bottom: 5px;
+                display: inline-block;
+              "
+            >
+              <img
+                src="assets/img/education/mcmaster.jpg"
+                class="img-fluid"
+                alt=""
+              />
+              <!-- <h4 style="text-align:left;"><a href="https://www.asu.edu/" target="_blank" style="color:#5ad4e2">Arizona State University</a><br> </h4> -->
+              <p style="text-align: left; color: #fff; padding: 5px 10px">
+                <em>B.Eng. in Mechatronics Engineering with Co-op</em>
+              </p>
+              <h5 style="text-align: left; padding: 0px 10px">
+                Graduated May 2020
+              </h5>
+              <h6 style="text-align: left; color: #fff; padding: 0px 10px">
+                Relevant Coursework
+              </h6>
+              <ul style="text-align: left; color: #fff">
+                <li>Embedded Systems</li>
+                <li>Software Development</li>
+                <li>Databases & Operating Systems</li>
+                <li>Networks & Security</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="portfolio">
+        <div class="container">
+          <div class="section-title">
+            <h2>Online Certification</h2>
           </div>
 
-          <div class="about__photo-container">
-            <img class="about__photo" src="./images/shubhangpic.jpg" alt="" />
+          <div
+            class="row portfolio-container"
+            style="position: relative; height: 437.75px"
+          >
+            <div
+              class="col-lg-4 col-md-6 portfolio-item filter-app"
+              style="position: absolute; left: 0px; top: 0px"
+            >
+              <div class="portfolio-wrap">
+                <img
+                  src="assets/img/certification/berkeley.jpg"
+                  class="img-fluid"
+                  alt=""
+                />
+                <div class="portfolio-info">
+                  <h4>Cybersecurity</h4>
+                  <div class="portfolio-links">
+                    <a
+                      href="assets/img/certification/berkeley.pdf"
+                      target="_blank"
+                      title="Certificate"
+                      ><i class="bx bx-link"></i
+                    ></a>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
-  </main>
+    <!-- End Education Section -->
 
-  <!-- ***** Contact ***** -->
+    <!-- Start Experience Section -->
 
-  <section class="contact" id="contact">
-    <div class="row">
-      <h2>Get in Touch</h2>
-      <div class="contact__info">
-        <p>
-          Thank you for visiting my website! If you are interested in learning more about my 
-          experience and skills or are seeking a fast-performing, hard-working, and dedicated individual,
-          or have some advice for me or just want to say "Hi 👋" please dont hesitate to contact me via email below. 
-          I will do my best to respond back. Let's connect and build something great together. 😊
-        </p>
-        <a href="mailto:shubhangmallcal20@gmail.com" class="btn">shubhangmallcal20@gmail.com</a>
+    <section id="experience" class="services">
+      <div class="container">
+        <div class="section-title">
+          <h2>Experience</h2>
+        </div>
+        <div class="row">
+          <div class="col-lg-12" data-aos="fade-up">
+            <div
+              class="col-md-12 mt-4 mt-md-0 icon-box"
+              data-aos="fade-up"
+              data-aos-delay="100"
+            >
+              <h4 style="text-align: left">
+                <a href="https://www.cotality.com/" style="color: #5ad4e2"
+                  >Cotality</a
+                ><br />
+              </h4>
+              <h5 style="text-align: left">Senior Software Engineer</h5>
+              <p style="text-align: left; color: #fff">
+                <em>July 2024 - Present</em>
+              </p>
+              <ul style="text-align: left">
+                <li>
+                  Led cross-functional teams of seven engineers, made critical
+                  architectural decisions for scalable API design using Ruby on
+                  Rails, and drove the modernization of legacy systems while
+                  managing complex integrations with microservices for mortgage
+                  platform components.
+                </li>
+                <li>
+                  Spearheaded major UI/UX redesigns that directly impacted
+                  business metrics, achieving 33% increase in user satisfaction
+                  and 25% growth in client acquisitions, while collaborating
+                  with stakeholders to align technical solutions with strategic
+                  business objectives.
+                </li>
+                <li>
+                  Championed the implementation of robust testing frameworks
+                  that eliminated 100% of known bugs, established best practices
+                  that improved deployment efficiency by 20%, and fostered a
+                  culture of continuous improvement across development teams.
+                </li>
+              </ul>
+            </div>
+            <div
+              class="col-md-12 mt-4 mt-md-0 icon-box"
+              data-aos="fade-up"
+              data-aos-delay="100"
+            >
+              <h4 style="text-align: left">
+                <a href="https://www.cotality.com/" style="color: #5ad4e2"
+                  >Cotality</a
+                ><br />
+              </h4>
+              <h5 style="text-align: left">Software Engineer</h5>
+              <p style="text-align: left; color: #fff">
+                <em>March 2023 - June 2024</em>
+              </p>
+              <ul style="text-align: left">
+                <li>
+                  Developed new React components using Material-UI framework and
+                  built API endpoints with Ruby on Rails, contributing to the
+                  redesign of the Lender Portal and mortgage pricing tools while
+                  working closely with senior team members and product
+                  designers.
+                </li>
+                <li>
+                  Participated in Agile development processes, working with
+                  cross-functional teams including QA, DevOps, and product
+                  managers to deliver features and enhancements, while utilizing
+                  tools like Postman, Splunk, and automated testing frameworks.
+                </li>
+                <li>
+                  Implemented TypeScript-based testing solutions and contributed
+                  to improving test coverage and code reusability, while
+                  collaborating on bug fixes and performance optimizations that
+                  supported increased user capacity and improved application
+                  reliability.
+                </li>
+              </ul>
+            </div>
+            <div
+              class="col-md-12 mt-4 mt-md-0 icon-box"
+              data-aos="fade-up"
+              data-aos-delay="100"
+            >
+              <h4 style="text-align: left">
+                <a
+                  href="https://www.businesswire.com/news/home/20230222005850/en/CoreLogic-Acquires-Roostify-Expanding-Digital-Mortgage-Capabilities"
+                  style="color: #5ad4e2"
+                  >Roostify [acquired by Cotality]</a
+                ><br />
+              </h4>
+              <h5 style="text-align: left">
+                Software Engineer IV, Technical Support
+              </h5>
+              <p style="text-align: left; color: #fff">
+                <em>July 2021 - February 2023</em>
+              </p>
+              <ul style="text-align: left">
+                <li>
+                  Led resolution of high-priority client escalations and complex
+                  technical issues by conducting comprehensive root cause
+                  analysis through code and server log investigation, ensuring
+                  100% customer satisfaction while managing strategic support
+                  cases that directly impacted client relationships and business
+                  outcomes.
+                </li>
+                <li>
+                  Collaborated with DevOps, QA, and product teams to
+                  troubleshoot, fix, and deploy solutions across Ruby on Rails
+                  and Java environments, while contributing to new feature
+                  development and maintaining legacy applications using React,
+                  JavaScript, and TypeScript in fast-paced, deadline-driven
+                  scenarios.
+                </li>
+                <li>
+                  Developed comprehensive knowledge base resources and training
+                  programs that enhanced team capabilities, while streamlining
+                  support processes through Jira and Zendesk management,
+                  ultimately reducing escalation times and improving overall
+                  technical support efficiency across the organization.
+                </li>
+              </ul>
+            </div>
+            <div
+              class="col-md-12 mt-4 mt-md-0 icon-box"
+              data-aos="fade-up"
+              data-aos-delay="100"
+            >
+              <h4 style="text-align: left">
+                <a
+                  href="https://www.meditab.com/"
+                  target="_blank"
+                  style="color: #5ad4e2"
+                  >Robocart.ai</a
+                ><br />
+              </h4>
+              <h5 style="text-align: left">Developer</h5>
+              <p style="text-align: left; color: #fff">
+                <em>January 2021 - June 2021</em>
+              </p>
+              <ul style="text-align: left">
+                <li>
+                  Delivered end-to-end website solutions by collaborating
+                  directly with clients to design and develop custom web
+                  applications using HTML, CSS, JavaScript, Python, and C++,
+                  while creating high-fidelity prototypes and conducting
+                  comprehensive quality assurance testing that ensured optimal
+                  user experience, performance, and cross-functional team
+                  alignment on tight project timelines.
+                </li>
+              </ul>
+            </div>
+            <div
+              class="col-md-12 mt-4 mt-md-0 icon-box"
+              data-aos="fade-up"
+              data-aos-delay="100"
+            >
+              <h4 style="text-align: left">
+                <a
+                  href="https://www.longanvision.com/"
+                  target="_blank"
+                  style="color: #5ad4e2"
+                  >Longan Vision</a
+                ><br />
+              </h4>
+              <h5 style="text-align: left">Software Developer</h5>
+              <p style="text-align: left; color: #fff">
+                <em>September 2019 - December 2020</em>
+              </p>
+              <ul style="text-align: left">
+                <li>
+                  Built functional web applications using Python, JavaScript,
+                  HTML/CSS with PostgreSQL/AWS S3 integration, while effectively
+                  communicating technical concepts to C-level executives and
+                  securing $2,000 in grant funding by presenting solutions to
+                  industry investors and stakeholders.
+                </li>
+              </ul>
+            </div>
+            <div
+              class="col-md-12 mt-4 mt-md-0 icon-box"
+              data-aos="fade-up"
+              data-aos-delay="100"
+            >
+              <h4 style="text-align: left">
+                <a
+                  href="https://www.loblaw.ca/"
+                  target="_blank"
+                  style="color: #5ad4e2"
+                  >Loblaw Companies Limited</a
+                ><br />
+              </h4>
+              <h5 style="text-align: left">
+                Information Technology Consumer Solutions Delivery Analyst
+                Intern
+              </h5>
+              <p style="text-align: left; color: #fff">
+                <em>May 2018 - August 2019</em>
+              </p>
+              <ul style="text-align: left">
+                <li>
+                  Led comprehensive cybersecurity operations by configuring
+                  security software, implementing enterprise-wide security
+                  standards, and executing incident response protocols while
+                  managing vulnerability assessments through SIEM monitoring and
+                  ServiceNow IT Service Management, successfully coordinating
+                  cross-functional teams with major consulting partners
+                  (Accenture, Cognizant, Deloitte) and translating complex
+                  technical security matters to C-level executives in Agile
+                  environments.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ***** Footer ***** -->
+    <!-- End Experience Section -->
 
-  <footer role="contentinfo" class="footer">
-    <div class="row">
-      <ul class="footer__social-links">
-      
-        <li class="footer__social-link-item">
-          <a href="https://github.com/shubhangmall" title="Link to Github Profile">
-            <img src="./images/github.svg" class="footer__social-image" alt="Github">
-          </a>
-        </li>
-        
-        <li class="footer__social-link-item">
-          <a href=https://www.linkedin.com/in/shubhangmall/">
-            <img src="./images/linkedin.svg" title="Link to Linkedin Profile" class="footer__social-image" alt="Linkedin">
-          </a>
-        </li>
-      </ul>
-    </div>
-  </footer>
+    <!-- Start Project Section -->
+    <section id="portfolio" class="portfolio">
+      <div class="container">
+        <div class="section-title">
+          <h2>Projects</h2>
+        </div>
 
-  <a href="#top" class="back-to-top" title="Back to Top">
-    <img src="./images/arrow-up.svg" alt="Back to Top" class="back-to-top__image"/>
-  </a>
-  <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
-  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
-  <script src="./index.js"></script>
+        <div class="row">
+          <div class="col-lg-12 d-flex justify-content-center">
+            <ul id="portfolio-flters">
+              <li data-filter="*" class="filter-active">All</li>
+              <li data-filter=".filter-app">Web-App</li>
+              <li data-filter=".filter-project">Project</li>
+            </ul>
+          </div>
+        </div>
 
-</body>
+        <div class="row portfolio-container">
+          <div class="col-lg-4 col-md-6 portfolio-item filter-app">
+            <center><h4>AI Career Chatbot</h4></center>
+            <div class="portfolio-wrap">
+              <img
+                src="assets/img/project/aichat.jpeg"
+                class="img-fluid"
+                alt=""
+              />
+              <div class="portfolio-info">
+                <div class="portfolio-links">
+                  <a
+                    href="projects/aichat.html"
+                    data-gall="portfolioDetailsGallery"
+                    data-vbtype="iframe"
+                    class="venobox"
+                    title="Project Details"
+                    ><i class="bx bx-info-circle"></i
+                  ></a>
+                </div>
+              </div>
+            </div>
+          </div>
 
+          <div class="col-lg-4 col-md-6 portfolio-item filter-app">
+            <center><h4>Weather App</h4></center>
+            <div class="portfolio-wrap">
+              <img
+                src="assets/img/project/weather.jpg"
+                class="img-fluid"
+                alt=""
+              />
+              <div class="portfolio-info">
+                <div class="portfolio-links">
+                  <a
+                    href="projects/weather.html"
+                    data-gall="portfolioDetailsGallery"
+                    data-vbtype="iframe"
+                    class="venobox"
+                    title="Project Details"
+                    ><i class="bx bx-info-circle"></i
+                  ></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 portfolio-item filter-app">
+            <center><h4>Expense Tracker</h4></center>
+            <div class="portfolio-wrap">
+              <img
+                src="assets/img/project/tracker.jpg"
+                class="img-fluid"
+                alt=""
+              />
+              <div class="portfolio-info">
+                <div class="portfolio-links">
+                  <a
+                    href="projects/tracker.html"
+                    data-gall="portfolioDetailsGallery"
+                    data-vbtype="iframe"
+                    class="venobox"
+                    title="Project Details"
+                    ><i class="bx bx-info-circle"></i
+                  ></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 portfolio-item filter-app">
+            <center><h4>Calculator App</h4></center>
+            <div class="portfolio-wrap">
+              <img
+                src="assets/img/project/calculator.jpg"
+                class="img-fluid"
+                alt=""
+              />
+              <div class="portfolio-info">
+                <div class="portfolio-links">
+                  <a
+                    href="projects/calculator.html"
+                    data-gall="portfolioDetailsGallery"
+                    data-vbtype="iframe"
+                    class="venobox"
+                    title="Project Details"
+                    ><i class="bx bx-info-circle"></i
+                  ></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="col-lg-4 col-md-6 portfolio-item filter-app">
+          <center><h4>To-Do App</h4></center>
+          <div class="portfolio-wrap">
+            <img src="assets/img/project/todo.jpg" class="img-fluid" alt="">
+            <div class="portfolio-info">
+              <div class="portfolio-links">
+                <a href="projects/todo.html" data-gall="portfolioDetailsGallery" data-vbtype="iframe" class="venobox" title="Project Details"><i class="bx bx-info-circle"></i></a>
+              </div>
+            </div>
+          </div>
+        </div> -->
+
+          <div
+            class="col-lg-4 col-md-6 portfolio-item filter-project filter-app"
+          >
+            <!-- <br> -->
+            <center><h4>5G First Responder Bodycam</h4></center>
+            <div class="portfolio-wrap">
+              <img
+                src="assets/img/project/bodycam.jpg"
+                class="img-fluid"
+                alt=""
+              />
+              <div class="portfolio-info">
+                <h4>5G First Responder Bodycam</h4>
+                <div class="portfolio-links">
+                  <a
+                    href="projects/firestream.html"
+                    data-gall="portfolioDetailsGallery"
+                    data-vbtype="iframe"
+                    class="venobox"
+                    title="Project Details"
+                    ><i class="bx bx-info-circle"></i
+                  ></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 portfolio-item filter-project">
+            <center><h4>AC Induction Motor</h4></center>
+            <div class="portfolio-wrap">
+              <img
+                src="assets/img/project/motor.jpg"
+                class="img-fluid"
+                alt=""
+              />
+              <div class="portfolio-info">
+                <div class="portfolio-links">
+                  <a
+                    href="projects/motor.html"
+                    data-gall="portfolioDetailsGallery"
+                    data-vbtype="iframe"
+                    class="venobox"
+                    title="Project Details"
+                    ><i class="bx bx-info-circle"></i
+                  ></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 portfolio-item filter-project">
+            <center><h4>Redesigned CD-ROM</h4></center>
+            <div class="portfolio-wrap">
+              <img
+                src="assets/img/project/cdrom.jpg"
+                class="img-fluid"
+                alt=""
+              />
+              <div class="portfolio-info">
+                <div class="portfolio-links">
+                  <a
+                    href="projects/cdrom.html"
+                    data-gall="portfolioDetailsGallery"
+                    data-vbtype="iframe"
+                    class="venobox"
+                    title="Project Details"
+                    ><i class="bx bx-info-circle"></i
+                  ></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 portfolio-item filter-project">
+            <!-- <br> -->
+            <center><h4>3D Custom Apple Cutter</h4></center>
+            <div class="portfolio-wrap">
+              <img
+                src="assets/img/project/apple.jpg"
+                class="img-fluid"
+                alt=""
+              />
+              <div class="portfolio-info">
+                <div class="portfolio-links">
+                  <a
+                    href="projects/applecutter.html"
+                    data-gall="portfolioDetailsGallery"
+                    data-vbtype="iframe"
+                    class="venobox"
+                    title="Project Details"
+                    ><i class="bx bx-info-circle"></i
+                  ></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- End Project Section -->
+
+    <!-- Start Skills Section -->
+
+    <section id="skills" class="services">
+      <div class="container">
+        <div class="section-title">
+          <h2>Skills</h2>
+        </div>
+        <div class="row">
+          <div class="col-lg-12" data-aos="fade-up">
+            <div
+              class="col-md-12 mt-4 mt-md-0 icon-box"
+              data-aos="fade-up"
+              data-aos-delay="100"
+              style="background: #fff"
+            >
+              <h4 style="text-align: left; color: #09203a">
+                Programming Languages
+              </h4>
+              <p style="text-align: left">
+                <img
+                  src="https://www.vectorlogo.zone/logos/ruby-lang/ruby-lang-horizontal.svg"
+                  alt="vectorlogo.zone"
+                  height="50"
+                  width="150"
+                />
+                <img
+                  src="https://www.vectorlogo.zone/logos/javascript/javascript-ar21.svg"
+                  alt="vectorlogo.zone"
+                  height="50"
+                  width="150"
+                />
+                <img
+                  src="https://www.vectorlogo.zone/logos/java/java-horizontal.svg"
+                  alt="vectorlogo.zone"
+                  height="50"
+                  width="120"
+                />
+                <img
+                  src="https://www.vectorlogo.zone/logos/w3_html5/w3_html5-ar21.svg"
+                  alt="vectorlogo.zone"
+                />
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/d/d5/CSS3_logo_and_wordmark.svg"
+                  alt="upload.wikimedia.org"
+                  height="60"
+                  width="90"
+                />
+                <img
+                  src="https://www.vectorlogo.zone/logos/mysql/mysql-horizontal.svg"
+                  alt="vectorlogo.zone"
+                  height="70"
+                  width="130"
+                />
+                <img
+                  src="https://www.vectorlogo.zone/logos/postgresql/postgresql-horizontal.svg"
+                  alt="vectorlogo.zone"
+                  height="50"
+                  width="190"
+                />
+              </p>
+            </div>
+            <div
+              class="col-md-12 mt-4 mt-md-0 icon-box"
+              data-aos="lefade-up"
+              data-aos-delay="100"
+              style="background: #fff"
+            >
+              <h4 style="text-align: left; color: #09203a">Frameworks</h4>
+              <p style="text-align: left">
+                <img
+                  src="https://www.vectorlogo.zone/logos/reactjs/reactjs-ar21~bgwhite.svg"
+                  alt="vectorlogo.zone"
+                />
+                <img
+                  src="https://www.vectorlogo.zone/logos/mui/mui-ar21~bgwhite.svg"
+                  alt="vectorlogo.zone"
+                />
+                <img
+                  src="https://www.vectorlogo.zone/logos/nodejs/nodejs-horizontal.svg"
+                  alt="vectorlogo.zone"
+                />
+                <img
+                  src="https://www.vectorlogo.zone/logos/getbootstrap/getbootstrap-ar21.svg"
+                  alt="vectorlogo.zone"
+                />
+                <img
+                  src="https://www.vectorlogo.zone/logos/springio/springio-ar21~bgwhite.svg"
+                  alt="vectorlogo.zone"
+                />
+                <img
+                  src="https://www.vectorlogo.zone/logos/palletsprojects_flask/palletsprojects_flask-ar21~bgwhite.svg"
+                  alt="vectorlogo.zone"
+                />
+                <img
+                  src="https://www.vectorlogo.zone/logos/laravel/laravel-ar21~bgwhite.svg"
+                  alt="vectorlogo.zone"
+                />
+                <img
+                  src="https://www.logo.wine/a/logo/Ruby_on_Rails/Ruby_on_Rails-Logo.wine.svg"
+                  alt="upload.wikimedia.org"
+                  width="90"
+                  height="70"
+                />
+              </p>
+            </div>
+            <div
+              class="col-md-12 mt-4 mt-md-0 icon-box"
+              data-aos="lefade-up"
+              data-aos-delay="100"
+              style="background: #fff"
+            >
+              <h4 style="text-align: left; color: #09203a">Tools</h4>
+              <p style="text-align: left">
+                <img
+                  src="https://www.vectorlogo.zone/logos/git-scm/git-scm-ar21.svg"
+                  alt="vectorlogo.zone"
+                />
+                <img
+                  src="https://www.vectorlogo.zone/logos/amazon_aws/amazon_aws-ar21.svg"
+                  alt="vectorlogo.zone"
+                />
+                <img
+                  src="https://www.vectorlogo.zone/logos/google_cloud/google_cloud-ar21.svg"
+                  alt="vectorlogo.zone"
+                />
+                <img
+                  src="https://www.vectorlogo.zone/logos/heroku/heroku-ar21.svg"
+                  alt="vectorlogo.zone"
+                />
+                <img
+                  src="https://www.vectorlogo.zone/logos/jupyter/jupyter-ar21.svg"
+                  alt="vectorlogo.zone"
+                />
+                <img
+                  src="https://www.vectorlogo.zone/logos/getpostman/getpostman-ar21~bgwhite.svg"
+                  alt="vectorlogo.zone"
+                />
+                <img
+                  src="https://www.vectorlogo.zone/logos/docker/docker-ar21~bgwhite.svg"
+                  alt="vectorlogo.zone"
+                />
+                <img
+                  src="https://www.vectorlogo.zone/logos/kubernetes/kubernetes-ar21~bgwhite.svg"
+                  alt="vectorlogo.zone"
+                />
+                <img
+                  src="https://www.vectorlogo.zone/logos/jenkins/jenkins-ar21~bgwhite.svg"
+                  alt="vectorlogo.zone"
+                />
+                <img
+                  src="https://www.vectorlogo.zone/logos/circleci/circleci-ar21~bgwhite.svg"
+                  alt="vectorlogo.zone"
+                />
+                <img
+                  src="https://www.vectorlogo.zone/logos/codeclimate/codeclimate-ar21~bgwhite.svg"
+                  alt="vectorlogo.zone"
+                />
+                <img
+                  src="https://www.vectorlogo.zone/logos/visualstudio_code/visualstudio_code-ar21~bgwhite.svg"
+                  alt="vectorlogo.zone"
+                />
+                <img
+                  src="https://www.vectorlogo.zone/logos/atlassian_jira/atlassian_jira-ar21~bgwhite.svg"
+                  alt="vectorlogo.zone"
+                />
+                <img
+                  src="https://www.vectorlogo.zone/logos/figma/figma-ar21~bgwhite.svg"
+                  alt="vectorlogo.zone"
+                />
+                <img
+                  src="https://www.vectorlogo.zone/logos/microsoft_azure/microsoft_azure-ar21~bgwhite.svg"
+                  alt="vectorlogo.zone"
+                />
+              </p>
+            </div>
+            <div
+              class="col-md-12 mt-4 mt-md-0 icon-box"
+              data-aos="lefade-up"
+              data-aos-delay="100"
+              style="background: #fff"
+            >
+              <h4 style="text-align: left; color: #09203a">Communication</h4>
+              <p style="text-align: left">
+                <img
+                  src="https://www.vectorlogo.zone/logos/slack/slack-ar21.svg"
+                  alt="vectorlogo.zone"
+                />
+                <img
+                  src="https://www.vectorlogo.zone/logos/gmail/gmail-ar21~bgwhite.svg"
+                  alt="vectorlogo.zone"
+                />
+                <img
+                  src="./assets/img/skills/zendesk.svg"
+                  alt="vectorlogo.zone"
+                />
+                <img
+                  src="./assets/img/skills/confluence.svg"
+                  alt="vectorlogo.zone"
+                />
+                <img
+                  src="./assets/img/skills/outlook.svg"
+                  alt="vectorlogo.zone"
+                />
+                <img
+                  src="https://www.vectorlogo.zone/logos/pagerduty/pagerduty-ar21~bgwhite.svg"
+                  alt="vectorlogo.zone"
+                />
+                <img
+                  src="./assets/img/skills/msteams.svg"
+                  alt="vectorlogo.zone"
+                />
+                <img
+                  src="https://www.vectorlogo.zone/logos/github/github-ar21~bgwhite.svg"
+                  alt="vectorlogo.zone"
+                />
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- End Skills Section -->
+
+    <!-- Start Links section -->
+    <section id="links" class="services">
+      <div class="container">
+        <div class="section-title">
+          <h2>Resume & Links</h2>
+        </div>
+        <div class="row">
+          <div
+            class="col-md-3 mt-4 mt-md-0 icon-box"
+            data-aos="fade-up"
+            data-aos-delay="100"
+          >
+            <a
+              href="https://drive.google.com/file/d/1_N-tTXATqUPkFXb7LZiTYhWtppFGP16u/view?usp=sharing"
+              target="_blank"
+              ><div class="icon"><i class="icofont-page"></i></div
+            ></a>
+            <h4 class="title">
+              <a
+                href="https://drive.google.com/file/d/1_N-tTXATqUPkFXb7LZiTYhWtppFGP16u/view?usp=sharing"
+                target="_blank"
+                >Resume</a
+              >
+            </h4>
+            <p class="description" style="color: #fff">
+              The link contains downloadable resume
+            </p>
+          </div>
+          <!-- <div class="col-md-3 mt-4 mt-md-0 icon-box" data-aos="fade-up" data-aos-delay="100">
+          <a href="https://techingenious.herokuapp.com/" target="_blank"><div class="icon"><i class="icofont-page"></i></div></a>
+          <h4 class="title"><a href="https://techingenious.herokuapp.com/" target="_blank">Blog</a></h4>
+          <p class="description" style="color:#fff;">Blog containing articles on AI, coding, development</p>
+        </div> -->
+        </div>
+      </div>
+    </section>
+    <!--End Links Section -->
+
+    <!-- Start Contact Section -->
+
+    <section id="contacts" class="contact">
+      <div class="container">
+        <div class="section-title">
+          <h2>Contact</h2>
+        </div>
+
+        <div class="row mt-2">
+          <div class="col-md-6 d-flex align-items-stretch">
+            <div class="info-box">
+              <i class="bx bx-map"></i>
+              <h3>My Address</h3>
+              <p>Livermore, CA</p>
+            </div>
+          </div>
+
+          <div class="col-md-6 mt-4 mt-md-0 d-flex align-items-stretch">
+            <div class="info-box">
+              <i class="bx bx-share-alt"></i>
+              <h3>Social Profiles</h3>
+              <div class="social-links">
+                <a
+                  href="https://www.linkedin.com/in/shubhangmall"
+                  target="_blank"
+                  class="linkedin"
+                  ><i class="bx bxl-linkedin"></i
+                ></a>
+                <a
+                  href="https://github.com/shubhangmall"
+                  target="_blank"
+                  class="github"
+                  ><i class="bx bxl-github"></i
+                ></a>
+                <a
+                  href="mailto:shubhangmallcal20@gmail.com"
+                  target="_blank"
+                  class="google"
+                  ><i class="bx bxl-google"></i
+                ></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 mt-4 d-flex align-items-stretch">
+            <div class="info-box">
+              <i class="bx bx-envelope"></i>
+              <h3>Email</h3>
+              <p>shubhangmallcal20@gmail.com</p>
+            </div>
+          </div>
+          <div class="col-md-6 mt-4 d-flex align-items-stretch">
+            <div class="info-box">
+              <i class="bx bx-phone-call"></i>
+              <h3>Contact</h3>
+              <p>+1 925-699-0367</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <div class="section-title">
+            <h2>Chat with my AI below</h2>
+          </div>
+          <div class="row mt-2">
+            <iframe
+              src="https://shubhangmall-career-chatbot.hf.space?__theme=dark"
+              width="100%"
+              height="600px"
+              style="border: none"
+              allow="microphone; camera"
+            ></iframe>
+          </div>
+        </div>
+
+        <!-- <div id="sfczmlqxr5caww28rswrt8849ghbekgnh3j" ></div><script type="text/javascript" src="https://counter1.stat.ovh/private/counter.js?c=zmlqxr5caww28rswrt8849ghbekgnh3j&down=async" async></script><noscript><a href="https://www.freecounterstat.com" title="free web counter"><img src="https://counter1.stat.ovh/private/freecounterstat.php?c=zmlqxr5caww28rswrt8849ghbekgnh3j" border="0" title="free web counter" alt="free web counter" style="visibility: none;"></a></noscript> -->
+      </div>
+    </section>
+
+    <!-- End Contact Section -->
+
+    <!-- Vendor JS Files -->
+    <script src="assets/vendor/jquery/jquery.min.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/jquery.easing/jquery.easing.min.js"></script>
+    <script src="assets/vendor/php-email-form/validate.js"></script>
+    <script src="assets/vendor/waypoints/jquery.waypoints.min.js"></script>
+    <script src="assets/vendor/counterup/counterup.min.js"></script>
+    <script src="assets/vendor/owl.carousel/owl.carousel.min.js"></script>
+    <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="assets/vendor/venobox/venobox.min.js"></script>
+    <script src="assets/vendor/typed.js/typed.min.js"></script>
+    <script type="text/javascript">
+      var typed = new Typed(".typing", {
+        strings: [
+          "an Engineer",
+          "a Developer",
+          "a Coder",
+          "an AI Enthusiast",
+          "an IT Professional",
+        ],
+        loop: true,
+        typeSpeed: 65,
+        backSpeed: 65,
+      });
+    </script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"
+      data-cfasync="false"
+    ></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css"
+    />
+
+    <!-- Template Main JS File -->
+    <script src="assets/js/main.js"></script>
+  </body>
 </html>
