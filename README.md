@@ -116,7 +116,7 @@ Built with modern web technologies ensuring optimal viewing across all devices:
 
 ## 📞 Contact Information
 
-- **Email**: shubhangmallcal20@gmail.com
+- **Email**: shubhangmall@hotmail.com
 - **Phone**: +1 925-699-0367
 - **Location**: San Francisco Bay Area
 - **LinkedIn**: [shubhangmall](https://www.linkedin.com/in/shubhangmall/)
