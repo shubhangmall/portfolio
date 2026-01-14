@@ -121,7 +121,6 @@ Built with modern web technologies ensuring optimal viewing across all devices:
 - **Location**: San Francisco Bay Area
 - **LinkedIn**: [shubhangmall](https://www.linkedin.com/in/shubhangmall/)
 - **GitHub**: [shubhangmall](https://github.com/shubhangmall)
-- **Resume**: [Download PDF](https://drive.google.com/file/d/1_N-tTXATqUPkFXb7LZiTYhWtppFGP16u/view?usp=sharing)
 
 ## 🚀 Getting Started
 
