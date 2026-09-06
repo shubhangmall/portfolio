@@ -1,0 +1,75 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PromptBar from "../components/PromptBar";
+import { identity } from "../data/site";
+import "../styles/global.css";
+
+export const prerender = true;
+
+const selectedSpecs = [
+  { slug: "engineering-team", index: "01", capability: "Multi-agent orchestration", className: "selected-system--lead" },
+  { slug: "deep-research", index: "02", capability: "Research / retrieval pipeline", className: "selected-system--research" },
+  { slug: "career-chatbot", index: "03", capability: "Context + tool calling", className: "selected-system--chatbot" },
+] as const;
+const allProjects = await getCollection("projects");
+const selectedProjects = selectedSpecs
+  .map((spec) => ({ ...spec, project: allProjects.find((project) => project.data.slug === spec.slug) }))
+  .filter((item): item is (typeof selectedSpecs)[number] & { project: (typeof allProjects)[number] } => Boolean(item.project));
+const selectedSlugs: string[] = selectedSpecs.map(({ slug }) => slug);
+const remainingProjects = allProjects.filter((project) => !selectedSlugs.includes(project.data.slug));
+
+const title = `${identity.name} — ${identity.headline}`;
+---
+
+<BaseLayout title={title} description={identity.intro}>
+  <main>
+    <section class="hero" id="about" aria-labelledby="hero-title">
+      <div>
+        <p class="eyebrow">Software engineer · San Francisco Bay Area</p>
+        <h1 id="hero-title">{identity.name}</h1>
+        <p class="hero-copy">{identity.intro}</p>
+        <div class="hero-links">
+          <a class="text-link" href="#featured-work">Explore selected work</a>
+          <a class="text-link" href="mailto:shubhangmall@hotmail.com">Get in touch</a>
+        </div>
+        <PromptBar client:visible demo={false} />
+      </div>
+      <img class="hero-image" src={identity.profileImage.src} alt={identity.profileImage.alt} width="2316" height="2316" loading="eager" fetchpriority="high" decoding="async" />
+    </section>
+
+    <section id="featured-work" class="selected-systems" aria-labelledby="featured-work-title">
+      <div class="section-heading">
+        <div><p class="section-kicker">Selected systems · AI engineering</p><h2 id="featured-work-title">Systems built to be inspected</h2></div>
+        <a class="section-route" href="/ai-lab/">Explore AI Lab <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="selected-system-grid">
+        {selectedProjects.map(({ project, index, capability, className }) => (
+          <a class={`selected-system ${className}`} href={`/work/${project.data.slug}/`}>
+            <div class="selected-system__meta"><span>{index} · {capability}</span><span>{project.data.category}</span></div>
+            <h3>{project.data.portfolioTitle ?? project.data.title}</h3>
+            <p>{project.data.summary}</p>
+            <footer><span>{project.data.technologies.slice(0, 4).join(" · ")}</span><span aria-hidden="true">↗</span></footer>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="all-work" id="all-projects" aria-labelledby="all-projects-title">
+      <div class="section-heading">
+        <h2 id="all-projects-title">More Projects</h2>
+        <p>{remainingProjects.length} more projects in the archive</p>
+      </div>
+      <div class="project-grid">
+        {remainingProjects.map((project) => (
+          <a class="project-card" href={`/work/${project.data.slug}/`}>
+            <span class="project-meta">{project.data.category}</span>
+            <h3>{project.data.portfolioTitle ?? project.data.title}</h3>
+            <p>{project.data.summary}</p>
+            <footer>{project.data.technologies.slice(0, 3).join(" · ")}</footer>
+          </a>
+        ))}
+      </div>
+    </section>
+  </main>
+</BaseLayout>

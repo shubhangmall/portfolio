@@ -1,0 +1,116 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/global.css";
+
+const aiProjectSlugs = ["engineering-team", "deep-research", "personal-sidekick", "career-chatbot", "stock-picker", "agent-creator"];
+const projects = await getCollection("projects");
+const aiProjects = aiProjectSlugs
+  .map((slug) => projects.find((project) => project.data.slug === slug))
+  .filter((project): project is (typeof projects)[number] => Boolean(project));
+
+const recommendationSpecs = [
+  { label: "Best for agent/tool orchestration", slug: "engineering-team", rationale: "A multi-agent engineering workflow with specialized roles across design, implementation, and testing." },
+  { label: "Best for research/retrieval workflows", slug: "deep-research", rationale: "A research assistant focused on multi-step searches, report generation, and traceable workflows." },
+  { label: "Best for production-oriented AI engineering", slug: "career-chatbot", rationale: "A web-based AI career chatbot that represents a professional persona, answers questions, and captures user interest and feedback." },
+];
+const recommendations = recommendationSpecs.flatMap((recommendation) => {
+  const project = projects.find((candidate) => candidate.data.slug === recommendation.slug);
+  return project ? [{ ...recommendation, project }] : [];
+});
+---
+
+<BaseLayout title="AI Lab — Shubhang Mall" description="A technical playground for agent workflows, research tools, and AI products. These projects focus on orchestration, evidence, and useful outputs—not just model calls.">
+  <main>
+    <section class="ai-lab-intro" aria-labelledby="ai-lab-title">
+      <p class="eyebrow">AI Lab · systems in practice</p>
+      <h1 id="ai-lab-title">Applied AI, built as systems.</h1>
+      <p class="hero-copy">A technical playground for agent workflows, research tools, and AI products. These projects focus on orchestration, evidence, and useful outputs—not just model calls.</p>
+      <a class="text-link" href="/#all-projects">Browse the full work archive</a>
+    </section>
+
+    <section class="ai-lab-section" aria-labelledby="ai-projects-title">
+      <div class="section-heading"><h2 id="ai-projects-title">AI systems</h2><p>{aiProjects.length} documented experiments</p></div>
+      <div class="ai-project-grid">
+        {aiProjects.map((project) => <article class="ai-project-card"><div><span class="project-meta">{project.data.category}</span><h3>{project.data.portfolioTitle ?? project.data.title}</h3><p>{project.data.summary}</p></div><div class="tool-chips" aria-label={`Tools used in ${project.data.title}`}>{project.data.technologies.map((technology) => <span>{technology}</span>)}</div><a class="text-link" href={`/work/${project.data.slug}/`}>Read the case study</a></article>)}
+      </div>
+    </section>
+
+    <section class="ai-lab-section" aria-labelledby="context-title">
+      <div class="section-heading"><h2 id="context-title">Context before generation</h2><p>Evidence is part of the system</p></div>
+      <div class="context-grid">
+        <article class="context-card"><span class="context-index">01 · Inputs</span><h3>Define the task</h3><p>Start with a concrete question, brief, or set of requirements before selecting an agent or model.</p></article>
+        <article class="context-card"><span class="context-index">02 · Context</span><h3>Retrieve useful evidence</h3><p>Ground the next step in project data, source material, tools, and explicit constraints.</p></article>
+        <article class="context-card"><span class="context-index">03 · Output</span><h3>Return a traceable result</h3><p>Make the output useful to a person: a report, implementation, answer, or next action with clear provenance.</p></article>
+      </div>
+    </section>
+
+    <section class="ai-lab-section" aria-labelledby="recommendations-title">
+      <div class="section-heading"><h2 id="recommendations-title">Where to start</h2><p>Review paths for technical readers</p></div>
+      <div class="recommendation-grid">
+        {recommendations.map(({ label, rationale, project }) => (
+          <article class="recommendation-card">
+            <span class="recommendation-label">{label}</span>
+            <h3>{project.data.portfolioTitle ?? project.data.title}</h3>
+            <p>{rationale}</p>
+            <div class="tool-chips" aria-label={`Tools used in ${project.data.title}`}>
+              {project.data.technologies.slice(0, 4).map((technology) => <span>{technology}</span>)}
+            </div>
+            <a class="text-link" href={`/work/${project.data.slug}/`}>Inspect this project</a>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="ai-lab-section" aria-labelledby="workflow-title">
+      <div class="section-heading"><h2 id="workflow-title">How it works</h2><p>Reusable agent workflow</p></div>
+      <ol class="workflow-flow" aria-label="Agent workflow from request to traceable result">
+        <li class="flow-node"><span class="flow-node__number">01</span><strong>Frame</strong><span>Bound the task</span><small>orchestrator</small></li>
+        <li class="flow-connector" aria-hidden="true"><span>request</span></li>
+        <li class="flow-node flow-node--accent"><span class="flow-node__number">02</span><strong>Gather</strong><span>Retrieve evidence</span><small>tools</small></li>
+        <li class="flow-connector" aria-hidden="true"><span>context</span></li>
+        <li class="flow-node"><span class="flow-node__number">03</span><strong>Compose</strong><span>Synthesize output</span><small>model</small></li>
+        <li class="flow-connector" aria-hidden="true"><span>draft</span></li>
+        <li class="flow-node flow-node--accent"><span class="flow-node__number">04</span><strong>Verify</strong><span>Trace the result</span><small>trace</small></li>
+      </ol>
+      <ol class="workflow-details">
+        <li><strong>Frame</strong><p>Translate the request into a bounded task with an expected output.</p></li>
+        <li><strong>Gather</strong><p>Call the relevant search or project tool and collect supporting context.</p></li>
+        <li><strong>Compose</strong><p>Use the model to synthesize an answer or artifact from the retrieved context.</p></li>
+        <li><strong>Verify</strong><p>Return the result with enough source information for a person or future agent to inspect.</p></li>
+      </ol>
+      <p class="workflow-note">The tool boundary is intentionally separate from the interface, leaving room for a future web agent or Portfolio MCP server to use the same portfolio data layer.</p>
+    </section>
+
+    <section class="ai-lab-section" aria-labelledby="code-example-title">
+      <div class="section-heading"><h2 id="code-example-title">A grounded tool call</h2><p>Illustrative TypeScript</p></div>
+      <div class="code-block" data-code-block>
+        <div class="code-block__header"><span>portfolio-search.ts · illustrative</span><button type="button" class="code-block__copy" data-copy-code aria-describedby="copy-status">Copy</button></div>
+        <pre><code data-code-content>const context = await searchPortfolio(question, 4);
+
+const answer = await compose(question, context);</code></pre>
+        <span class="sr-only" id="copy-status" role="status" aria-live="polite"></span>
+      </div>
+      <p class="code-note">This is a visual example of the portfolio tool boundary, not a new endpoint or executable example.</p>
+    </section>
+  </main>
+</BaseLayout>
+
+<script>
+  const codeBlock = document.querySelector("[data-code-block]");
+  const copyButton = codeBlock?.querySelector("[data-copy-code]");
+  const codeContent = codeBlock?.querySelector("[data-code-content]");
+  const copyStatus = codeBlock?.querySelector("#copy-status");
+
+  copyButton?.addEventListener("click", async () => {
+    if (!codeContent || !copyStatus) return;
+    try {
+      await navigator.clipboard.writeText(codeContent.textContent ?? "");
+      copyButton.textContent = "Copied";
+      copyStatus.textContent = "Code copied to clipboard.";
+      window.setTimeout(() => { copyButton.textContent = "Copy"; }, 1600);
+    } catch {
+      copyStatus.textContent = "Copy is unavailable in this browser.";
+    }
+  });
+</script>

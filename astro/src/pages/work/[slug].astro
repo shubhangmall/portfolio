@@ -1,0 +1,353 @@
+---
+import { getCollection, render } from "astro:content";
+import { absoluteUrl } from "../../lib/seo";
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+
+  return projects.map((project) => ({
+    params: { slug: project.data.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+const { title, summary, image, projectUrl, repositoryUrl, technologies } = project.data;
+const canonicalUrl = absoluteUrl(`/work/${project.data.slug}/`);
+const imageUrl = image ? absoluteUrl(image) : absoluteUrl("/assets/profile.jpeg");
+const isEngineeringTeam = project.data.slug === "engineering-team";
+const isCareerChatbot = project.data.slug === "career-chatbot";
+const isSystemPresentation = ["agent-creator", "personal-sidekick", "stock-picker"].includes(project.data.slug);
+const isRemainingProject = !["deep-research", "engineering-team", "career-chatbot"].includes(project.data.slug);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={summary} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Shubhang Mall" />
+    <meta property="og:title" content={`${title} — Shubhang Mall`} />
+    <meta property="og:description" content={summary} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={imageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={`${title} — Shubhang Mall`} />
+    <meta name="twitter:description" content={summary} />
+    <meta name="twitter:image" content={imageUrl} />
+    <title>{title} — Shubhang Mall</title>
+  </head>
+  <body>
+    <main class:list={{ "deep-research-page": project.data.slug === "deep-research", "engineering-page": isEngineeringTeam, "career-page": isCareerChatbot, "case-page": isRemainingProject }}>
+      <article>
+        <header class:list={{ "engineering-hero": isEngineeringTeam, "career-hero": isCareerChatbot }}>
+          <p><a class="back-home" href="/"><span aria-hidden="true">←</span> Back to Home</a></p>
+          {isEngineeringTeam && <p class="engineering-hero-meta">AI · MULTI-AGENT SOFTWARE ENGINEERING</p>}
+          {isCareerChatbot && <p class="career-hero-meta">AI · CONVERSATIONAL CAREER SYSTEM</p>}
+          <h1>{title}</h1>
+          <p>{summary}</p>
+        </header>
+
+        {!isEngineeringTeam && !isCareerChatbot && !isSystemPresentation && image && <img src={image} alt={`${title} project screenshot`} width={project.data.slug === "deep-research" ? 1311 : undefined} height={project.data.slug === "deep-research" ? 771 : undefined} loading="lazy" decoding="async" />}
+
+        {isEngineeringTeam ? (
+          <div class="engineering-hero-tools">
+            <div class="engineering-tool-chips" aria-label="Technologies used"><span>Python</span><span>crewAI</span><span>OpenAI API</span><span>UV</span></div>
+            <nav aria-label="Project links"><ul>{repositoryUrl && <li><a href={repositoryUrl} target="_blank" rel="noreferrer">Repository ↗</a></li>}</ul></nav>
+          </div>
+        ) : isCareerChatbot ? (
+          <div class="career-hero-tools"><div class="career-tool-chips" aria-label="Technologies used">{technologies.map((technology) => <span>{technology}</span>)}</div><p class="career-link-note">No external project URL documented.</p></div>
+        ) : <p><strong>Technologies:</strong> {technologies.join(", ")}</p>}
+
+        {!isEngineeringTeam && !isCareerChatbot && <nav aria-label="Project links">
+          <ul>
+            {projectUrl && <li><a href={projectUrl}>Project</a></li>}
+            {repositoryUrl && <li><a href={repositoryUrl} target="_blank" rel="noreferrer">Repository</a></li>}
+          </ul>
+        </nav>}
+
+        {project.data.slug === "deep-research" && (
+          <>
+            <section class="deep-research-section" aria-labelledby="research-workflow-title">
+              <h2 id="research-workflow-title">Research workflow</h2>
+              <ol class="research-flow" aria-label="Deep Research AI workflow">
+                <li><span>01</span><strong>Plan</strong><small>query</small></li>
+                <li aria-hidden="true" class="research-flow__arrow">→</li>
+                <li><span>02</span><strong>Search</strong><small>web sources</small></li>
+                <li aria-hidden="true" class="research-flow__arrow">→</li>
+                <li><span>03</span><strong>Aggregate</strong><small>results</small></li>
+                <li aria-hidden="true" class="research-flow__arrow">→</li>
+                <li><span>04</span><strong>Report</strong><small>email delivery</small></li>
+              </ol>
+            </section>
+
+            <section class="deep-research-section" aria-labelledby="research-context-title">
+              <h2 id="research-context-title">System context</h2>
+              <div class="research-context-grid">
+                <article><span>Input</span><h3>Research query</h3><p>A user submits a question through the Gradio interface.</p></article>
+                <article><span>Evidence</span><h3>Search results</h3><p>Multiple web searches run concurrently and are aggregated into a traceable research context.</p></article>
+                <article><span>Output</span><h3>Actionable report</h3><p>The system generates a detailed report, converts it to clean HTML, and sends it by email via SendGrid.</p></article>
+              </div>
+            </section>
+
+            <section class="deep-research-section" aria-labelledby="research-stages-title">
+              <h2 id="research-stages-title">Execution stages</h2>
+              <ol class="research-tasks">
+                <li><span>01</span><div><strong>Search planning</strong><p>Plan the multi-step web research process.</p></div><small>asyncio</small></li>
+                <li><span>02</span><div><strong>Concurrent retrieval</strong><p>Run multiple web searches efficiently.</p></div><small>Python</small></li>
+                <li><span>03</span><div><strong>Result aggregation</strong><p>Collect findings for report generation.</p></div><small>AI agents</small></li>
+                <li><span>04</span><div><strong>Report and notification</strong><p>Produce clean HTML, send the report, and retain links to the research path.</p></div><small>SendGrid</small></li>
+              </ol>
+            </section>
+          </>
+        )}
+
+        {project.data.slug === "engineering-team" && (
+          <section class="engineering-system" aria-labelledby="engineering-workflow-title">
+            <div class="engineering-system__header"><div><p class="engineering-kicker">01 · Agent topology</p><h2 id="engineering-workflow-title">Engineering Team system</h2></div><span>crewAI · documented workflow</span></div>
+            <div class="engineering-flow" aria-label="Engineering Lead coordinates Backend Engineer and Frontend Engineer, which converge on Test Engineer">
+              <article class="engineering-node engineering-node--lead"><span>coordination</span><strong>Engineering Lead</strong><p>Coordinates requirements and system direction.</p></article>
+              <div class="engineering-flow__split" aria-hidden="true"></div>
+              <div class="engineering-flow__branches">
+                <article class="engineering-node"><span>implementation · backend</span><strong>Backend Engineer</strong><p>Produces backend application files.</p></article>
+                <article class="engineering-node"><span>implementation · frontend</span><strong>Frontend Engineer</strong><p>Produces frontend application files.</p></article>
+              </div>
+              <div class="engineering-flow__merge" aria-hidden="true"></div>
+              <article class="engineering-node engineering-node--test"><span>validation</span><strong>Test Engineer</strong><p>Validates the generated result using sandboxed testing execution.</p></article>
+            </div>
+
+            <div class="engineering-system__section">
+              <div class="engineering-system__subhead"><p class="engineering-kicker">02 · Responsibilities</p><span>workflow stages</span></div>
+              <ol class="engineering-tasks">
+                <li><span>01</span><div><strong>Engineering Lead</strong><p>Coordinates requirements and system direction.</p></div><small>coordination · crewAI</small></li>
+                <li><span>02A</span><div><strong>Backend Engineer</strong><p>Produces backend application files.</p></div><small>implementation · Python</small></li>
+                <li><span>02B</span><div><strong>Frontend Engineer</strong><p>Produces frontend application files.</p></div><small>implementation · Python</small></li>
+                <li><span>03</span><div><strong>Test Engineer</strong><p>Validates the generated result using sandboxed testing execution.</p></div><small>validation · crewAI</small></li>
+              </ol>
+            </div>
+
+            <div class="engineering-system__section">
+              <div class="engineering-system__subhead"><p class="engineering-kicker">03 · Artifact output</p><span>generated application</span></div>
+              <pre class="engineering-code"><code>application/
+├── accounts.py
+├── app.py
+└── tests/</code></pre>
+              <p class="engineering-code-note">Documented examples of application files created by the AI workflow.</p>
+            </div>
+          </section>
+        )}
+
+        {isCareerChatbot && (
+          <section class="career-system" aria-labelledby="career-system-title">
+            <div class="career-system__header"><div><p class="career-kicker">01 · Context</p><h2 id="career-system-title">A professional persona with a tool boundary</h2></div><span>documented system view</span></div>
+            <div class="career-context-grid">
+              <article><span>Persona</span><h3>Career information</h3><p>Represents a professional digital persona and answers questions about background, skills, and experience.</p></article>
+              <article><span>Conversation</span><h3>Questions and feedback</h3><p>Maintains dynamic conversation management while capturing user interest and feedback.</p></article>
+              <article><span>Action signals</span><h3>Engagement and unknowns</h3><p>Tracks questions and uses custom tools when a user engages or asks something unknown.</p></article>
+            </div>
+
+            <div class="career-system__section">
+              <div class="career-system__subhead"><p class="career-kicker">02 · Interaction workflow</p><span>runtime responsibilities</span></div>
+              <ol class="career-tasks">
+                <li><span>01</span><div><strong>Answer career questions</strong><p>Responds about professional background, skills, and experience through conversation.</p></div><small>conversation · Python</small></li>
+                <li><span>02</span><div><strong>Call custom tools</strong><p>Uses function calling for lead capture and question tracking.</p></div><small>tool call · OpenAI</small></li>
+                <li><span>03</span><div><strong>Notify on engagement</strong><p>Sends mobile notifications when users engage or unknown questions arrive.</p></div><small>notification · Pushover</small></li>
+                <li><span>04</span><div><strong>Serve the deployed chatbot</strong><p>Runs the web application on Hugging Face Spaces using Gradio.</p></div><small>deployment · HuggingFace</small></li>
+                <li><span>05</span><div><strong>Parse and manage context</strong><p>Uses PDF resume parsing and dynamic conversation management for the professional representation.</p></div><small>context · Gradio</small></li>
+              </ol>
+            </div>
+
+            <div class="career-system__section career-system__note">
+              <p class="career-kicker">03 · Tool boundary</p>
+              <p>The source documents OpenAI function calling with custom tools, but does not provide a function schema or code sample. No fabricated tool-call code is shown here.</p>
+            </div>
+          </section>
+        )}
+
+        {project.data.slug === "agent-creator" && <section class="case-system" aria-labelledby="agent-creator-system"><div class="case-system__heading"><p class="case-kicker">01 · Agent workflow</p><h2 id="agent-creator-system">Template to agent ecosystem</h2></div><div class="case-flow"><article><span>Input</span><strong>Template + instructions</strong><p>Defines the focus or personality for a new agent.</p></article><i aria-hidden="true">→</i><article><span>Creator</span><strong>Creator agent</strong><p>Generates and customizes new agent code.</p></article><i aria-hidden="true">→</i><article><span>Output</span><strong>Specialized agents</strong><p>Agents are registered and can collaborate and refine ideas.</p></article></div><div class="case-section"><p class="case-kicker">02 · Responsibilities</p><ol class="case-tasks"><li><span>01</span><div><strong>Receive a template</strong><p>Use a template and instructions as the starting point.</p></div><small>Autogen Core</small></li><li><span>02</span><div><strong>Generate agent code</strong><p>Create a specialized agent with a distinct system message and business vertical.</p></div><small>Python</small></li><li><span>03</span><div><strong>Register and collaborate</strong><p>Register generated agents so they can interact, brainstorm, and refine ideas.</p></div><small>AgentChat</small></li></ol></div></section>}
+
+        {project.data.slug === "personal-sidekick" && <section class="case-system" aria-labelledby="sidekick-system"><div class="case-system__heading"><p class="case-kicker">01 · Assistant loop</p><h2 id="sidekick-system">Request → tools → verified help</h2></div><div class="case-context-grid"><article><span>Request</span><h3>Task and success criteria</h3><p>The user describes a personal or professional task and defines what success looks like.</p></article><article><span>Tools</span><h3>Web browsing and code execution</h3><p>The assistant uses documented tools to work toward the requested outcome.</p></article><article><span>Result</span><h3>Step-by-step assistance</h3><p>The agent checks its work, iterates, or asks a clarifying question.</p></article></div><div class="case-section"><p class="case-kicker">02 · Task rows</p><ol class="case-tasks"><li><span>01</span><div><strong>Clarify the request</strong><p>Capture the task and its custom success criteria.</p></div><small>Gradio · LangGraph</small></li><li><span>02</span><div><strong>Use available tools</strong><p>Apply web browsing or code execution to fulfill the request.</p></div><small>tools · Python</small></li><li><span>03</span><div><strong>Check and iterate</strong><p>Maintain context, verify progress, and ask for clarification when needed.</p></div><small>memory · LangChain</small></li></ol></div></section>}
+
+        {project.data.slug === "stock-picker" && <section class="case-system" aria-labelledby="stock-system"><div class="case-system__heading"><p class="case-kicker">01 · Multi-agent research</p><h2 id="stock-system">Market signals to decision report</h2></div><div class="case-flow case-flow--wide"><article><span>Research</span><strong>News and markets</strong><p>Identify trending companies and perform financial research.</p></article><i aria-hidden="true">→</i><article><span>Decision</span><strong>Specialized agents</strong><p>Collaborate using configurable agents, tasks, and decision logic.</p></article><i aria-hidden="true">→</i><article><span>Output</span><strong>Investment report</strong><p>Produce a clear, actionable stock-selection decision report.</p></article></div><div class="case-section"><p class="case-kicker">02 · Execution rows</p><ol class="case-tasks"><li><span>01</span><div><strong>Research market signals</strong><p>Find trending companies in news and markets.</p></div><small>Python · crewAI</small></li><li><span>02</span><div><strong>Analyze and select</strong><p>Apply configurable agents, tasks, and predefined criteria.</p></div><small>OpenAI API · UV</small></li><li><span>03</span><div><strong>Produce the report</strong><p>Return an actionable investment decision report with persistent memory available for context.</p></div><small>memory · crewAI</small></li></ol></div></section>}
+
+        {project.data.slug === "first-responder-bodycam" && <section class="case-system" aria-labelledby="bodycam-system"><div class="case-system__heading"><p class="case-kicker">01 · Application system</p><h2 id="bodycam-system">Tested service, managed media</h2></div><div class="case-context-grid"><article><span>Application</span><h3>Flask routes and accounts</h3><p>Frontend login/signup forms and Python Flask API endpoints support the web application.</p></article><article><span>Data</span><h3>Media and user storage</h3><p>AWS S3 stores files while PostgreSQL supports user data connectivity.</p></article><article><span>Operations</span><h3>Deployment and scale</h3><p>Elastic Beanstalk deployment and load testing validate scaling behavior.</p></article></div><div class="case-section"><p class="case-kicker">02 · Task rows</p><ol class="case-tasks"><li><span>01</span><div><strong>Test Flask routes</strong><p>Execute unit tests for application routes.</p></div><small>Python testing libraries</small></li><li><span>02</span><div><strong>Test AWS connectivity</strong><p>Run integration tests for AWS service connections.</p></div><small>AWS S3 · Flask</small></li><li><span>03</span><div><strong>Validate auto-scaling</strong><p>Run load tests against Elastic Beanstalk scaling performance.</p></div><small>Elastic Beanstalk</small></li></ol></div></section>}
+
+        {project.data.slug === "expense-tracker" && <section class="case-system" aria-labelledby="expense-system"><div class="case-system__heading"><p class="case-kicker">01 · Application boundary</p><h2 id="expense-system">React state to backend API</h2></div><div class="case-flow"><article><span>Frontend</span><strong>React Hooks + Context</strong><p>Manages the expense tracker interface.</p></article><i aria-hidden="true">→</i><article><span>Backend</span><strong>Node.js API</strong><p>Provides the application backend.</p></article><i aria-hidden="true">→</i><article><span>Data</span><strong>MongoDB</strong><p>Supports the MERN application stack.</p></article></div><div class="case-section"><p class="case-kicker">02 · System context</p><div class="case-context-grid case-context-grid--two"><article><span>Interface</span><h3>React frontend</h3><p>Built with React Hooks and the Context API.</p></article><article><span>Runtime</span><h3>Local production environment</h3><p>The backend API was added and deployed into a local production environment.</p></article></div></div></section>}
+
+        {project.data.slug === "weather" && <section class="case-system" aria-labelledby="weather-system"><div class="case-system__heading"><p class="case-kicker">01 · Client request loop</p><h2 id="weather-system">Input to current conditions</h2></div><div class="case-context-grid"><article><span>Interface</span><h3>Responsive vanilla UI</h3><p>Built with JavaScript, HTML, and CSS without libraries.</p></article><article><span>Request</span><h3>Fetch API</h3><p>The browser calls the OpenWeatherMap REST API.</p></article><article><span>Result</span><h3>Current weather</h3><p>The response is returned to the app for presentation.</p></article></div></section>}
+
+        {project.data.slug === "calculator" && <section class="case-system" aria-labelledby="calculator-system"><div class="case-system__heading"><p class="case-kicker">01 · Implementation notes</p><h2 id="calculator-system">Small interface, explicit structure</h2></div><div class="case-insights"><article><span>Organization</span><strong>ES6 classes</strong><p>Used to organize the calculator code.</p></article><article><span>Layout</span><strong>Grid + Flexbox</strong><p>CSS layout techniques support the interface.</p></article><article><span>Reliability</span><strong>Input and edge cases</strong><p>Clean input handling and debugging were documented concepts.</p></article></div><div class="case-section"><p class="case-kicker">02 · Concepts covered</p><ol class="case-tasks"><li><span>01</span><div><strong>Sync JavaScript with the UI</strong><p>Connect calculator behavior to the interface.</p></div><small>JavaScript</small></li><li><span>02</span><div><strong>Handle user input</strong><p>Keep interaction clean and predictable.</p></div><small>HTML · CSS</small></li><li><span>03</span><div><strong>Debug edge cases</strong><p>Work through complicated input and calculation cases.</p></div><small>ES6 classes</small></li></ol></div></section>}
+
+        {project.data.slug === "apple-cutter" && <section class="case-system" aria-labelledby="apple-system"><div class="case-system__heading"><p class="case-kicker">01 · Product design context</p><h2 id="apple-system">Model, material, ergonomics</h2></div><div class="case-context-grid"><article><span>Modeling</span><h3>AutoCAD and 3D form</h3><p>The device was designed using AutoCAD and 3D modeling.</p></article><article><span>Material</span><h3>Material selection</h3><p>Materials were considered as part of the custom device design.</p></article><article><span>Use</span><h3>Ergonomic design</h3><p>Ergonomics informed the device and its intended handling.</p></article></div><div class="case-section"><p class="case-kicker">02 · Deliverable</p><p class="case-callout">A custom-made apple cutting device presented to a client in a formal presentation.</p></div></section>}
+
+        {project.data.slug === "cdrom" && <section class="case-system" aria-labelledby="cdrom-system"><div class="case-system__heading"><p class="case-kicker">01 · Engineering context</p><h2 id="cdrom-system">A team redesign of the read-head</h2></div><div class="case-context-grid"><article><span>Objective</span><h3>Modify and control</h3><p>The project focused on modifying and controlling the read-head of a CD-ROM.</p></article><article><span>Method</span><h3>AutoCAD and 3D modeling</h3><p>The team used AutoCAD and 3D modeling to develop the redesign.</p></article><article><span>Team</span><h3>Three-person project</h3><p>Led a team of 3 through the project work.</p></article></div><div class="case-section"><p class="case-kicker">02 · Deliverables</p><p class="case-callout">The final product was presented in a formal presentation and technical report to 30 professors and students.</p></div></section>}
+
+        {project.data.slug === "induction-motor" && <section class="case-system" aria-labelledby="motor-system"><div class="case-system__heading"><p class="case-kicker">01 · Hoist system context</p><h2 id="motor-system">A motor recommendation around the mechanism</h2></div><div class="case-context-grid"><article><span>Motor</span><h3>AC squirrel cage motor</h3><p>The report recommended a commercially available motor for the application.</p></article><article><span>Transmission</span><h3>Speed reducer and cable drum</h3><p>The specialized hoist included a speed reducer and cable drum.</p></article><article><span>Load path</span><h3>Single or multi-pulley assembly</h3><p>The cable assembly had to operate within specified parameters.</p></article></div><div class="case-section"><p class="case-kicker">02 · Deliverable</p><p class="case-callout">A technical report connecting the motor recommendation to the customer’s specialized hoist application.</p></div></section>}
+
+        <section>
+          <Content />
+        </section>
+      </article>
+    </main>
+  </body>
+</html>
+
+<style>
+  :global(html), :global(body) { background: #111214; }
+  .deep-research-page { background: #111214; color: #f1f0eb; font-family: Inter, ui-sans-serif, system-ui, sans-serif; line-height: 1.6; margin: 0 auto; max-width: 980px; padding: 3rem 1.5rem 6rem; }
+  .back-home { align-items: center; border: 1px solid #30343b; border-radius: .45rem; color: #9a9da5; display: inline-flex; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .78rem; gap: .55rem; letter-spacing: .02em; padding: .55rem .8rem; transition: background-color .4s cubic-bezier(.22, .61, .36, 1), border-color .4s cubic-bezier(.22, .61, .36, 1), color .4s cubic-bezier(.22, .61, .36, 1), padding .4s cubic-bezier(.22, .61, .36, 1); }
+  .back-home span { display: inline-block; transition: transform .4s cubic-bezier(.22, .61, .36, 1); }
+  .back-home:hover, .back-home:focus-visible { background: rgb(185 242 124 / 9%); border-color: #b9f27c; color: #f1f0eb; padding-left: .7rem; padding-right: .9rem; }
+  .back-home:hover span, .back-home:focus-visible span { transform: translateX(-.2rem); }
+  .back-home:focus-visible { outline: 2px solid #b9f27c; outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) { .back-home, .back-home span { transition: none; } }
+  .deep-research-page article > header { max-width: 760px; }
+  .deep-research-page a { color: inherit; }
+  .deep-research-page h1 { font-size: clamp(2.8rem, 8vw, 6rem); letter-spacing: -.07em; line-height: .95; margin: 2rem 0 1rem; }
+  .deep-research-page article > header > p:not(:first-child) { color: #9a9da5; font-size: 1.1rem; }
+  .deep-research-page article > img { border: 1px solid #30343b; display: block; margin: 3rem 0 1.5rem; max-height: 520px; max-width: 100%; object-fit: cover; }
+  .deep-research-section { border-top: 1px solid #30343b; margin-top: 4rem; padding-top: 1.5rem; }
+  .deep-research-section h2 { color: #f1f0eb; font-size: clamp(1.7rem, 4vw, 2.5rem); letter-spacing: -.04em; margin: 0 0 1.5rem; }
+  .research-flow { align-items: stretch; display: grid; grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr; list-style: none; margin: 0; padding: 0; }
+  .research-flow li:not(.research-flow__arrow) { background: #181a1e; border: 1px solid #30343b; display: flex; flex-direction: column; gap: .35rem; padding: 1rem; }
+  .research-flow span, .research-flow small, .research-tasks > li > span, .research-tasks small, .research-context-grid span { color: #b9f27c; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .7rem; letter-spacing: .06em; text-transform: uppercase; }
+  .research-flow small { margin-top: auto; }
+  .research-flow__arrow { align-self: center; color: #b9f27c; padding: 0 .65rem; }
+  .research-context-grid { display: grid; gap: 1rem; grid-template-columns: repeat(3, 1fr); }
+  .research-context-grid article { border-left: 2px solid #b9f27c; padding: .25rem 1rem; }
+  .research-context-grid h3 { margin: .75rem 0 .35rem; }
+  .research-context-grid p, .research-tasks p { color: #9a9da5; margin: 0; }
+  .research-tasks { border-top: 1px solid #30343b; list-style: none; margin: 0; padding: 0; }
+  .research-tasks li { align-items: start; border-bottom: 1px solid #30343b; display: grid; gap: 1rem; grid-template-columns: 2rem 1fr auto; padding: 1rem 0; }
+  .research-tasks small { padding-top: .2rem; }
+  .engineering-page { background: #111214; color: #f1f0eb; font-family: Inter, ui-sans-serif, system-ui, sans-serif; line-height: 1.6; margin: 0 auto; max-width: 1080px; padding: 3rem 1.5rem 6rem; }
+  .engineering-page .engineering-hero { border-bottom: 1px solid #30343b; max-width: 860px; padding-bottom: 2rem; }
+  .engineering-page .engineering-hero h1 { font-size: clamp(3.2rem, 8vw, 6.8rem); letter-spacing: -.08em; line-height: .9; margin: 1.5rem 0 1.25rem; }
+  .engineering-page .engineering-hero > p:last-child { color: #9a9da5; font-size: clamp(1.05rem, 2vw, 1.25rem); max-width: 700px; }
+  .engineering-hero-meta, .engineering-kicker { color: #b9f27c; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; }
+  .engineering-hero-meta { margin: 2rem 0 0; }
+  .engineering-hero-tools { align-items: center; border-bottom: 1px solid #30343b; display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: space-between; max-width: 860px; padding: 1.25rem 0 1.5rem; }
+  .engineering-tool-chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .engineering-tool-chips span { border: 1px solid rgb(185 242 124 / 35%); border-radius: 999px; color: #b9f27c; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .72rem; padding: .35rem .6rem; }
+  .engineering-hero-tools nav ul { display: flex; gap: 1rem; list-style: none; margin: 0; padding: 0; }
+  .engineering-hero-tools nav a { border-bottom: 1px solid #b9f27c; padding-bottom: .2rem; }
+  .engineering-system { background: linear-gradient(145deg, #181a1e, #101113); border: 1px solid #30343b; margin-top: 4rem; max-width: 980px; padding: clamp(1.25rem, 4vw, 3rem); }
+  .engineering-system__header { align-items: end; border-bottom: 1px solid #30343b; display: flex; justify-content: space-between; margin-bottom: 3rem; padding-bottom: 1.25rem; }
+  .engineering-system__header > span, .engineering-system__subhead > span { color: #9a9da5; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .7rem; text-transform: uppercase; }
+  .engineering-system h2 { color: #f1f0eb; font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: -.06em; margin: 0; }
+  .engineering-system__section { border-top: 1px solid #30343b; margin-top: 3rem; padding-top: 1.5rem; }
+  .engineering-system__subhead { align-items: baseline; display: flex; justify-content: space-between; margin-bottom: 1.5rem; }
+  .engineering-system__subhead .engineering-kicker { margin: 0; }
+  .engineering-kicker { color: #b9f27c; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .7rem; letter-spacing: .06em; margin: 0 0 .55rem; text-transform: uppercase; }
+  .engineering-flow { margin: 0 auto; max-width: 900px; }
+  .engineering-node { background: #181a1e; border: 1px solid #30343b; min-height: 150px; padding: 1.5rem 1.65rem; }
+  .engineering-node--lead { border-color: rgb(185 242 124 / 65%); margin: 0 auto; max-width: 500px; }
+  .engineering-node--test { border-color: rgb(185 242 124 / 65%); margin: 0 auto; max-width: 500px; }
+  .engineering-node span, .engineering-tasks > li > span, .engineering-tasks small, .engineering-code-header span { color: #b9f27c; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; }
+  .engineering-node strong { display: block; font-size: 1.4rem; letter-spacing: -.02em; margin-top: .75rem; }
+  .engineering-node p { color: #9a9da5; margin: .35rem 0 0; }
+  .engineering-flow__split, .engineering-flow__merge { height: 2.75rem; margin: 0 auto; position: relative; width: 100%; }
+  .engineering-flow__split::before, .engineering-flow__merge::before { border-left: 1px solid #b9f27c; content: ""; height: 100%; left: 50%; position: absolute; top: 0; }
+  .engineering-flow__split::after { border-bottom: 1px solid #b9f27c; content: ""; left: 25%; position: absolute; right: 25%; top: 100%; }
+  .engineering-flow__merge::after { border-bottom: 1px solid #b9f27c; content: ""; left: 25%; position: absolute; right: 25%; top: 0; }
+  .engineering-flow__branches { display: grid; gap: 3rem; grid-template-columns: 1fr 1fr; position: relative; }
+  .engineering-flow__branches::before, .engineering-flow__branches::after { border-left: 1px solid #b9f27c; content: ""; height: 1rem; position: absolute; top: -1rem; }
+  .engineering-flow__branches::before { left: 25%; }
+  .engineering-flow__branches::after { right: 25%; }
+  .engineering-tasks { border-top: 1px solid #30343b; list-style: none; margin: 0; padding: 0; }
+  .engineering-tasks li { align-items: start; border-bottom: 1px solid #30343b; display: grid; gap: 1.5rem; grid-template-columns: 3rem 1fr minmax(170px, auto); padding: 1.25rem .25rem; }
+  .engineering-tasks strong { font-size: 1.05rem; }
+  .engineering-tasks p { color: #9a9da5; margin: .35rem 0 0; }
+  .engineering-code-header { align-items: baseline; display: flex; justify-content: space-between; }
+  .engineering-code-header h2 { margin-bottom: 1rem; }
+  .engineering-code { background: #0c0d0f; border: 1px solid #30343b; color: #f1f0eb; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; line-height: 1.75; margin: 0; max-width: 900px; overflow-x: auto; padding: 1.5rem; }
+  .engineering-code-note { color: #9a9da5; font-size: .85rem; margin: .85rem 0 0; }
+  .career-page { background: #111214; color: #f1f0eb; font-family: Inter, ui-sans-serif, system-ui, sans-serif; line-height: 1.6; margin: 0 auto; max-width: 1080px; padding: 3rem 1.5rem 6rem; }
+  .career-page .career-hero { border-bottom: 1px solid #30343b; max-width: 900px; padding-bottom: 2rem; }
+  .career-page .career-hero h1 { font-size: clamp(3rem, 8vw, 6.4rem); letter-spacing: -.08em; line-height: .92; margin: 1.5rem 0 1.25rem; }
+  .career-page .career-hero > p:last-child { color: #9a9da5; font-size: clamp(1.05rem, 2vw, 1.25rem); max-width: 720px; }
+  .career-hero-meta, .career-kicker { color: #b9f27c; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; }
+  .career-hero-meta { margin: 2rem 0 0; }
+  .career-hero-tools { align-items: center; border-bottom: 1px solid #30343b; display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: space-between; max-width: 900px; padding: 1.25rem 0 1.5rem; }
+  .career-tool-chips { display: flex; flex-wrap: wrap; gap: .45rem; }
+  .career-tool-chips span { border: 1px solid rgb(185 242 124 / 35%); border-radius: 999px; color: #b9f27c; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .7rem; padding: .35rem .55rem; }
+  .career-link-note { color: #9a9da5; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .7rem; margin: 0; }
+  .career-system { background: linear-gradient(145deg, #181a1e, #101113); border: 1px solid #30343b; margin-top: 4rem; max-width: 980px; padding: clamp(1.25rem, 4vw, 3rem); }
+  .career-system__header { align-items: end; border-bottom: 1px solid #30343b; display: flex; justify-content: space-between; margin-bottom: 2rem; padding-bottom: 1.25rem; }
+  .career-system__header > span, .career-system__subhead > span { color: #9a9da5; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .7rem; text-transform: uppercase; }
+  .career-system h2 { color: #f1f0eb; font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: -.06em; line-height: 1; margin: 0; max-width: 700px; }
+  .career-system__section { border-top: 1px solid #30343b; margin-top: 3rem; padding-top: 1.5rem; }
+  .career-system__subhead { align-items: baseline; display: flex; justify-content: space-between; margin-bottom: 1.5rem; }
+  .career-system__subhead .career-kicker { margin: 0; }
+  .career-context-grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(3, 1fr); }
+  .career-context-grid article { border-left: 2px solid #b9f27c; padding: .25rem 1rem; }
+  .career-context-grid span, .career-tasks > li > span, .career-tasks small { color: #b9f27c; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .7rem; letter-spacing: .06em; text-transform: uppercase; }
+  .career-context-grid h3 { font-size: 1.2rem; margin: .7rem 0 .35rem; }
+  .career-context-grid p, .career-tasks p, .career-system__note > p:last-child { color: #9a9da5; margin: 0; }
+  .career-tasks { border-top: 1px solid #30343b; list-style: none; margin: 0; padding: 0; }
+  .career-tasks li { align-items: start; border-bottom: 1px solid #30343b; display: grid; gap: 1.5rem; grid-template-columns: 3rem 1fr minmax(170px, auto); padding: 1.25rem .25rem; }
+  .career-tasks strong { font-size: 1.05rem; }
+  .career-tasks p { margin-top: .35rem; }
+  .career-system__note { border-left: 2px solid #b9f27c; padding-left: 1rem; }
+  .career-system__note .career-kicker { margin-top: 0; }
+  .case-page { background: #111214; color: #f1f0eb; font-family: Inter, ui-sans-serif, system-ui, sans-serif; line-height: 1.6; margin: 0 auto; max-width: 1080px; padding: 3rem 1.5rem 6rem; }
+  .case-page > article > header { border-bottom: 1px solid #30343b; max-width: 900px; padding-bottom: 2rem; }
+  .case-page > article > header h1 { font-size: clamp(3rem, 8vw, 6.4rem); letter-spacing: -.08em; line-height: .92; margin: 1.5rem 0 1.25rem; }
+  .case-page > article > header > p:last-child { color: #9a9da5; font-size: clamp(1.05rem, 2vw, 1.25rem); max-width: 720px; }
+  .case-page > article > img { border: 1px solid #30343b; display: block; margin: 3rem 0 1.5rem; max-height: 520px; max-width: 100%; object-fit: cover; }
+  .case-page > article > p { color: #9a9da5; }
+  .case-page .case-system { background: linear-gradient(145deg, #181a1e, #101113); border: 1px solid #30343b; margin-top: 4rem; max-width: 980px; padding: clamp(1.25rem, 4vw, 3rem); }
+  .case-system__heading { border-bottom: 1px solid #30343b; margin-bottom: 2rem; padding-bottom: 1.25rem; }
+  .case-system h2 { color: #f1f0eb; font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: -.06em; line-height: 1; margin: 0; }
+  .case-kicker { color: #b9f27c; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .72rem; letter-spacing: .08em; margin: 0 0 .55rem; text-transform: uppercase; }
+  .case-flow { align-items: stretch; display: grid; gap: 1rem; grid-template-columns: 1fr auto 1fr auto 1fr; }
+  .case-flow article, .case-insights article { background: #181a1e; border: 1px solid #30343b; display: flex; flex-direction: column; padding: 1.25rem; }
+  .case-flow article span, .case-context-grid span, .case-insights span { color: #b9f27c; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .7rem; letter-spacing: .06em; text-transform: uppercase; }
+  .case-flow article strong { font-size: 1.15rem; margin: .65rem 0 .35rem; }
+  .case-flow article p, .case-context-grid p, .case-insights p, .case-callout { color: #9a9da5; margin: 0; }
+  .case-flow > i { align-self: center; color: #b9f27c; font-style: normal; font-size: 1.4rem; }
+  .case-section { border-top: 1px solid #30343b; margin-top: 3rem; padding-top: 1.5rem; }
+  .case-context-grid, .case-insights { display: grid; gap: 1.25rem; grid-template-columns: repeat(3, 1fr); }
+  .case-context-grid article { border-left: 2px solid #b9f27c; padding: .25rem 1rem; }
+  .case-context-grid h3 { font-size: 1.2rem; margin: .7rem 0 .35rem; }
+  .case-context-grid--two { grid-template-columns: repeat(2, 1fr); }
+  .case-insights article strong { font-size: 1.2rem; margin: .7rem 0 .35rem; }
+  .case-tasks { border-top: 1px solid #30343b; list-style: none; margin: 0; padding: 0; }
+  .case-tasks li { align-items: start; border-bottom: 1px solid #30343b; display: grid; gap: 1.5rem; grid-template-columns: 3rem 1fr minmax(150px, auto); padding: 1.25rem .25rem; }
+  .case-tasks > li > span, .case-tasks small { color: #b9f27c; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .7rem; letter-spacing: .06em; text-transform: uppercase; }
+  .case-tasks strong { font-size: 1.05rem; }
+  .case-tasks p { color: #9a9da5; margin: .35rem 0 0; }
+  .case-callout { border-left: 2px solid #b9f27c; padding-left: 1rem; }
+  @media (max-width: 700px) {
+    .research-flow { gap: .5rem; grid-template-columns: 1fr; }
+    .research-flow__arrow { padding: .1rem 0; transform: rotate(90deg); }
+    .research-context-grid { grid-template-columns: 1fr; }
+    .research-tasks li { grid-template-columns: 2rem 1fr; }
+    .research-tasks small { grid-column: 2; }
+    .engineering-system__header, .engineering-system__subhead { align-items: start; flex-direction: column; gap: .5rem; }
+    .engineering-flow__branches { gap: .75rem; grid-template-columns: 1fr; }
+    .engineering-flow__split::after, .engineering-flow__merge::after, .engineering-flow__branches::before, .engineering-flow__branches::after { display: none; }
+    .engineering-flow__branches::before { left: 50%; }
+    .engineering-flow__branches::after { right: auto; }
+    .engineering-tasks li { gap: .75rem; grid-template-columns: 2.5rem 1fr; padding-left: 0; padding-right: 0; }
+    .engineering-tasks small { grid-column: 2; }
+    .engineering-code-header { align-items: start; flex-direction: column; gap: .25rem; }
+    .career-system__header, .career-system__subhead { align-items: start; flex-direction: column; gap: .5rem; }
+    .career-context-grid { grid-template-columns: 1fr; }
+    .career-tasks li { gap: .75rem; grid-template-columns: 2.5rem 1fr; padding-left: 0; padding-right: 0; }
+    .career-tasks small { grid-column: 2; }
+    .case-flow, .case-context-grid, .case-context-grid--two, .case-insights { grid-template-columns: 1fr; }
+    .case-flow { gap: .75rem; }
+    .case-flow > i { justify-self: center; transform: rotate(90deg); }
+    .case-tasks li { gap: .75rem; grid-template-columns: 2.5rem 1fr; padding-left: 0; padding-right: 0; }
+    .case-tasks small { grid-column: 2; }
+  }
+</style>
