@@ -1,0 +1,35 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/global.css";
+
+const notes = await getCollection("notes");
+---
+
+<BaseLayout title="Notes — Shubhang Mall" description="Short technical writing drawn from AI systems and software projects I have actually built. These entries are outlined now; full notes will be published as they are written.">
+  <main class="notes-page">
+    <section class="notes-intro" aria-labelledby="notes-title">
+      <p class="eyebrow">Notes · engineering notebook</p>
+      <h1 id="notes-title">Systems, decisions, and working notes.</h1>
+      <p class="hero-copy">Short technical writing drawn from AI systems and software projects I have actually built. These entries are outlined now; full notes will be published as they are written.</p>
+      <a class="text-link" href="/">Return home</a>
+    </section>
+
+    <section class="notes-feed" aria-labelledby="notes-feed-title">
+      <div class="section-heading"><div><p class="section-kicker">The notebook</p><h2 id="notes-feed-title">Drafts and upcoming notes</h2></div><span class="notes-count">{notes.length} entries</span></div>
+      <div class="notes-list">
+        {notes.map((note, index) => (
+          <article class="note-entry">
+            <div class="note-entry__index">{String(index + 1).padStart(2, "0")}</div>
+            <div class="note-entry__body">
+              <div class="note-entry__meta"><span>{note.data.status}</span><span>{note.data.topic}</span>{note.data.date && <time datetime={note.data.date.toISOString()}>{note.data.date.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}</time>}</div>
+              <h3>{note.data.title}</h3>
+              <p>{note.data.description}</p>
+              <div class="note-entry__footer"><div class="note-tags">{note.data.tags.map((tag) => <span>#{tag}</span>)}</div>{note.data.relatedProject && <a class="text-link" href={`/work/${note.data.relatedProject}/`}>Related project <span aria-hidden="true">→</span></a>}</div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  </main>
+</BaseLayout>

@@ -1,0 +1,77 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { experience } from "../data/experience";
+import { identity } from "../data/site";
+import "../styles/global.css";
+
+const projects = await getCollection("projects");
+const aiProjects = ["engineering-team", "deep-research", "career-chatbot"]
+  .map((slug) => projects.find((project) => project.data.slug === slug))
+  .filter((project): project is (typeof projects)[number] => Boolean(project));
+
+const actions = [
+  { label: "View Work", href: "/#all-projects", kind: "internal" },
+  { label: "Explore AI Lab", href: "/ai-lab/", kind: "internal" },
+  { label: "Read Notes", href: "/notes/", kind: "internal" },
+  { label: "GitHub", href: identity.links.find((link) => link.label === "GitHub")?.href ?? "https://github.com/shubhangmall", kind: "external" },
+  { label: "LinkedIn", href: identity.links.find((link) => link.label === "LinkedIn")?.href ?? "https://www.linkedin.com/in/shubhangmall/", kind: "external" },
+  { label: "Resume", href: "https://drive.google.com/file/d/1_N-tTXATqUPkFXb7LZiTYhWtppFGP16u/view?usp=sharing", kind: "external" },
+  { label: "Email", href: identity.links.find((link) => link.label === "Email Shubhang Mall")?.href ?? "mailto:shubhangmall@hotmail.com", kind: "external" },
+];
+---
+
+<BaseLayout title="About — Shubhang Mall" description="The work documented here moves from full-stack and cloud software toward interactive AI systems: multi-agent engineering, deep research and retrieval workflows, context and tool calling, and practical conversational experiences.">
+  <main class="about-page">
+    <section class="about-intro" aria-labelledby="about-title">
+      <div>
+        <p class="about-kicker">About · software → AI engineering</p>
+        <h1 id="about-title">Building useful systems across the stack.</h1>
+        <p class="about-lede">{identity.intro}</p>
+      </div>
+      <img class="about-portrait" src={identity.profileImage.src} alt={identity.profileImage.alt} width="2316" height="2316" loading="eager" decoding="async" />
+    </section>
+
+    <section class="about-section" aria-labelledby="snapshot-title">
+      <div class="about-section-heading"><p class="about-kicker">Professional snapshot</p><h2 id="snapshot-title">A practice shaped by systems and people.</h2></div>
+      <div class="about-insights">
+        <article><span>01 · Production software</span><h3>Reliable application work</h3><p>Experience includes API design, microservices, testing, deployment efficiency, and modernization of legacy systems at Cotality.</p><footer>Ruby on Rails · APIs · microservices</footer></article>
+        <article><span>02 · AI systems</span><h3>Applied agent workflows</h3><p>The portfolio documents multi-agent engineering, deep research, and a career chatbot with function calling and notifications.</p><footer>crewAI · Gradio · function calling</footer></article>
+        <article><span>03 · Product engineering</span><h3>Full-stack delivery</h3><p>Work spans React interfaces, backend APIs, cloud services, client support, and technical communication with stakeholders.</p><footer>React · Python · AWS · JavaScript</footer></article>
+      </div>
+    </section>
+
+    <section class="about-section" aria-labelledby="experience-title">
+      <div class="about-section-heading"><p class="about-kicker">Experience records</p><h2 id="experience-title">Work history</h2></div>
+      <div class="experience-table-wrap">
+        <table class="experience-table">
+          <caption class="sr-only">Professional experience records</caption>
+          <thead><tr><th scope="col">Company</th><th scope="col">Role</th><th scope="col">Period</th><th scope="col">Technologies / domain</th></tr></thead>
+          <tbody>
+            {experience.map((record) => (
+              <tr>
+                <th scope="row"><a href={record.companyUrl} target="_blank" rel="noreferrer">{record.employer} <span aria-hidden="true">↗</span></a></th>
+                <td>{record.role}<details><summary>Details</summary><ul>{record.details.map((detail) => <li>{detail}</li>)}</ul></details></td>
+                <td>{record.dateRange}</td>
+                <td><div class="experience-tags">{record.technologies.map((technology) => <span>{technology}</span>)}</div></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="about-section about-direction" aria-labelledby="direction-title">
+      <div class="about-section-heading"><p class="about-kicker">Current direction</p><h2 id="direction-title">From production systems to AI engineering.</h2></div>
+      <p class="about-direction-copy">The work documented here moves from full-stack and cloud software toward interactive AI systems: multi-agent engineering, deep research and retrieval workflows, context and tool calling, and practical conversational experiences.</p>
+      <div class="about-project-links">{aiProjects.map((project) => <a href={`/work/${project.data.slug}/`}><span>{project.data.category} · {project.data.technologies.slice(0, 2).join(" · ")}</span><strong>{project.data.portfolioTitle ?? project.data.title}</strong><span aria-hidden="true">↗</span></a>)}</div>
+    </section>
+
+    <section class="about-actions" aria-labelledby="actions-title">
+      <div><p class="about-kicker">Continue exploring</p><h2 id="actions-title">Choose a path.</h2></div>
+      <nav class="selection-actions" aria-label="About page actions">
+        {actions.map((action) => <a href={action.href} target={action.kind === "external" ? "_blank" : undefined} rel={action.kind === "external" ? "noreferrer" : undefined}>{action.label}<span aria-hidden="true">↗</span></a>)}
+      </nav>
+    </section>
+  </main>
+</BaseLayout>
