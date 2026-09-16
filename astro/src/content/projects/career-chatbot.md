@@ -4,7 +4,7 @@ slug: "career-chatbot"
 summary: "A web-based AI career chatbot that represents a professional digital persona, answers questions, and captures user interest and feedback."
 category: "AI"
 portfolioTitle: "Career Chatbot AI Agent"
-technologies: ["uv", "OpenAI", "Google Gemini", "CrewAI", "Ollama", "Cursor", "HuggingFace", "Pushover", "Python"]
+technologies: ["Python", "Gradio", "OpenAI", "Chroma", "OpenAI embeddings", "Pushover"]
 image: "/assets/project/aichat.jpeg"
 ---
 

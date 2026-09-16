@@ -1,6 +1,9 @@
 ---
 import { getCollection, render } from "astro:content";
 import { absoluteUrl } from "../../lib/seo";
+import RunInspector from "../../components/RunInspector";
+import { TrustSlide } from "../../components/LabPatterns";
+import { getLabTrace } from "../../lib/ai-lab";
 
 export const prerender = true;
 
@@ -22,6 +25,21 @@ const isEngineeringTeam = project.data.slug === "engineering-team";
 const isCareerChatbot = project.data.slug === "career-chatbot";
 const isSystemPresentation = ["agent-creator", "personal-sidekick", "stock-picker"].includes(project.data.slug);
 const isRemainingProject = !["deep-research", "engineering-team", "career-chatbot"].includes(project.data.slug);
+const labTrace = getLabTrace(project.data.slug);
+const displayTitles: Record<string, string> = {
+  "deep-research": "Deep Research AI",
+  "career-chatbot": "Career Chatbot",
+  "engineering-team": "Engineering Team",
+  "personal-sidekick": "Personal Sidekick",
+  "stock-picker": "StockPicker",
+  "agent-creator": "Agent Creating Agent",
+};
+const displayTitle = displayTitles[project.data.slug] ?? title;
+const detailNavigation = [
+  { label: "Home", href: "/" },
+  { label: "AI Lab", href: "/ai-lab/" },
+  { label: "Notes", href: "/notes/" },
+];
 ---
 
 <!doctype html>
@@ -46,13 +64,17 @@ const isRemainingProject = !["deep-research", "engineering-team", "career-chatbo
     <title>{title} — Shubhang Mall</title>
   </head>
   <body>
+    <header class="detail-header">
+      <a class="detail-header__wordmark" href="/" aria-label="Shubhang Mall home">SM<span>.</span></a>
+      <nav aria-label="Project navigation"><ul>{detailNavigation.map((item) => <li><a href={item.href}>{item.label}</a></li>)}</ul></nav>
+      <a class="detail-header__back" href="/">Back to archive <span aria-hidden="true">↗</span></a>
+    </header>
     <main class:list={{ "deep-research-page": project.data.slug === "deep-research", "engineering-page": isEngineeringTeam, "career-page": isCareerChatbot, "case-page": isRemainingProject }}>
       <article>
         <header class:list={{ "engineering-hero": isEngineeringTeam, "career-hero": isCareerChatbot }}>
-          <p><a class="back-home" href="/"><span aria-hidden="true">←</span> Back to Home</a></p>
           {isEngineeringTeam && <p class="engineering-hero-meta">AI · MULTI-AGENT SOFTWARE ENGINEERING</p>}
           {isCareerChatbot && <p class="career-hero-meta">AI · CONVERSATIONAL CAREER SYSTEM</p>}
-          <h1>{title}</h1>
+          <h1>{displayTitle}</h1>
           <p>{summary}</p>
         </header>
 
@@ -73,6 +95,10 @@ const isRemainingProject = !["deep-research", "engineering-team", "career-chatbo
             {repositoryUrl && <li><a href={repositoryUrl} target="_blank" rel="noreferrer">Repository</a></li>}
           </ul>
         </nav>}
+
+        {labTrace && <section class="lab-run-section" aria-labelledby="lab-run-heading"><div class="lab-run-heading"><p class="case-kicker">04 · Safe public demonstration</p><h2 id="lab-run-heading">Replay the execution</h2><p>This is a curated presentation fixture derived from the current project architecture. It is not a historical run and does not call a paid provider.</p></div><RunInspector trace={labTrace} client:load /></section>}
+
+        {project.data.slug === "agent-creator" && labTrace?.diff && <section class="lab-run-section" aria-labelledby="generated-code-title"><div class="lab-run-heading"><p class="case-kicker">05 · Trust boundary</p><h2 id="generated-code-title">Generated code is an artifact, not an action</h2><p>The source experiment writes and imports generated Python. This portfolio keeps the capability inspectable without executing it.</p></div><TrustSlide file={labTrace.diff.file} rows={labTrace.diff.rows} client:load /></section>}
 
         {project.data.slug === "deep-research" && (
           <>
@@ -113,14 +139,14 @@ const isRemainingProject = !["deep-research", "engineering-team", "career-chatbo
         {project.data.slug === "engineering-team" && (
           <section class="engineering-system" aria-labelledby="engineering-workflow-title">
             <div class="engineering-system__header"><div><p class="engineering-kicker">01 · Agent topology</p><h2 id="engineering-workflow-title">Engineering Team system</h2></div><span>crewAI · documented workflow</span></div>
-            <div class="engineering-flow" aria-label="Engineering Lead coordinates Backend Engineer and Frontend Engineer, which converge on Test Engineer">
+            <div class="engineering-flow" aria-label="Engineering Lead passes work through Backend Engineer, Frontend Engineer, and Test Engineer in a sequential CrewAI process">
               <article class="engineering-node engineering-node--lead"><span>coordination</span><strong>Engineering Lead</strong><p>Coordinates requirements and system direction.</p></article>
-              <div class="engineering-flow__split" aria-hidden="true"></div>
-              <div class="engineering-flow__branches">
-                <article class="engineering-node"><span>implementation · backend</span><strong>Backend Engineer</strong><p>Produces backend application files.</p></article>
-                <article class="engineering-node"><span>implementation · frontend</span><strong>Frontend Engineer</strong><p>Produces frontend application files.</p></article>
+              <div class="engineering-flow__connector" aria-hidden="true">↓</div>
+              <div class="engineering-flow__sequence">
+                <article class="engineering-node"><span>02 · implementation</span><strong>Backend Engineer</strong><p>Produces backend application files.</p></article>
+                <article class="engineering-node"><span>03 · implementation</span><strong>Frontend Engineer</strong><p>Produces frontend application files.</p></article>
               </div>
-              <div class="engineering-flow__merge" aria-hidden="true"></div>
+              <div class="engineering-flow__connector" aria-hidden="true">↓</div>
               <article class="engineering-node engineering-node--test"><span>validation</span><strong>Test Engineer</strong><p>Validates the generated result using sandboxed testing execution.</p></article>
             </div>
 
@@ -197,11 +223,25 @@ const isRemainingProject = !["deep-research", "engineering-team", "career-chatbo
         </section>
       </article>
     </main>
+    <footer class="detail-footer">
+      <span>Shubhang Mall · technical portfolio</span>
+      <nav aria-label="Footer navigation"><a href="/ai-lab/">AI Lab</a><a href="mailto:shubhangmall@hotmail.com">Email</a><a href="https://github.com/shubhangmall" target="_blank" rel="noreferrer">GitHub</a></nav>
+    </footer>
   </body>
 </html>
 
 <style>
   :global(html), :global(body) { background: #111214; }
+  .detail-header { align-items: center; border-bottom: 1px solid #30343b; display: flex; gap: 2rem; justify-content: space-between; margin: 0 auto; max-width: 1080px; padding: 1.15rem 1.5rem; }
+  .detail-header__wordmark { color: #f1f0eb; font-size: 1rem; font-weight: 700; letter-spacing: .08em; }
+  .detail-header__wordmark span { color: #b9f27c; }
+  .detail-header nav ul, .detail-footer nav { display: flex; flex-wrap: wrap; gap: 1rem; list-style: none; margin: 0; padding: 0; }
+  .detail-header a, .detail-footer a { color: #9a9da5; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .7rem; }
+  .detail-header a:hover, .detail-header a:focus-visible, .detail-footer a:hover, .detail-footer a:focus-visible { color: #f1f0eb; }
+  .detail-header__back { border-bottom: 1px solid #b9f27c; color: #f1f0eb !important; padding-bottom: .2rem; }
+  .detail-footer { align-items: center; border-top: 1px solid #30343b; color: #9a9da5; display: flex; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .7rem; gap: 1rem; justify-content: space-between; margin: 0 auto; max-width: 1080px; padding: 1.5rem 1.5rem 3rem; }
+  .detail-footer nav a { color: #f1f0eb; }
+  .detail-header a:focus-visible, .detail-footer a:focus-visible { outline: 2px solid #b9f27c; outline-offset: 4px; }
   .deep-research-page { background: #111214; color: #f1f0eb; font-family: Inter, ui-sans-serif, system-ui, sans-serif; line-height: 1.6; margin: 0 auto; max-width: 980px; padding: 3rem 1.5rem 6rem; }
   .back-home { align-items: center; border: 1px solid #30343b; border-radius: .45rem; color: #9a9da5; display: inline-flex; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .78rem; gap: .55rem; letter-spacing: .02em; padding: .55rem .8rem; transition: background-color .4s cubic-bezier(.22, .61, .36, 1), border-color .4s cubic-bezier(.22, .61, .36, 1), color .4s cubic-bezier(.22, .61, .36, 1), padding .4s cubic-bezier(.22, .61, .36, 1); }
   .back-home span { display: inline-block; transition: transform .4s cubic-bezier(.22, .61, .36, 1); }
@@ -211,7 +251,7 @@ const isRemainingProject = !["deep-research", "engineering-team", "career-chatbo
   @media (prefers-reduced-motion: reduce) { .back-home, .back-home span { transition: none; } }
   .deep-research-page article > header { max-width: 760px; }
   .deep-research-page a { color: inherit; }
-  .deep-research-page h1 { font-size: clamp(2.8rem, 8vw, 6rem); letter-spacing: -.07em; line-height: .95; margin: 2rem 0 1rem; }
+  .deep-research-page h1 { font-size: clamp(2.8rem, 7vw, 5.2rem); letter-spacing: -.07em; line-height: .95; margin: 2rem 0 1rem; max-width: 720px; }
   .deep-research-page article > header > p:not(:first-child) { color: #9a9da5; font-size: 1.1rem; }
   .deep-research-page article > img { border: 1px solid #30343b; display: block; margin: 3rem 0 1.5rem; max-height: 520px; max-width: 100%; object-fit: cover; }
   .deep-research-section { border-top: 1px solid #30343b; margin-top: 4rem; padding-top: 1.5rem; }
@@ -230,7 +270,7 @@ const isRemainingProject = !["deep-research", "engineering-team", "career-chatbo
   .research-tasks small { padding-top: .2rem; }
   .engineering-page { background: #111214; color: #f1f0eb; font-family: Inter, ui-sans-serif, system-ui, sans-serif; line-height: 1.6; margin: 0 auto; max-width: 1080px; padding: 3rem 1.5rem 6rem; }
   .engineering-page .engineering-hero { border-bottom: 1px solid #30343b; max-width: 860px; padding-bottom: 2rem; }
-  .engineering-page .engineering-hero h1 { font-size: clamp(3.2rem, 8vw, 6.8rem); letter-spacing: -.08em; line-height: .9; margin: 1.5rem 0 1.25rem; }
+  .engineering-page .engineering-hero h1 { font-size: clamp(3rem, 6.5vw, 5.5rem); letter-spacing: -.08em; line-height: .92; margin: 1.5rem 0 1.25rem; max-width: 780px; }
   .engineering-page .engineering-hero > p:last-child { color: #9a9da5; font-size: clamp(1.05rem, 2vw, 1.25rem); max-width: 700px; }
   .engineering-hero-meta, .engineering-kicker { color: #b9f27c; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; }
   .engineering-hero-meta { margin: 2rem 0 0; }
@@ -259,6 +299,8 @@ const isRemainingProject = !["deep-research", "engineering-team", "career-chatbo
   .engineering-flow__split::after { border-bottom: 1px solid #b9f27c; content: ""; left: 25%; position: absolute; right: 25%; top: 100%; }
   .engineering-flow__merge::after { border-bottom: 1px solid #b9f27c; content: ""; left: 25%; position: absolute; right: 25%; top: 0; }
   .engineering-flow__branches { display: grid; gap: 3rem; grid-template-columns: 1fr 1fr; position: relative; }
+  .engineering-flow__sequence { display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; }
+  .engineering-flow__connector { color: #b9f27c; font-size: 1.4rem; line-height: 2.75rem; text-align: center; }
   .engineering-flow__branches::before, .engineering-flow__branches::after { border-left: 1px solid #b9f27c; content: ""; height: 1rem; position: absolute; top: -1rem; }
   .engineering-flow__branches::before { left: 25%; }
   .engineering-flow__branches::after { right: 25%; }
@@ -272,7 +314,7 @@ const isRemainingProject = !["deep-research", "engineering-team", "career-chatbo
   .engineering-code-note { color: #9a9da5; font-size: .85rem; margin: .85rem 0 0; }
   .career-page { background: #111214; color: #f1f0eb; font-family: Inter, ui-sans-serif, system-ui, sans-serif; line-height: 1.6; margin: 0 auto; max-width: 1080px; padding: 3rem 1.5rem 6rem; }
   .career-page .career-hero { border-bottom: 1px solid #30343b; max-width: 900px; padding-bottom: 2rem; }
-  .career-page .career-hero h1 { font-size: clamp(3rem, 8vw, 6.4rem); letter-spacing: -.08em; line-height: .92; margin: 1.5rem 0 1.25rem; }
+  .career-page .career-hero h1 { font-size: clamp(3rem, 6.5vw, 5.5rem); letter-spacing: -.08em; line-height: .92; margin: 1.5rem 0 1.25rem; max-width: 800px; }
   .career-page .career-hero > p:last-child { color: #9a9da5; font-size: clamp(1.05rem, 2vw, 1.25rem); max-width: 720px; }
   .career-hero-meta, .career-kicker { color: #b9f27c; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; }
   .career-hero-meta { margin: 2rem 0 0; }
@@ -300,7 +342,7 @@ const isRemainingProject = !["deep-research", "engineering-team", "career-chatbo
   .career-system__note .career-kicker { margin-top: 0; }
   .case-page { background: #111214; color: #f1f0eb; font-family: Inter, ui-sans-serif, system-ui, sans-serif; line-height: 1.6; margin: 0 auto; max-width: 1080px; padding: 3rem 1.5rem 6rem; }
   .case-page > article > header { border-bottom: 1px solid #30343b; max-width: 900px; padding-bottom: 2rem; }
-  .case-page > article > header h1 { font-size: clamp(3rem, 8vw, 6.4rem); letter-spacing: -.08em; line-height: .92; margin: 1.5rem 0 1.25rem; }
+  .case-page > article > header h1 { font-size: clamp(3rem, 6.5vw, 5.5rem); letter-spacing: -.08em; line-height: .92; margin: 1.5rem 0 1.25rem; max-width: 820px; }
   .case-page > article > header > p:last-child { color: #9a9da5; font-size: clamp(1.05rem, 2vw, 1.25rem); max-width: 720px; }
   .case-page > article > img { border: 1px solid #30343b; display: block; margin: 3rem 0 1.5rem; max-height: 520px; max-width: 100%; object-fit: cover; }
   .case-page > article > p { color: #9a9da5; }
@@ -327,13 +369,18 @@ const isRemainingProject = !["deep-research", "engineering-team", "career-chatbo
   .case-tasks p { color: #9a9da5; margin: .35rem 0 0; }
   .case-callout { border-left: 2px solid #b9f27c; padding-left: 1rem; }
   @media (max-width: 700px) {
+    .detail-header { align-items: flex-start; flex-wrap: wrap; gap: .75rem 1rem; padding: .9rem 1rem; }
+    .detail-header nav { order: 3; width: 100%; }
+    .detail-header nav ul { gap: .25rem; }
+    .detail-header nav a, .detail-header__back { align-items: center; display: inline-flex; min-height: 44px; padding: .65rem .55rem; }
+    .detail-footer { align-items: flex-start; flex-direction: column; padding-left: 1rem; padding-right: 1rem; }
     .research-flow { gap: .5rem; grid-template-columns: 1fr; }
     .research-flow__arrow { padding: .1rem 0; transform: rotate(90deg); }
     .research-context-grid { grid-template-columns: 1fr; }
     .research-tasks li { grid-template-columns: 2rem 1fr; }
     .research-tasks small { grid-column: 2; }
     .engineering-system__header, .engineering-system__subhead { align-items: start; flex-direction: column; gap: .5rem; }
-    .engineering-flow__branches { gap: .75rem; grid-template-columns: 1fr; }
+    .engineering-flow__branches, .engineering-flow__sequence { gap: .75rem; grid-template-columns: 1fr; }
     .engineering-flow__split::after, .engineering-flow__merge::after, .engineering-flow__branches::before, .engineering-flow__branches::after { display: none; }
     .engineering-flow__branches::before { left: 50%; }
     .engineering-flow__branches::after { right: auto; }

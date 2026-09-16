@@ -45,7 +45,7 @@ const title = `${identity.name} — ${identity.headline}`;
       </div>
       <div class="selected-system-grid">
         {selectedProjects.map(({ project, index, capability, className }) => (
-          <a class={`selected-system ${className}`} href={`/work/${project.data.slug}/`}>
+          <a class={`selected-system ${className}`} href={`/work/${project.data.slug}/`} aria-label={`View ${project.data.portfolioTitle ?? project.data.title} project`}>
             <div class="selected-system__meta"><span>{index} · {capability}</span><span>{project.data.category}</span></div>
             <h3>{project.data.portfolioTitle ?? project.data.title}</h3>
             <p>{project.data.summary}</p>
@@ -60,16 +60,19 @@ const title = `${identity.name} — ${identity.headline}`;
         <h2 id="all-projects-title">More Projects</h2>
         <p>{remainingProjects.length} more projects in the archive</p>
       </div>
-      <div class="project-grid">
+      <ul class="project-index" aria-label="More project case studies">
         {remainingProjects.map((project) => (
-          <a class="project-card" href={`/work/${project.data.slug}/`}>
-            <span class="project-meta">{project.data.category}</span>
-            <h3>{project.data.portfolioTitle ?? project.data.title}</h3>
-            <p>{project.data.summary}</p>
-            <footer>{project.data.technologies.slice(0, 3).join(" · ")}</footer>
-          </a>
+          <li>
+            <a class="project-index__row" href={`/work/${project.data.slug}/`} aria-label={`View ${project.data.portfolioTitle ?? project.data.title} project`}>
+              <span class="project-index__number" aria-hidden="true">↳</span>
+              <span class="project-index__title"><span class="project-meta">{project.data.category}</span><strong>{project.data.portfolioTitle ?? project.data.title}</strong></span>
+              <span class="project-index__summary">{project.data.summary}</span>
+              <span class="project-index__tools">{project.data.technologies.slice(0, 3).join(" · ")}</span>
+              <span class="project-index__arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   </main>
 </BaseLayout>
