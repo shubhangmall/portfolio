@@ -4,11 +4,11 @@ slug: "deep-research"
 summary: "A web-based AI research assistant for multi-step searches, report generation, traceable workflows, and email notifications."
 category: "AI"
 portfolioTitle: "Deep Research AI Agent"
-technologies: ["Python", "Gradio", "OpenAI", "GPT-4o-mini", "SendGrid", "asyncio"]
+technologies: ["Python", "Gradio", "OpenRouter / Groq / Ollama", "Tavily", "SendGrid", "asyncio"]
 image: "/assets/project/deepresearch.jpg"
 ---
 
-Developed a web-based AI research assistant capable of performing multi-step web searches, compiling results, generating detailed reports, and sending notifications via email. Designed to streamline deep research processes and provide concise, actionable insights.
+Developed a web-based AI research assistant capable of performing multi-step web searches, compiling results, generating detailed reports, and optionally sending notifications via email. The current implementation uses a provider-independent LLM boundary with configurable hosted or local backends.
 
 Integrated Gradio for an interactive UI, allowing users to submit queries and track real-time progress of research. Leveraged asynchronous execution with Python’s asyncio to efficiently perform multiple web searches concurrently.
 
