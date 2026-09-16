@@ -264,8 +264,8 @@ h2 { font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: -.05em; margin: 0; }
   --surface: #e9e3d8;
   --border: #cec5b6;
   --text: #1c1c1a;
-  --muted: #6b675f;
-  --accent: #b43f2b;
+  --muted: #625e56;
+  --accent: #a83b27;
   --accent-ink: #fff9f0;
   --max-width: 1240px;
   font-family: "Arial", "Helvetica Neue", sans-serif;
@@ -311,7 +311,7 @@ main { max-width: var(--max-width); padding-bottom: 7rem; }
 .selected-system-list { border-top: 1px solid var(--text); }
 .selected-system-grid { display: none; }
 .selected-system { align-items: stretch; background: transparent; border: 0; border-bottom: 1px solid var(--border); display: grid; gap: 1.5rem; grid-template-columns: 3rem minmax(0, 1fr) minmax(150px, 240px); min-height: 0; padding: 1.5rem 0; }
-.selected-system:hover, .selected-system:focus-visible { background: rgb(180 63 43 / 6%); border-color: var(--text); transform: none; }
+.selected-system:hover, .selected-system:focus-visible { background: rgb(168 59 39 / 6%); border-color: var(--text); transform: none; }
 .selected-system__number { color: var(--accent); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .8rem; padding-top: .2rem; }
 .selected-system__body { display: flex; flex-direction: column; }
 .selected-system__meta { color: var(--muted); font-size: .68rem; justify-content: space-between; letter-spacing: .08em; text-transform: uppercase; }
@@ -325,7 +325,7 @@ main { max-width: var(--max-width); padding-bottom: 7rem; }
 .all-work { border-top-color: var(--text); padding-top: 6rem; }
 .project-index { border-top-color: var(--text); }
 .project-index__row { border-bottom-color: var(--border); grid-template-columns: 2rem minmax(220px, 1fr) minmax(220px, 1.4fr) minmax(150px, .8fr) 1rem; padding: 1.3rem 0; }
-.project-index__row:hover, .project-index__row:focus-visible { background: rgb(180 63 43 / 6%); }
+.project-index__row:hover, .project-index__row:focus-visible { background: rgb(168 59 39 / 6%); }
 .project-index__number, .project-index__arrow { color: var(--accent); }
 .project-index__title strong { font-family: Georgia, "Times New Roman", serif; font-size: 1.3rem; font-weight: 400; }
 .project-index__summary { color: var(--muted); font-family: Georgia, "Times New Roman", serif; }
@@ -359,7 +359,7 @@ main { max-width: var(--max-width); padding-bottom: 7rem; }
 .about-project-links a, .note-entry + .note-entry { border-bottom-color: var(--border); }
 .about-actions { border-top-color: var(--text); }
 .selection-actions a { border-color: var(--border); }
-.selection-actions a:hover { background: rgb(180 63 43 / 8%); color: var(--accent); }
+.selection-actions a:hover { background: rgb(168 59 39 / 8%); color: var(--accent); }
 .notes-feed { border-top-color: var(--text); }
 .note-entry { padding: 2.5rem 0; }
 .note-entry__index, .note-entry__meta span:first-child { color: var(--accent); }
