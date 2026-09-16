@@ -64,12 +64,13 @@ const detailNavigation = [
     <title>{title} — Shubhang Mall</title>
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="detail-header">
       <a class="detail-header__wordmark" href="/" aria-label="Shubhang Mall home">SM<span>.</span></a>
       <nav aria-label="Project navigation"><ul>{detailNavigation.map((item) => <li><a href={item.href}>{item.label}</a></li>)}</ul></nav>
       <a class="detail-header__back" href="/">Back to archive <span aria-hidden="true">↗</span></a>
     </header>
-    <main class:list={{ "deep-research-page": project.data.slug === "deep-research", "engineering-page": isEngineeringTeam, "career-page": isCareerChatbot, "case-page": isRemainingProject }}>
+    <main id="main-content" class:list={{ "deep-research-page": project.data.slug === "deep-research", "engineering-page": isEngineeringTeam, "career-page": isCareerChatbot, "case-page": isRemainingProject }}>
       <article>
         <header class:list={{ "engineering-hero": isEngineeringTeam, "career-hero": isCareerChatbot }}>
           {isEngineeringTeam && <p class="engineering-hero-meta">AI · MULTI-AGENT SOFTWARE ENGINEERING</p>}
@@ -233,6 +234,8 @@ const detailNavigation = [
 <style>
   :global(html), :global(body) { background: #111214; }
   .detail-header { align-items: center; border-bottom: 1px solid #30343b; display: flex; gap: 2rem; justify-content: space-between; margin: 0 auto; max-width: 1080px; padding: 1.15rem 1.5rem; }
+  .skip-link { background: #15181b; color: #f1f0eb; left: 1rem; padding: .75rem 1rem; position: fixed; top: -5rem; z-index: 20; }
+  .skip-link:focus { top: 1rem; }
   .detail-header__wordmark { color: #f1f0eb; font-size: 1rem; font-weight: 700; letter-spacing: .08em; }
   .detail-header__wordmark span { color: #b9f27c; }
   .detail-header nav ul, .detail-footer nav { display: flex; flex-wrap: wrap; gap: 1rem; list-style: none; margin: 0; padding: 0; }
