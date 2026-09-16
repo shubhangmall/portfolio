@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import type { LabTrace, TraceEvent } from "../lib/ai-lab";
 import "./LabPatterns.css";
 
@@ -12,9 +12,10 @@ export function ThinkingState({ label }: { label: string }) {
 }
 
 export function ReplayScrubber({ value, max, onChange }: { value: number; max: number; onChange: (value: number) => void }) {
+  const progress = max > 0 ? Math.min(Math.max(value / max, 0), 1) * 100 : 0;
   return <div className="replay-scrubber">
     <div className="replay-scrubber__topline"><span>Replay position</span><span>{value} / {max} events</span></div>
-    <input aria-label="Replay position" type="range" min="1" max={Math.max(max, 1)} value={Math.min(Math.max(value, 1), Math.max(max, 1))} onChange={(event) => onChange(Number(event.target.value))} />
+    <input aria-label="Replay position" style={{ "--scrub-progress": `${progress}%` } as CSSProperties} type="range" min="1" max={Math.max(max, 1)} value={Math.min(Math.max(value, 1), Math.max(max, 1))} onChange={(event) => onChange(Number(event.target.value))} />
   </div>;
 }
 
@@ -87,5 +88,5 @@ export function SystemCarousel({ traces }: { traces: LabTrace[] }) {
   const [index, setIndex] = useState(0);
   const trace = traces[index];
   const move = (delta: number) => setIndex((value) => (value + delta + traces.length) % traces.length);
-  return <div className="system-carousel" aria-label="AI Lab system carousel"><div className="system-carousel__controls"><span className="lab-kicker">Architecture index · {String(index + 1).padStart(2, "0")} / {String(traces.length).padStart(2, "0")}</span><div><button type="button" aria-label="Previous system" onClick={() => move(-1)}>←</button><button type="button" aria-label="Next system" onClick={() => move(1)}>→</button></div></div><article className="system-carousel__card"><div><span className="project-meta">{trace.mode} · {trace.fixtureLabel}</span><h3>{trace.runLabel}</h3><p>{trace.caveat}</p></div><div className="system-carousel__events">{trace.events.slice(0, 3).map((event: TraceEvent) => <span key={event.id}>{event.kind}<b>{event.label}</b></span>)}</div></article></div>;
+  return <div className="system-carousel" aria-label="AI Lab system carousel"><div className="system-carousel__controls"><span className="lab-kicker" aria-live="polite">Architecture index · {String(index + 1).padStart(2, "0")} / {String(traces.length).padStart(2, "0")}</span><div><button type="button" aria-label="Previous system" onClick={() => move(-1)}>←</button><button type="button" aria-label="Next system" onClick={() => move(1)}>→</button></div></div><article className="system-carousel__card"><div><span className="project-meta">{trace.mode} · {trace.fixtureLabel}</span><h3>{trace.runLabel}</h3><p>{trace.caveat}</p></div><div className="system-carousel__events">{trace.events.slice(0, 3).map((event: TraceEvent) => <span key={event.id}>{event.kind}<b>{event.label}</b></span>)}</div></article></div>;
 }

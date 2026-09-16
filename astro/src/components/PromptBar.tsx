@@ -125,6 +125,7 @@ export default function PromptBar({
           onChange={(event) => setPrompt(event.target.value)}
           placeholder={placeholder}
           rows={2}
+          maxLength={1000}
           aria-describedby="portfolio-prompt-status"
         />
         <div className="prompt-bar__footer">
@@ -133,6 +134,7 @@ export default function PromptBar({
             <span>/ commands</span>
             {demo && <span>Demo</span>}
           </div>
+          <span className="prompt-bar__counter" aria-live="polite">{prompt.length} / 1000</span>
           <button className="prompt-bar__send" type="submit" disabled={isBusy || !prompt.trim()}>
             {buttonLabel}
           </button>

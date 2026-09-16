@@ -9,6 +9,7 @@ const projects = await getCollection("projects");
 const aiProjects = ["engineering-team", "deep-research", "career-chatbot"]
   .map((slug) => projects.find((project) => project.data.slug === slug))
   .filter((project): project is (typeof projects)[number] => Boolean(project));
+const aiProjectCount = projects.filter((project) => project.data.category === "AI").length;
 
 const actions = [
   { label: "View Work", href: "/#all-projects", kind: "internal" },
@@ -23,16 +24,21 @@ const actions = [
 
 <BaseLayout title="About — Shubhang Mall" description="The work documented here moves from full-stack and cloud software toward interactive AI systems: multi-agent engineering, deep research and retrieval workflows, context and tool calling, and practical conversational experiences.">
   <main id="main-content" class="about-page">
-    <section class="about-intro" aria-labelledby="about-title">
+    <section class="about-intro" aria-labelledby="about-title" data-reveal>
       <div>
-        <p class="about-kicker">About · software → AI engineering</p>
+        <p class="about-kicker">00 / About · software → AI engineering</p>
         <h1 id="about-title">Building useful systems across the stack.</h1>
         <p class="about-lede">{identity.intro}</p>
+        <ul class="about-facts" aria-label="Portfolio facts">
+          <li><strong>8+</strong><span>years in the field</span></li>
+          <li><strong>{projects.length}</strong><span>documented projects</span></li>
+          <li><strong>{aiProjectCount}</strong><span>AI experiments</span></li>
+        </ul>
       </div>
-      <img class="about-portrait" src={identity.profileImage.src} alt={identity.profileImage.alt} width="2316" height="2316" loading="eager" decoding="async" />
+      <img class="about-portrait" src={identity.profileImage.src} alt={identity.profileImage.alt} width="900" height="900" loading="eager" decoding="async" sizes="(max-width: 640px) 170px, 220px" srcset="/assets/profile-450.jpg 450w, /assets/profile-900.jpg 900w" />
     </section>
 
-    <section class="about-section" aria-labelledby="snapshot-title">
+    <section class="about-section" aria-labelledby="snapshot-title" data-reveal>
       <div class="about-section-heading"><p class="about-kicker">Professional snapshot</p><h2 id="snapshot-title">A practice shaped by systems and people.</h2></div>
       <div class="about-insights">
         <article><span>01 · Production software</span><h3>Reliable application work</h3><p>Experience includes API design, microservices, testing, deployment efficiency, and modernization of legacy systems at Cotality.</p><footer>Ruby on Rails · APIs · microservices</footer></article>
@@ -41,7 +47,7 @@ const actions = [
       </div>
     </section>
 
-    <section class="about-section" aria-labelledby="experience-title">
+    <section class="about-section" id="experience" aria-labelledby="experience-title" data-reveal>
       <div class="about-section-heading"><p class="about-kicker">Experience records</p><h2 id="experience-title">Work history</h2></div>
       <div class="experience-table-wrap">
         <table class="experience-table">
@@ -61,13 +67,13 @@ const actions = [
       </div>
     </section>
 
-    <section class="about-section about-direction" aria-labelledby="direction-title">
+    <section class="about-section about-direction" aria-labelledby="direction-title" data-reveal>
       <div class="about-section-heading"><p class="about-kicker">Current direction</p><h2 id="direction-title">From production systems to AI engineering.</h2></div>
       <p class="about-direction-copy">The work documented here moves from full-stack and cloud software toward interactive AI systems: multi-agent engineering, deep research and retrieval workflows, context and tool calling, and practical conversational experiences.</p>
       <div class="about-project-links">{aiProjects.map((project) => <a href={`/work/${project.data.slug}/`}><span>{project.data.category} · {project.data.technologies.slice(0, 2).join(" · ")}</span><strong>{project.data.portfolioTitle ?? project.data.title}</strong><span aria-hidden="true">↗</span></a>)}</div>
     </section>
 
-    <section class="about-actions" aria-labelledby="actions-title">
+    <section class="about-actions" aria-labelledby="actions-title" data-reveal>
       <div><p class="about-kicker">Continue exploring</p><h2 id="actions-title">Choose a path.</h2></div>
       <nav class="selection-actions" aria-label="About page actions">
         {actions.map((action) => <a href={action.href} target={action.kind === "external" ? "_blank" : undefined} rel={action.kind === "external" ? "noreferrer" : undefined}>{action.label}<span aria-hidden="true">↗</span></a>)}
