@@ -3,6 +3,8 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PromptBar from "../components/PromptBar";
 import { identity } from "../data/site";
+import { experience } from "../data/experience";
+import { sortProjects } from "../data/portfolio";
 import "../styles/global.css";
 
 export const prerender = true;
@@ -12,59 +14,87 @@ const selectedSpecs = [
   { slug: "deep-research", index: "02", capability: "Research / retrieval pipeline", className: "selected-system--research" },
   { slug: "career-chatbot", index: "03", capability: "Context + tool calling", className: "selected-system--chatbot" },
 ] as const;
-const allProjects = await getCollection("projects");
+const allProjects = sortProjects(await getCollection("projects"));
 const selectedProjects = selectedSpecs
   .map((spec) => ({ ...spec, project: allProjects.find((project) => project.data.slug === spec.slug) }))
   .filter((item): item is (typeof selectedSpecs)[number] & { project: (typeof allProjects)[number] } => Boolean(item.project));
 const selectedSlugs: string[] = selectedSpecs.map(({ slug }) => slug);
 const remainingProjects = allProjects.filter((project) => !selectedSlugs.includes(project.data.slug));
+const archiveFilters = ["All", ...new Set(remainingProjects.map((project) => project.data.category))];
+const aiProjectCount = allProjects.filter((project) => project.data.category === "AI").length;
 
 const title = `${identity.name} — ${identity.headline}`;
 ---
 
 <BaseLayout title={title} description={identity.intro}>
   <main id="main-content">
-    <section class="hero" id="about" aria-labelledby="hero-title">
-      <div>
-        <p class="eyebrow">Software engineer · AI systems · San Francisco Bay Area</p>
-        <h1 id="hero-title">I build software that makes complex systems legible.</h1>
+    <section class="hero" id="about" aria-labelledby="hero-title" data-reveal>
+      <div class="hero-content">
+        <p class="eyebrow"><span class="eyebrow__index">00 /</span> Software engineer · AI systems · San Francisco Bay Area</p>
+        <div class="hero-title-lockup"><span class="hero-title-lockup__line" aria-hidden="true"></span><h1 id="hero-title">I turn messy systems into something you can reason about.</h1></div>
         <p class="hero-copy">I’m {identity.name}, a software engineer moving between production applications and applied AI. This is a working archive of the systems, decisions, and experiments behind that practice.</p>
         <div class="hero-aside"><span>Currently</span><strong>Turning agent workflows into inspectable products.</strong><span>8+ years across full-stack, cloud, and AI engineering.</span></div>
         <div class="hero-links">
-          <a class="button-link button-link--accent" href="#featured-work">Explore selected work <span aria-hidden="true">↓</span></a>
+          <a class="button-link button-link--accent" href="#featured-work">Start with the systems <span aria-hidden="true">↓</span></a>
           <a class="text-link" href="mailto:shubhangmall@hotmail.com">Get in touch <span aria-hidden="true">↗</span></a>
         </div>
         <PromptBar client:visible demo={false} />
       </div>
-      <div class="hero-portrait-wrap"><span class="hero-portrait-label">01 / profile</span><img class="hero-image" src={identity.profileImage.src} alt={identity.profileImage.alt} width="2316" height="2316" loading="eager" fetchpriority="high" decoding="async" /><span class="hero-portrait-caption">Software → AI engineering</span></div>
+      <div class="hero-visual">
+        <figure class="signal-map" aria-labelledby="signal-map-caption">
+          <figcaption id="signal-map-caption"><span>Practice map / 01</span><strong>Signal over spectacle.</strong><small>Software, AI, and human judgement connected by a useful interface.</small></figcaption>
+          <div class="signal-map__canvas" aria-hidden="true">
+            <span class="signal-map__orbit signal-map__orbit--outer"></span><span class="signal-map__orbit signal-map__orbit--inner"></span>
+            <span class="signal-node signal-node--software"><b>01</b>software</span><span class="signal-node signal-node--ai"><b>02</b>AI systems</span><span class="signal-node signal-node--judgement"><b>03</b>judgement</span><span class="signal-node signal-node--core"><b>SM</b>make it clear</span>
+          </div>
+          <div class="signal-map__footer"><span>field guide</span><span>Bay Area · 2026</span></div>
+        </figure>
+        <div class="hero-portrait-wrap"><span class="hero-portrait-label">portrait / field note</span><img class="hero-image" src={identity.profileImage.src} alt={identity.profileImage.alt} width="900" height="900" loading="eager" fetchpriority="high" decoding="async" sizes="(max-width: 640px) 170px, 185px" srcset="/assets/profile-450.jpg 450w, /assets/profile-900.jpg 900w" /><span class="hero-portrait-caption">Software → AI engineering</span></div>
+      </div>
     </section>
 
-    <section id="featured-work" class="selected-systems" aria-labelledby="featured-work-title">
+    <section class="proof-strip" aria-label="Portfolio at a glance" data-reveal>
+      <div class="proof-strip__label"><span>At a glance</span><small>What this archive contains</small></div>
+      <ul>
+        <li><strong>{allProjects.length}</strong><span>project records</span></li>
+        <li><strong>{aiProjectCount}</strong><span>AI systems</span></li>
+        <li><strong>{experience.length}</strong><span>career chapters</span></li>
+        <li><strong>8+</strong><span>years building</span></li>
+      </ul>
+    </section>
+
+    <section id="featured-work" class="selected-systems" aria-labelledby="featured-work-title" data-reveal>
       <div class="section-heading">
-        <div><p class="section-kicker">01 / selected work</p><h2 id="featured-work-title">Systems built to be inspected.</h2></div>
+        <div><p class="section-kicker">01 / selected work</p><h2 id="featured-work-title">Systems I return to.</h2></div>
         <a class="section-route" href="/ai-lab/">Explore AI Lab <span aria-hidden="true">→</span></a>
       </div>
       <div class="selected-system-list">
         {selectedProjects.map(({ project, index, capability, className }) => (
-          <a class={`selected-system ${className}`} href={`/work/${project.data.slug}/`} aria-label={`View ${project.data.portfolioTitle ?? project.data.title} project`}>
+          <a class={`selected-system ${className}`} href={`/work/${project.data.slug}/`} aria-label={`View ${project.data.portfolioTitle ?? project.data.title} project`} data-project-link>
             <span class="selected-system__number">{index}</span>
             <div class="selected-system__body"><div class="selected-system__meta"><span>{capability}</span><span>{project.data.category}</span></div><h3>{project.data.portfolioTitle ?? project.data.title}</h3><p>{project.data.summary}</p><footer><span>{project.data.technologies.slice(0, 4).join(" · ")}</span><span aria-hidden="true">↗</span></footer></div>
-            {project.data.image && <img src={project.data.image} alt="" width="1311" height="771" loading="lazy" decoding="async" />}
+            {project.data.image && <img src={project.data.image} alt="" width="1311" height="771" loading="lazy" decoding="async" sizes="(max-width: 800px) 0px, 22vw" srcset={`${project.data.image.replace("/assets/project/", "/assets/project/thumb-")} 640w, ${project.data.image} 1311w`} />}
           </a>
         ))}
       </div>
     </section>
 
-    <section class="all-work" id="all-projects" aria-labelledby="all-projects-title">
+    <section class="all-work" id="all-projects" aria-labelledby="all-projects-title" data-reveal>
       <div class="section-heading">
         <div><p class="section-kicker">02 / archive</p><h2 id="all-projects-title">The wider archive.</h2></div>
         <p>{remainingProjects.length} smaller experiments, studies, and systems.</p>
       </div>
-      <ul class="project-index" aria-label="More project case studies">
-        {remainingProjects.map((project) => (
-          <li>
+      <div class="archive-toolbar" data-project-filter>
+        <div class="archive-toolbar__summary"><span id="project-filter-count">Showing {remainingProjects.length} records</span><span id="project-filter-status" class="sr-only" role="status" aria-live="polite"></span></div>
+        <div class="filter-controls" role="group" aria-label="Filter project archive">
+          {archiveFilters.map((filter) => <button type="button" data-project-filter-button={filter.toLowerCase()} aria-controls="project-list" aria-pressed={filter === "All" ? "true" : "false"}>{filter}<span>{filter === "All" ? remainingProjects.length : remainingProjects.filter((project) => project.data.category === filter).length}</span></button>)}
+        </div>
+      </div>
+      <ul class="project-index" id="project-list" aria-label="More project case studies">
+        {remainingProjects.map((project, index) => (
+          <li data-project-item data-project-category={project.data.category.toLowerCase()}>
             <a class="project-index__row" href={`/work/${project.data.slug}/`} aria-label={`View ${project.data.portfolioTitle ?? project.data.title} project`}>
-              <span class="project-index__number" aria-hidden="true">↳</span>
+              <span class="project-index__number" aria-hidden="true">{String(index + 4).padStart(2, "0")}</span>
               <span class="project-index__title"><span class="project-meta">{project.data.category}</span><strong>{project.data.portfolioTitle ?? project.data.title}</strong></span>
               <span class="project-index__summary">{project.data.summary}</span>
               <span class="project-index__tools">{project.data.technologies.slice(0, 3).join(" · ")}</span>
@@ -75,9 +105,32 @@ const title = `${identity.name} — ${identity.headline}`;
       </ul>
     </section>
 
-    <section class="home-contact" aria-labelledby="home-contact-title">
+    <section class="home-contact" aria-labelledby="home-contact-title" data-reveal>
       <p class="section-kicker">03 / open channel</p>
-      <div><h2 id="home-contact-title">Have a hard system to make clearer?</h2><a class="button-link button-link--accent" href="mailto:shubhangmall@hotmail.com">Start a conversation <span aria-hidden="true">↗</span></a></div>
+      <div><h2 id="home-contact-title">Have a hard system to make clearer?</h2><p class="home-contact__note">The best route is a concrete problem, an unfinished idea, or a system that needs a sharper interface.</p><a class="button-link button-link--accent" href="mailto:shubhangmall@hotmail.com">Start a conversation <span aria-hidden="true">↗</span></a></div>
     </section>
   </main>
 </BaseLayout>
+
+<script>
+  const filterRoot = document.querySelector("[data-project-filter]");
+  const filterButtons = Array.from(filterRoot?.querySelectorAll<HTMLButtonElement>("[data-project-filter-button]") ?? []);
+  const projectItems = Array.from(document.querySelectorAll<HTMLElement>("[data-project-item]"));
+  const filterCount = document.querySelector("#project-filter-count");
+  const filterStatus = document.querySelector("#project-filter-status");
+
+  filterButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const filter = button.dataset.projectFilterButton ?? "all";
+      filterButtons.forEach((candidate) => candidate.setAttribute("aria-pressed", String(candidate === button)));
+      let visibleCount = 0;
+      projectItems.forEach((item) => {
+        const matches = filter === "all" || item.dataset.projectCategory === filter;
+        item.hidden = !matches;
+        if (matches) visibleCount += 1;
+      });
+      if (filterCount) filterCount.textContent = `Showing ${visibleCount} ${visibleCount === 1 ? "record" : "records"}`;
+      if (filterStatus) filterStatus.textContent = `${visibleCount} ${visibleCount === 1 ? "project" : "projects"} shown for ${filter === "all" ? "all categories" : filter}.`;
+    });
+  });
+</script>

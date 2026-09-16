@@ -8,7 +8,7 @@ interface Props {
 const {
   title,
   description = "Shubhang Mall — Software Engineer and Developer",
-  image = "/assets/profile.jpeg",
+  image = "/assets/profile-900.jpg",
 } = Astro.props;
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? "https://shubhangmall.com").toString();
 const imageUrl = new URL(image, Astro.site ?? "https://shubhangmall.com").toString();
@@ -25,6 +25,18 @@ const externalLinks = [
   { label: "LinkedIn", href: "https://www.linkedin.com/in/shubhangmall/" },
   { label: "Resume", href: "https://drive.google.com/file/d/1_N-tTXATqUPkFXb7LZiTYhWtppFGP16u/view?usp=sharing" },
 ];
+
+const currentPath = Astro.url.pathname;
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Shubhang Mall",
+  url: "https://shubhangmall.com",
+  jobTitle: "Software Engineer",
+  description,
+  image: imageUrl,
+  sameAs: externalLinks.filter((link) => link.label !== "Resume").map((link) => link.href),
+};
 ---
 
 <!doctype html>
@@ -33,6 +45,8 @@ const externalLinks = [
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
+    <meta name="theme-color" content="#f4f0e7" />
+    <meta name="color-scheme" content="light dark" />
     <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -46,35 +60,93 @@ const externalLinks = [
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={imageUrl} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        root.classList.add("js");
+        let storedTheme = "";
+        try { storedTheme = window.localStorage.getItem("portfolio-theme") ?? ""; } catch {}
+        const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        root.dataset.theme = storedTheme === "dark" || storedTheme === "light" ? storedTheme : systemTheme;
+      })();
+    </script>
     <title>{title}</title>
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="site-header">
-      <a class="wordmark" href="/" aria-label="Shubhang Mall home">SM<span>.</span></a>
+      <a class="wordmark" href="/" aria-label="Shubhang Mall home">SM<span>.</span><small> / field notes</small></a>
       <nav aria-label="Primary navigation">
         <ul class="nav-list">
-          {navigation.map((item) => (
-            <li><a href={item.href}>{item.label}</a></li>
-          ))}
+          {navigation.map((item) => {
+            const isCurrent = item.label === "Work"
+              ? currentPath === "/" || currentPath.startsWith("/work/")
+              : currentPath.startsWith(item.href.replace(/\/$/, ""));
+            return (
+            <li><a href={item.href} aria-current={isCurrent ? "page" : undefined}>{item.label}</a></li>
+            );
+          })}
         </ul>
       </nav>
-      <nav aria-label="External links">
-        <ul class="external-list">
-          {externalLinks.map((item) => (
-            <li><a href={item.href} target="_blank" rel="noreferrer">{item.label}</a></li>
-          ))}
-        </ul>
-      </nav>
+      <div class="site-header__tools">
+        <nav aria-label="External links">
+          <ul class="external-list">
+            {externalLinks.map((item) => (
+              <li><a href={item.href} target="_blank" rel="noreferrer">{item.label}</a></li>
+            ))}
+          </ul>
+        </nav>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Switch to dark theme">
+          <span class="theme-toggle__dot" aria-hidden="true"></span><span data-theme-label>Night</span>
+        </button>
+      </div>
     </header>
     <slot />
     <footer class="site-footer">
-      <span>Shubhang Mall · software → AI engineering</span>
+      <span>Shubhang Mall · software → AI engineering · <span data-current-year></span></span>
       <nav aria-label="Footer navigation">
         <a href="/ai-lab/">AI Lab</a>
         <a href="mailto:shubhangmall@hotmail.com">Email</a>
         <a href="https://github.com/shubhangmall" target="_blank" rel="noreferrer">GitHub</a>
       </nav>
     </footer>
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        const toggle = document.querySelector("[data-theme-toggle]");
+        const label = toggle?.querySelector("[data-theme-label]");
+        const applyTheme = (theme) => {
+          root.dataset.theme = theme;
+          toggle?.setAttribute("aria-pressed", String(theme === "dark"));
+          toggle?.setAttribute("aria-label", theme === "dark" ? "Switch to light theme" : "Switch to dark theme");
+          if (label) label.textContent = theme === "dark" ? "Day" : "Night";
+          document.querySelector('meta[name="theme-color"]')?.setAttribute("content", theme === "dark" ? "#111827" : "#f4f0e7");
+        };
+        applyTheme(root.dataset.theme === "dark" ? "dark" : "light");
+        toggle?.addEventListener("click", () => {
+          const nextTheme = root.dataset.theme === "dark" ? "light" : "dark";
+          applyTheme(nextTheme);
+          try { window.localStorage.setItem("portfolio-theme", nextTheme); } catch {}
+        });
+        document.querySelectorAll("[data-current-year]").forEach((element) => { element.textContent = String(new Date().getFullYear()); });
+
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+        const revealItems = document.querySelectorAll("[data-reveal]");
+        const revealAll = () => revealItems.forEach((item) => item.classList.add("is-revealed"));
+        if (reduceMotion.matches || !("IntersectionObserver" in window)) {
+          revealAll();
+        } else {
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              entry.target.classList.add("is-revealed");
+              observer.unobserve(entry.target);
+            });
+          }, { rootMargin: "0px 0px -12%" });
+          revealItems.forEach((item) => observer.observe(item));
+        }
+      })();
+    </script>
   </body>
 </html>

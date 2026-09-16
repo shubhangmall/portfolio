@@ -4,7 +4,7 @@ export const identity = {
   intro:
     "I am a software engineer and developer in the San Francisco Bay Area with 8+ years of experience. I have strong skills in full-stack development, cloud technology, microservices, client support, systems analysis, cybersecurity and working with a variety of high-profile clients.",
   profileImage: {
-    src: "/assets/profile.jpeg",
+    src: "/assets/profile-900.jpg",
     alt: "Portrait of Shubhang Mall",
   },
   links: [

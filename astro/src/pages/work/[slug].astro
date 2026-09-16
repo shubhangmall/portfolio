@@ -4,6 +4,7 @@ import { absoluteUrl } from "../../lib/seo";
 import RunInspector from "../../components/RunInspector";
 import { TrustSlide } from "../../components/LabPatterns";
 import { getLabTrace } from "../../lib/ai-lab";
+import { sortProjects } from "../../data/portfolio";
 
 export const prerender = true;
 
@@ -17,13 +18,13 @@ export async function getStaticPaths() {
 }
 
 const { project } = Astro.props;
+const allProjects = sortProjects(await getCollection("projects"));
 const { Content } = await render(project);
 const { title, summary, image, projectUrl, repositoryUrl, technologies } = project.data;
 const canonicalUrl = absoluteUrl(`/work/${project.data.slug}/`);
-const imageUrl = image ? absoluteUrl(image) : absoluteUrl("/assets/profile.jpeg");
+const imageUrl = image ? absoluteUrl(image) : absoluteUrl("/assets/profile-900.jpg");
 const isEngineeringTeam = project.data.slug === "engineering-team";
 const isCareerChatbot = project.data.slug === "career-chatbot";
-const isSystemPresentation = ["agent-creator", "personal-sidekick", "stock-picker"].includes(project.data.slug);
 const isRemainingProject = !["deep-research", "engineering-team", "career-chatbot"].includes(project.data.slug);
 const labTrace = getLabTrace(project.data.slug);
 const displayTitles: Record<string, string> = {
@@ -35,11 +36,31 @@ const displayTitles: Record<string, string> = {
   "agent-creator": "Agent Creating Agent",
 };
 const displayTitle = displayTitles[project.data.slug] ?? title;
+const projectPosition = allProjects.findIndex((candidate) => candidate.data.slug === project.data.slug);
+const previousProject = allProjects[(projectPosition - 1 + allProjects.length) % allProjects.length];
+const nextProject = allProjects[(projectPosition + 1) % allProjects.length];
+const imageDimensions: Record<string, { width: number; height: number }> = {
+  "personal-sidekick": { width: 1529, height: 901 },
+  "engineering-team": { width: 1300, height: 770 },
+};
+const dimensions = imageDimensions[project.data.slug] ?? { width: 1311, height: 771 };
+const responsiveImage = image?.replace("/assets/project/", "/assets/project/thumb-");
 const detailNavigation = [
   { label: "Home", href: "/" },
   { label: "AI Lab", href: "/ai-lab/" },
   { label: "Notes", href: "/notes/" },
+  { label: "About", href: "/about/" },
 ];
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  name: displayTitle,
+  description: summary,
+  url: canonicalUrl,
+  image: imageUrl,
+  creator: { "@type": "Person", name: "Shubhang Mall", url: "https://shubhangmall.com" },
+  keywords: technologies.join(", "),
+};
 ---
 
 <!doctype html>
@@ -48,6 +69,8 @@ const detailNavigation = [
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={summary} />
+    <meta name="theme-color" content="#f4f0e7" />
+    <meta name="color-scheme" content="light dark" />
     <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -61,25 +84,46 @@ const detailNavigation = [
     <meta name="twitter:title" content={`${title} — Shubhang Mall`} />
     <meta name="twitter:description" content={summary} />
     <meta name="twitter:image" content={imageUrl} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        root.classList.add("js");
+        let storedTheme = "";
+        try { storedTheme = window.localStorage.getItem("portfolio-theme") ?? ""; } catch {}
+        const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        root.dataset.theme = storedTheme === "dark" || storedTheme === "light" ? storedTheme : systemTheme;
+      })();
+    </script>
     <title>{title} — Shubhang Mall</title>
   </head>
-  <body>
+  <body class="detail-shell">
     <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="detail-header">
-      <a class="detail-header__wordmark" href="/" aria-label="Shubhang Mall home">SM<span>.</span></a>
+      <a class="detail-header__wordmark" href="/" aria-label="Shubhang Mall home">SM<span>.</span><small> / field notes</small></a>
       <nav aria-label="Project navigation"><ul>{detailNavigation.map((item) => <li><a href={item.href}>{item.label}</a></li>)}</ul></nav>
-      <a class="detail-header__back" href="/">Back to archive <span aria-hidden="true">↗</span></a>
+      <div class="detail-header__tools"><button class="detail-theme-toggle" type="button" data-detail-theme-toggle aria-pressed="false" aria-label="Switch to dark theme"><span aria-hidden="true">◐</span><span data-detail-theme-label>Night</span></button><a class="detail-header__back" href="/">Back to archive <span aria-hidden="true">↗</span></a></div>
     </header>
     <main id="main-content" class:list={{ "deep-research-page": project.data.slug === "deep-research", "engineering-page": isEngineeringTeam, "career-page": isCareerChatbot, "case-page": isRemainingProject }}>
-      <article>
+      <article id="case-overview" data-reveal>
         <header class:list={{ "engineering-hero": isEngineeringTeam, "career-hero": isCareerChatbot }}>
-          {isEngineeringTeam && <p class="engineering-hero-meta">AI · MULTI-AGENT SOFTWARE ENGINEERING</p>}
-          {isCareerChatbot && <p class="career-hero-meta">AI · CONVERSATIONAL CAREER SYSTEM</p>}
+          <p class:list={{ "engineering-hero-meta": isEngineeringTeam, "career-hero-meta": isCareerChatbot, "case-hero-meta": !isEngineeringTeam && !isCareerChatbot }}>{project.data.category} · project record{labTrace ? " · replayable system" : ""}</p>
           <h1>{displayTitle}</h1>
           <p>{summary}</p>
         </header>
 
-        {!isEngineeringTeam && !isCareerChatbot && !isSystemPresentation && image && <img src={image} alt={`${title} project screenshot`} width={project.data.slug === "deep-research" ? 1311 : undefined} height={project.data.slug === "deep-research" ? 771 : undefined} loading="lazy" decoding="async" />}
+        <dl class="case-facts" aria-label="Project record facts">
+          <div><dt>Archive</dt><dd>{String(projectPosition + 1).padStart(2, "0")} / {allProjects.length}</dd></div>
+          <div><dt>Format</dt><dd>{labTrace ? "replayable system" : "project study"}</dd></div>
+          <div><dt>Stack</dt><dd>{technologies.length} documented tools</dd></div>
+        </dl>
+        <nav class="case-outline" aria-label="Case file sections">
+          <a href="#case-overview">Overview</a>
+          {labTrace && <a href="#demonstration">Replay</a>}
+          <a href="#source-record">Source record</a>
+        </nav>
+
+        {image && <figure class="case-hero-media"><img src={image} alt={`${title} project visual`} width={dimensions.width} height={dimensions.height} loading="eager" fetchpriority="high" decoding="async" sizes="(max-width: 800px) 100vw, 980px" srcset={`${responsiveImage} 640w, ${image} ${dimensions.width}w`} /><figcaption>{project.data.category} / source image from the project archive</figcaption></figure>}
 
         {isEngineeringTeam ? (
           <div class="engineering-hero-tools">
@@ -88,16 +132,18 @@ const detailNavigation = [
           </div>
         ) : isCareerChatbot ? (
           <div class="career-hero-tools"><div class="career-tool-chips" aria-label="Technologies used">{technologies.map((technology) => <span>{technology}</span>)}</div><p class="career-link-note">No external project URL documented.</p></div>
-        ) : <p><strong>Technologies:</strong> {technologies.join(", ")}</p>}
+        ) : <div class="case-hero-tools"><div class="case-tool-chips" aria-label="Technologies used">{technologies.map((technology) => <span>{technology}</span>)}</div><p class="case-link-note">{technologies.length} tools · documented in source</p></div>}
 
-        {!isEngineeringTeam && !isCareerChatbot && <nav aria-label="Project links">
+        {!isEngineeringTeam && !isCareerChatbot && <nav class="case-links" aria-label="Project links">
           <ul>
-            {projectUrl && <li><a href={projectUrl}>Project</a></li>}
+            {projectUrl && <li><a href={projectUrl} target="_blank" rel="noreferrer">Project ↗</a></li>}
             {repositoryUrl && <li><a href={repositoryUrl} target="_blank" rel="noreferrer">Repository</a></li>}
           </ul>
         </nav>}
 
-        {labTrace && <section class="lab-run-section" aria-labelledby="lab-run-heading"><div class="lab-run-heading"><p class="case-kicker">04 · Safe public demonstration</p><h2 id="lab-run-heading">Replay the execution</h2><p>This is a curated presentation fixture derived from the current project architecture. It is not a historical run and does not call a paid provider.</p></div><RunInspector trace={labTrace} client:load /></section>}
+        <div class="case-actions"><button type="button" data-copy-link>Copy page link</button><span id="copy-link-status" role="status" aria-live="polite"></span></div>
+
+        {labTrace && <section id="demonstration" class="lab-run-section" aria-labelledby="lab-run-heading"><div class="lab-run-heading"><p class="case-kicker">04 · Safe public demonstration</p><h2 id="lab-run-heading">Replay the execution</h2><p>This is a curated presentation fixture derived from the current project architecture. It is not a historical run and does not call a paid provider.</p></div><RunInspector trace={labTrace} client:load /></section>}
 
         {project.data.slug === "agent-creator" && labTrace?.diff && <section class="lab-run-section" aria-labelledby="generated-code-title"><div class="lab-run-heading"><p class="case-kicker">05 · Trust boundary</p><h2 id="generated-code-title">Generated code is an artifact, not an action</h2><p>The source experiment writes and imports generated Python. This portfolio keeps the capability inspectable without executing it.</p></div><TrustSlide file={labTrace.diff.file} rows={labTrace.diff.rows} client:load /></section>}
 
@@ -219,17 +265,59 @@ const detailNavigation = [
 
         {project.data.slug === "induction-motor" && <section class="case-system" aria-labelledby="motor-system"><div class="case-system__heading"><p class="case-kicker">01 · Hoist system context</p><h2 id="motor-system">A motor recommendation around the mechanism</h2></div><div class="case-context-grid"><article><span>Motor</span><h3>AC squirrel cage motor</h3><p>The report recommended a commercially available motor for the application.</p></article><article><span>Transmission</span><h3>Speed reducer and cable drum</h3><p>The specialized hoist included a speed reducer and cable drum.</p></article><article><span>Load path</span><h3>Single or multi-pulley assembly</h3><p>The cable assembly had to operate within specified parameters.</p></article></div><div class="case-section"><p class="case-kicker">02 · Deliverable</p><p class="case-callout">A technical report connecting the motor recommendation to the customer’s specialized hoist application.</p></div></section>}
 
-        <section>
+        <section id="source-record" class="case-source-record">
           <Content />
         </section>
       </article>
+      <nav class="case-pagination" aria-label="Adjacent project records">
+        <a href={`/work/${previousProject.data.slug}/`}><span>Previous record</span><strong>{previousProject.data.portfolioTitle ?? previousProject.data.title}</strong><small>←</small></a>
+        <a href="/#all-projects"><span>Archive index</span><strong>All project records</strong><small>↗</small></a>
+        <a href={`/work/${nextProject.data.slug}/`}><span>Next record</span><strong>{nextProject.data.portfolioTitle ?? nextProject.data.title}</strong><small>→</small></a>
+      </nav>
     </main>
     <footer class="detail-footer">
-      <span>Shubhang Mall · technical portfolio</span>
+      <span>Shubhang Mall · technical portfolio · <span data-detail-year></span></span>
       <nav aria-label="Footer navigation"><a href="/ai-lab/">AI Lab</a><a href="mailto:shubhangmall@hotmail.com">Email</a><a href="https://github.com/shubhangmall" target="_blank" rel="noreferrer">GitHub</a></nav>
     </footer>
   </body>
 </html>
+
+<script is:inline>
+  (() => {
+    const root = document.documentElement;
+    const toggle = document.querySelector("[data-detail-theme-toggle]");
+    const label = toggle?.querySelector("[data-detail-theme-label]");
+    const applyTheme = (theme) => {
+      root.dataset.theme = theme;
+      toggle?.setAttribute("aria-pressed", String(theme === "dark"));
+      toggle?.setAttribute("aria-label", theme === "dark" ? "Switch to light theme" : "Switch to dark theme");
+      if (label) label.textContent = theme === "dark" ? "Day" : "Night";
+      document.querySelector('meta[name="theme-color"]')?.setAttribute("content", theme === "dark" ? "#111827" : "#f4f0e7");
+    };
+    applyTheme(root.dataset.theme === "dark" ? "dark" : "light");
+    toggle?.addEventListener("click", () => {
+      const nextTheme = root.dataset.theme === "dark" ? "light" : "dark";
+      applyTheme(nextTheme);
+      try { window.localStorage.setItem("portfolio-theme", nextTheme); } catch {}
+    });
+    document.querySelectorAll("[data-detail-year]").forEach((element) => { element.textContent = String(new Date().getFullYear()); });
+    const copyButton = document.querySelector("[data-copy-link]");
+    const copyStatus = document.querySelector("#copy-link-status");
+    copyButton?.addEventListener("click", async () => {
+      if (!copyStatus) return;
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        copyButton.textContent = "Link copied";
+        copyStatus.textContent = "Page link copied to clipboard.";
+        window.setTimeout(() => { copyButton.textContent = "Copy page link"; }, 1800);
+      } catch {
+        copyStatus.textContent = "Copy is unavailable in this browser.";
+      }
+    });
+    const reveal = document.querySelector("[data-reveal]");
+    if (reveal) window.requestAnimationFrame(() => reveal.classList.add("is-revealed"));
+  })();
+</script>
 
 <style>
   :global(html), :global(body) { background: #111214; }
@@ -399,5 +487,126 @@ const detailNavigation = [
     .case-flow > i { justify-self: center; transform: rotate(90deg); }
     .case-tasks li { gap: .75rem; grid-template-columns: 2.5rem 1fr; padding-left: 0; padding-right: 0; }
     .case-tasks small { grid-column: 2; }
+  }
+</style>
+
+<style>
+  :global(html) {
+    --detail-background: #f4f0e7;
+    --detail-surface: #ebe5d9;
+    --detail-surface-raised: #fffaf1;
+    --detail-border: #c9c1b3;
+    --detail-text: #1c1c1a;
+    --detail-muted: #625e56;
+    --detail-accent: #a83b27;
+    --detail-accent-2: #155e75;
+    --detail-accent-ink: #fffaf1;
+  }
+  :global(html[data-theme="dark"]) {
+    --detail-background: #111827;
+    --detail-surface: #1b2739;
+    --detail-surface-raised: #23334a;
+    --detail-border: #415069;
+    --detail-text: #f7f3eb;
+    --detail-muted: #bac1cc;
+    --detail-accent: #ff9b73;
+    --detail-accent-2: #8dd5e8;
+    --detail-accent-ink: #111827;
+  }
+  :global(html) { scroll-padding-top: 5.5rem; }
+  :global(html), :global(body.detail-shell) { background: var(--detail-background); color: var(--detail-text); }
+  :global(body.detail-shell) { margin: 0; min-width: 320px; overflow-x: clip; }
+  :global(body.detail-shell)::before { background-image: linear-gradient(90deg, color-mix(in srgb, var(--detail-text) 7%, transparent) 1px, transparent 1px), linear-gradient(color-mix(in srgb, var(--detail-text) 5%, transparent) 1px, transparent 1px); background-size: 4rem 4rem; content: ""; inset: 0; opacity: .5; pointer-events: none; position: fixed; z-index: -1; }
+  :global(body.detail-shell) a:focus-visible, :global(body.detail-shell) button:focus-visible, :global(body.detail-shell) summary:focus-visible { outline: 3px solid var(--detail-accent-2); outline-offset: 4px; }
+
+  .detail-header { align-items: center; backdrop-filter: blur(16px); background: color-mix(in srgb, var(--detail-background) 90%, transparent); border-bottom: 1px solid var(--detail-text); display: grid; grid-template-columns: auto 1fr auto; gap: 1.5rem; margin: 0; max-width: none; padding: .85rem max(1.25rem, calc((100vw - 1040px) / 2)); position: sticky; top: 0; z-index: 10; }
+  .detail-header__wordmark { align-items: baseline; color: var(--detail-text); display: inline-flex; font-family: Georgia, "Times New Roman", serif; font-size: 1.45rem; font-weight: 400; letter-spacing: -.08em; white-space: nowrap; }
+  .detail-header__wordmark span { color: var(--detail-accent); }
+  .detail-header__wordmark small { color: var(--detail-muted); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .58rem; letter-spacing: .08em; margin-left: .2rem; text-transform: uppercase; }
+  .detail-header nav { justify-self: center; }
+  .detail-header nav ul, .detail-footer nav { gap: .25rem; }
+  .detail-header a, .detail-footer a { color: var(--detail-muted); font-size: .68rem; min-height: 40px; padding: .55rem .65rem; transition: color .2s ease, background-color .2s ease; }
+  .detail-header a:hover, .detail-header a:focus-visible, .detail-footer a:hover, .detail-footer a:focus-visible { background: color-mix(in srgb, var(--detail-accent) 9%, transparent); color: var(--detail-text); }
+  .detail-header__tools { align-items: center; display: flex; gap: .5rem; }
+  .detail-header__back { border-bottom: 2px solid var(--detail-accent); color: var(--detail-text) !important; }
+  .detail-theme-toggle { align-items: center; background: transparent; border: 1px solid var(--detail-border); color: var(--detail-muted); cursor: pointer; display: inline-flex; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .62rem; gap: .4rem; min-height: 40px; min-width: 40px; padding: .45rem .6rem; text-transform: uppercase; }
+  .detail-theme-toggle:hover, .detail-theme-toggle[aria-pressed="true"] { border-color: var(--detail-accent-2); color: var(--detail-text); }
+  .skip-link { background: var(--detail-text); color: var(--detail-background); }
+
+  .deep-research-page, .engineering-page, .career-page, .case-page { background: transparent !important; color: var(--detail-text); max-width: 1040px; padding: clamp(3rem, 7vw, 6rem) 1.25rem 8rem; }
+  .detail-shell main > article > header, .detail-shell .engineering-page .engineering-hero, .detail-shell .career-page .career-hero { border-bottom-color: var(--detail-text); max-width: 920px; }
+  .detail-shell main > article > header h1 { color: var(--detail-text); font-family: Georgia, "Times New Roman", serif; font-size: clamp(3.5rem, 8vw, 7.2rem); letter-spacing: -.09em; line-height: .84; margin: 1.5rem 0 1.35rem; max-width: 900px; }
+  .detail-shell main > article > header > p:last-child { color: var(--detail-text); font-family: Georgia, "Times New Roman", serif; font-size: clamp(1.15rem, 2vw, 1.45rem); line-height: 1.45; max-width: 760px; }
+  .case-hero-meta, .engineering-hero-meta, .career-hero-meta { color: var(--detail-accent-2) !important; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .68rem; letter-spacing: .1em; margin: 0 !important; text-transform: uppercase; }
+  .case-facts { border-bottom: 1px solid var(--detail-border); border-top: 1px solid var(--detail-border); display: flex; flex-wrap: wrap; gap: 0; margin: 1.5rem 0 0; max-width: 920px; padding: 1rem 0; }
+  .case-facts div { border-left: 1px solid var(--detail-border); display: grid; gap: .25rem; padding: 0 1.25rem; }
+  .case-facts div:first-child { border-left: 0; padding-left: 0; }
+  .case-facts dt { color: var(--detail-accent); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .62rem; letter-spacing: .08em; text-transform: uppercase; }
+  .case-facts dd { color: var(--detail-text); font-size: .82rem; margin: 0; }
+  .case-outline { align-items: center; background: color-mix(in srgb, var(--detail-background) 92%, transparent); border-bottom: 1px solid var(--detail-border); display: flex; flex-wrap: wrap; gap: .25rem; margin: 0 0 1.5rem; max-width: 920px; padding: .35rem 0; position: sticky; top: 4.8rem; z-index: 5; }
+  .case-outline a { color: var(--detail-muted); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .62rem; min-height: 36px; padding: .55rem .65rem; text-transform: uppercase; }
+  .case-outline a:hover, .case-outline a:focus-visible { background: color-mix(in srgb, var(--detail-accent-2) 9%, transparent); color: var(--detail-text); }
+  .case-hero-media { margin: 2.5rem 0 0; max-width: 920px; }
+  .case-hero-media img { border: 1px solid var(--detail-border); box-shadow: .75rem .75rem 0 color-mix(in srgb, var(--detail-accent-2) 16%, transparent); display: block; height: auto; max-height: 560px; object-fit: cover; width: 100%; }
+  .case-hero-media figcaption { color: var(--detail-muted); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .62rem; letter-spacing: .06em; margin-top: .7rem; text-transform: uppercase; }
+  .case-hero-tools { align-items: center; border-bottom: 1px solid var(--detail-border); display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; max-width: 920px; padding: 1.25rem 0; }
+  .case-tool-chips { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .case-tool-chips span, .engineering-tool-chips span, .career-tool-chips span { border: 1px solid color-mix(in srgb, var(--detail-accent-2) 65%, transparent); color: var(--detail-accent-2); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .64rem; padding: .35rem .55rem; }
+  .case-link-note, .career-link-note { color: var(--detail-muted); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .66rem; margin: 0; }
+  .case-links { margin-top: .75rem; }
+  .case-links ul { display: flex; flex-wrap: wrap; gap: .6rem; list-style: none; margin: 0; padding: 0; }
+  .case-links a, .engineering-hero-tools nav a { border-bottom: 2px solid var(--detail-accent); color: var(--detail-text); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .7rem; padding: .55rem 0; }
+  .case-actions { align-items: center; display: flex; gap: .75rem; margin-top: .8rem; }
+  .case-actions button { background: transparent; border: 1px solid var(--detail-border); color: var(--detail-muted); cursor: pointer; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .64rem; min-height: 40px; padding: .5rem .65rem; }
+  .case-actions button:hover { border-color: var(--detail-accent-2); color: var(--detail-text); }
+  .case-actions span { color: var(--detail-accent-2); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .65rem; }
+
+  .detail-shell .deep-research-section, .detail-shell .engineering-system, .detail-shell .career-system, .detail-shell .case-page .case-system { border-color: var(--detail-border); }
+  .detail-shell .deep-research-section { border-top-color: var(--detail-text); }
+  .detail-shell .engineering-system, .detail-shell .career-system, .detail-shell .case-page .case-system { background: linear-gradient(145deg, var(--detail-surface), var(--detail-background)) !important; border: 1px solid var(--detail-border); box-shadow: .65rem .65rem 0 color-mix(in srgb, var(--detail-accent) 9%, transparent); }
+  .detail-shell .deep-research-section h2, .detail-shell .engineering-system h2, .detail-shell .career-system h2, .detail-shell .case-system h2 { color: var(--detail-text); }
+  .detail-shell .research-flow li:not(.research-flow__arrow), .detail-shell .engineering-node, .detail-shell .career-context-grid article, .detail-shell .case-flow article, .detail-shell .case-insights article { background: var(--detail-surface-raised); border-color: var(--detail-border); }
+  .detail-shell .research-flow span, .detail-shell .research-flow small, .detail-shell .research-tasks > li > span, .detail-shell .research-tasks small, .detail-shell .research-context-grid span, .detail-shell .engineering-node span, .detail-shell .engineering-tasks > li > span, .detail-shell .engineering-tasks small, .detail-shell .career-context-grid span, .detail-shell .career-tasks > li > span, .detail-shell .career-tasks small, .detail-shell .case-flow article span, .detail-shell .case-context-grid span, .detail-shell .case-insights span, .detail-shell .case-tasks > li > span, .detail-shell .case-tasks small { color: var(--detail-accent-2); }
+  .detail-shell .research-context-grid article, .detail-shell .career-context-grid article, .detail-shell .case-context-grid article { border-left-color: var(--detail-accent); }
+  .detail-shell .research-context-grid p, .detail-shell .research-tasks p, .detail-shell .engineering-node p, .detail-shell .engineering-tasks p, .detail-shell .engineering-code-note, .detail-shell .career-context-grid p, .detail-shell .career-tasks p, .detail-shell .career-link-note, .detail-shell .case-flow article p, .detail-shell .case-context-grid p, .detail-shell .case-insights p, .detail-shell .case-tasks p, .detail-shell .case-callout { color: var(--detail-muted); }
+  .detail-shell .research-flow li:not(.research-flow__arrow), .detail-shell .engineering-node--lead, .detail-shell .engineering-node--test, .detail-shell .career-context-grid article, .detail-shell .case-context-grid article { border-color: color-mix(in srgb, var(--detail-accent-2) 70%, var(--detail-border)); }
+  .detail-shell .engineering-system__header, .detail-shell .engineering-system__section, .detail-shell .career-system__header, .detail-shell .career-system__section, .detail-shell .case-system__heading, .detail-shell .case-section, .detail-shell .research-tasks, .detail-shell .engineering-tasks, .detail-shell .career-tasks, .detail-shell .case-tasks { border-color: var(--detail-border); }
+  .detail-shell .engineering-code { background: var(--detail-background); border-color: var(--detail-border); color: var(--detail-text); }
+  .detail-shell .case-page > article > p, .detail-shell .case-page .case-source-record { color: var(--detail-muted); }
+  .detail-shell .case-source-record { border-top: 1px solid var(--detail-text); margin-top: 4rem; padding-top: 1.5rem; }
+  .detail-shell .case-source-record :where(h2, h3, h4) { color: var(--detail-text); font-family: Georgia, "Times New Roman", serif; }
+  .detail-shell .case-source-record :where(p, li) { color: var(--detail-muted); line-height: 1.7; }
+  .detail-shell .case-source-record a { color: var(--detail-accent-2); text-decoration: underline; text-decoration-thickness: .08em; text-underline-offset: .18em; }
+  .detail-shell .lab-run-section { border-top-color: var(--detail-text); }
+  .detail-shell .lab-run-heading p:last-child { color: var(--detail-muted); }
+  :global(.detail-shell .run-inspector) { background: var(--detail-surface) !important; border-color: var(--detail-border) !important; }
+
+  .case-pagination { border-top: 1px solid var(--detail-text); display: grid; grid-template-columns: 1fr 1fr 1fr; margin-top: 6rem; }
+  .case-pagination a { border-bottom: 1px solid var(--detail-border); border-left: 1px solid var(--detail-border); color: var(--detail-text); display: grid; gap: .45rem; min-height: 150px; padding: 1rem; position: relative; transition: background-color .2s ease, color .2s ease; }
+  .case-pagination a:first-child { border-left: 0; }
+  .case-pagination a:hover, .case-pagination a:focus-visible { background: color-mix(in srgb, var(--detail-accent-2) 8%, transparent); }
+  .case-pagination span, .case-pagination small { color: var(--detail-accent-2); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .62rem; letter-spacing: .07em; text-transform: uppercase; }
+  .case-pagination strong { align-self: center; font-family: Georgia, "Times New Roman", serif; font-size: 1.15rem; font-weight: 400; line-height: 1.05; max-width: 200px; }
+  .case-pagination small { align-self: end; font-size: 1rem; }
+  .detail-footer { border-top-color: var(--detail-text); color: var(--detail-muted); max-width: none; padding-left: max(1.25rem, calc((100vw - 1040px) / 2)); padding-right: max(1.25rem, calc((100vw - 1040px) / 2)); }
+  .detail-footer nav a { color: var(--detail-text); }
+
+  @media (max-width: 700px) {
+    .detail-header { align-items: start; grid-template-columns: auto 1fr; gap: .4rem 1rem; padding: .65rem 1rem; }
+    .detail-header nav { grid-column: 1 / -1; justify-self: start; order: 3; width: 100%; }
+    .detail-header nav ul { gap: .15rem; }
+    .detail-header nav a, .detail-header__back, .detail-theme-toggle { min-height: 40px; padding: .5rem .45rem; }
+    .detail-header__tools { align-self: start; justify-self: end; }
+    .detail-theme-toggle span:last-child { display: none; }
+    .deep-research-page, .engineering-page, .career-page, .case-page { padding-left: 1rem; padding-right: 1rem; }
+    .case-outline { top: 9rem; }
+    .detail-shell main > article > header h1 { font-size: clamp(3rem, 15vw, 5.5rem); }
+    .case-facts { display: grid; grid-template-columns: repeat(3, 1fr); }
+    .case-facts div, .case-facts div:first-child { padding: 0 .5rem; }
+    .case-facts div:first-child { padding-left: 0; }
+    .case-facts dd { font-size: .7rem; }
+    .case-hero-media img { box-shadow: .4rem .4rem 0 color-mix(in srgb, var(--detail-accent-2) 16%, transparent); }
+    .case-pagination { grid-template-columns: 1fr; }
+    .case-pagination a, .case-pagination a:first-child { border-left: 0; min-height: 100px; }
   }
 </style>
