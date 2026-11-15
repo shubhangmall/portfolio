@@ -1,7 +1,30 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import "./PromptBar.css";
 
 type PromptState = "idle" | "submitting" | "streaming" | "error";
+
+const ERROR_MESSAGES: Record<string, string> = {
+  service_not_configured:
+    "The portfolio assistant isn't set up yet — please try again later, or email me instead.",
+  rate_limited: "You're asking a bit fast — please wait a minute and try again.",
+  question_too_long: "That question is over 1,000 characters — please shorten it.",
+  invalid_question: "Please type a question first.",
+  gemini_failed: "The portfolio assistant couldn't answer right now. Please try again in a moment.",
+};
+
+const FALLBACK_ERROR = "The portfolio assistant couldn't answer right now. Please try again in a moment.";
+
+async function errorMessage(response: Response): Promise<string> {
+  try {
+    const data: unknown = await response.json();
+    if (typeof data === "object" && data !== null && "code" in data && typeof data.code === "string") {
+      return ERROR_MESSAGES[data.code] ?? FALLBACK_ERROR;
+    }
+  } catch {
+    // Fall through to the generic message — never show raw response text.
+  }
+  return FALLBACK_ERROR;
+}
 
 function escapeHtml(value: string): string {
   return value
@@ -55,9 +78,9 @@ export default function PromptBar({
   const [answer, setAnswer] = useState("");
   const [state, setState] = useState<PromptState>("idle");
   const [error, setError] = useState("");
+  const formRef = useRef<HTMLFormElement>(null);
 
-  async function handleSubmit(event: { preventDefault: () => void }) {
-    event.preventDefault();
+  async function submitQuestion() {
     const question = prompt.trim();
     if (!question || state === "submitting" || state === "streaming") return;
 
@@ -73,11 +96,10 @@ export default function PromptBar({
       });
 
       if (!response.ok) {
-        const details = await response.text();
-        throw new Error(details || "Unable to ask the portfolio right now.");
+        throw new Error(await errorMessage(response));
       }
 
-      if (!response.body) throw new Error("The portfolio response did not include a stream.");
+      if (!response.body) throw new Error(FALLBACK_ERROR);
 
       setState("streaming");
       const reader = response.body.getReader();
@@ -96,8 +118,13 @@ export default function PromptBar({
       setState("idle");
     } catch (requestError) {
       setState("error");
-      setError(requestError instanceof Error ? requestError.message : "Unable to ask the portfolio right now.");
+      setError(requestError instanceof Error ? requestError.message : FALLBACK_ERROR);
     }
+  }
+
+  async function handleSubmit(event: { preventDefault: () => void }) {
+    event.preventDefault();
+    await submitQuestion();
   }
 
   const isBusy = state === "submitting" || state === "streaming";
@@ -113,7 +140,7 @@ export default function PromptBar({
           : "";
 
   return (
-    <form className="prompt-bar" onSubmit={handleSubmit} aria-label="Ask My Portfolio">
+    <form ref={formRef} className="prompt-bar" onSubmit={handleSubmit} aria-label="Ask My Portfolio">
       <label className="prompt-bar__label" htmlFor="portfolio-prompt">
         Ask My Portfolio
       </label>
@@ -123,16 +150,25 @@ export default function PromptBar({
           className="prompt-bar__input"
           value={prompt}
           onChange={(event) => setPrompt(event.target.value)}
+          onKeyDown={(event) => {
+            if (event.key === "Enter" && !event.shiftKey) {
+              event.preventDefault();
+              void submitQuestion();
+            }
+          }}
           placeholder={placeholder}
           rows={2}
+          maxLength={1000}
           aria-describedby="portfolio-prompt-status"
         />
         <div className="prompt-bar__footer">
           <div className="prompt-bar__hints" aria-hidden="true">
-            <span>@ sources</span>
-            <span>/ commands</span>
+            <span>Enter to send · Shift+Enter for a new line</span>
             {demo && <span>Demo</span>}
           </div>
+          <span className="prompt-bar__count" aria-hidden="true">
+            {prompt.length}/1000
+          </span>
           <button className="prompt-bar__send" type="submit" disabled={isBusy || !prompt.trim()}>
             {buttonLabel}
           </button>
