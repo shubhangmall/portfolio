@@ -14,4 +14,4 @@ Implemented OpenAI’s function calling API with custom tools for lead capture a
 
 Deployed a scalable chatbot to Hugging Face Spaces using the Gradio framework with PDF resume parsing and dynamic conversation management, enabling 24/7 professional representation and automated lead generation.
 
-The legacy page links to the portfolio’s internal `#chatbot` section rather than an external project URL.
+No external project URL is documented for this project.
