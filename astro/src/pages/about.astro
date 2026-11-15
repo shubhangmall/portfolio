@@ -31,7 +31,7 @@ export const prerender = true;
         <h1 id="about-title">Building useful systems across the stack.</h1>
         <p class="about-lede">{identity.intro}</p>
       </div>
-      <img class="about-portrait" src={identity.profileImage.src} alt={identity.profileImage.alt} width="2316" height="2316" loading="eager" decoding="async" />
+      <img class="about-portrait" src={identity.profileImage.src} alt={identity.profileImage.alt} width="600" height="600" loading="eager" decoding="async" />
     </section>
 
     <section class="about-section" aria-labelledby="snapshot-title">
@@ -53,9 +53,9 @@ export const prerender = true;
             {experience.map((record) => (
               <tr>
                 <th scope="row">{record.companyUrl ? <a href={record.companyUrl} target="_blank" rel="noreferrer">{record.employer} <span aria-hidden="true">↗</span></a> : record.employer}</th>
-                <td>{record.role}<details><summary>Details</summary><ul>{record.details.map((detail) => <li>{detail}</li>)}</ul></details></td>
-                <td>{record.dateRange}</td>
-                <td><div class="experience-tags">{record.technologies.map((technology) => <span>{technology}</span>)}</div></td>
+                <td data-label="Role">{record.role}<details><summary>Details</summary><ul>{record.details.map((detail) => <li>{detail}</li>)}</ul></details></td>
+                <td data-label="Period">{record.dateRange}</td>
+                <td data-label="Technologies / domain"><div class="experience-tags">{record.technologies.map((technology) => <span>{technology}</span>)}</div></td>
               </tr>
             ))}
           </tbody>

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 import type { LabTrace, TraceEvent } from "../lib/ai-lab";
 import "./LabPatterns.css";
 
@@ -12,9 +13,10 @@ export function ThinkingState({ label }: { label: string }) {
 }
 
 export function ReplayScrubber({ value, max, onChange }: { value: number; max: number; onChange: (value: number) => void }) {
+  const progress = max > 1 ? ((Math.min(Math.max(value, 1), max) - 1) / (max - 1)) * 100 : 100;
   return <div className="replay-scrubber">
     <div className="replay-scrubber__topline"><span>Replay position</span><span>{value} / {max} events</span></div>
-    <input aria-label="Replay position" type="range" min="1" max={Math.max(max, 1)} value={Math.min(Math.max(value, 1), Math.max(max, 1))} onChange={(event) => onChange(Number(event.target.value))} />
+    <input aria-label="Replay position" type="range" min="1" max={Math.max(max, 1)} value={Math.min(Math.max(value, 1), Math.max(max, 1))} style={{ "--scrub-progress": `${progress}%` } as CSSProperties} onChange={(event) => onChange(Number(event.target.value))} />
   </div>;
 }
 

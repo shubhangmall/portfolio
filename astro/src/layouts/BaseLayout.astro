@@ -8,10 +8,16 @@ interface Props {
 const {
   title,
   description = "Shubhang Mall — Software Engineer and Developer",
-  image = "/assets/profile.jpeg",
+  image = "/assets/og-image.jpg",
 } = Astro.props;
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? "https://shubhangmall.com").toString();
 const imageUrl = new URL(image, Astro.site ?? "https://shubhangmall.com").toString();
+const currentPath = Astro.url.pathname;
+
+function isCurrent(href: string): boolean {
+  if (href === "/#all-projects") return currentPath === "/";
+  return currentPath === href || currentPath === href.replace(/\/$/, "") + "/";
+}
 
 const navigation = [
   { label: "Work", href: "/#all-projects" },
@@ -31,7 +37,8 @@ const externalLinks = [
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f3efe6" />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" type="image/png" href="/favicon.png" />
@@ -55,7 +62,7 @@ const externalLinks = [
       <nav aria-label="Primary navigation">
         <ul class="nav-list">
           {navigation.map((item) => (
-            <li><a href={item.href}>{item.label}</a></li>
+            <li><a href={item.href} aria-current={isCurrent(item.href) ? "page" : undefined}>{item.label}</a></li>
           ))}
         </ul>
       </nav>
