@@ -1,0 +1,42 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/global.css";
+
+export const prerender = true;
+---
+
+<BaseLayout
+  title="Page not found — Shubhang Mall"
+  description="This page doesn't exist in Shubhang Mall's portfolio. Return to the work archive, the AI Lab, or the About page."
+>
+  <main id="main-content" class="about-page">
+    <section class="about-intro" aria-labelledby="not-found-title">
+      <div>
+        <p class="about-kicker">404 · page not found</p>
+        <h1 id="not-found-title">That page isn't in the archive.</h1>
+        <p class="about-lede">
+          The link you followed may be from the old portfolio, or the page may
+          have moved. The work is still here — start from the archive below.
+        </p>
+        <div class="hero-links">
+          <a class="button-link button-link--accent" href="/#all-projects">
+            Browse the work archive <span aria-hidden="true">→</span>
+          </a>
+          <a class="text-link" href="/">Return home</a>
+        </div>
+      </div>
+    </section>
+    <section class="about-actions" aria-labelledby="not-found-actions-title">
+      <div>
+        <p class="about-kicker">Or try</p>
+        <h2 id="not-found-actions-title">Somewhere else.</h2>
+      </div>
+      <nav class="selection-actions" aria-label="Not found page actions">
+        <a href="/ai-lab/">AI Lab <span aria-hidden="true">→</span></a>
+        <a href="/notes/">Notes <span aria-hidden="true">→</span></a>
+        <a href="/about/">About <span aria-hidden="true">→</span></a>
+        <a href="mailto:shubhangmall@hotmail.com">Email <span aria-hidden="true">→</span></a>
+      </nav>
+    </section>
+  </main>
+</BaseLayout>
