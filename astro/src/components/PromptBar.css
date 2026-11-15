@@ -64,7 +64,7 @@
 }
 
 .prompt-bar__send {
-  background: var(--surface-raised, #202329);
+  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 0.45rem;
   color: var(--muted);
@@ -102,7 +102,7 @@
 .prompt-bar__answer h4 { font-size: .95rem; }
 .prompt-bar__answer ul { display: grid; gap: .55rem; margin: 0 0 1rem; padding-left: 1.35rem; }
 .prompt-bar__answer li::marker { color: var(--accent); }
-.prompt-bar__answer code { background: var(--surface-raised, #202329); border-radius: .25rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .85em; padding: .1rem .3rem; }
+.prompt-bar__answer code { background: var(--surface); border-radius: .25rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .85em; padding: .1rem .3rem; }
 .prompt-bar__answer a { border-bottom: 1px solid var(--accent); color: var(--accent); }
 .prompt-bar__surface[data-state="error"] { border-color: #d87979; }
 .prompt-bar__surface[data-state="streaming"] { border-color: var(--accent); }
