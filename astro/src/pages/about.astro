@@ -19,6 +19,8 @@ const actions = [
   { label: "Resume", href: "https://drive.google.com/file/d/1_N-tTXATqUPkFXb7LZiTYhWtppFGP16u/view?usp=sharing", kind: "external" },
   { label: "Email", href: identity.links.find((link) => link.label === "Email Shubhang Mall")?.href ?? "mailto:shubhangmall@hotmail.com", kind: "external" },
 ];
+
+export const prerender = true;
 ---
 
 <BaseLayout title="About — Shubhang Mall" description="The work documented here moves from full-stack and cloud software toward interactive AI systems: multi-agent engineering, deep research and retrieval workflows, context and tool calling, and practical conversational experiences.">

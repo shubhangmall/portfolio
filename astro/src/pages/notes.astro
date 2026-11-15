@@ -4,6 +4,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import "../styles/global.css";
 
 const notes = await getCollection("notes");
+
+export const prerender = true;
 ---
 
 <BaseLayout title="Notes — Shubhang Mall" description="Short technical writing drawn from AI systems and software projects I have actually built. These entries are outlined now; full notes will be published as they are written.">
