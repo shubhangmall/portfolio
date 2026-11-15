@@ -52,7 +52,7 @@ export const prerender = true;
           <tbody>
             {experience.map((record) => (
               <tr>
-                <th scope="row"><a href={record.companyUrl} target="_blank" rel="noreferrer">{record.employer} <span aria-hidden="true">↗</span></a></th>
+                <th scope="row">{record.companyUrl ? <a href={record.companyUrl} target="_blank" rel="noreferrer">{record.employer} <span aria-hidden="true">↗</span></a> : record.employer}</th>
                 <td>{record.role}<details><summary>Details</summary><ul>{record.details.map((detail) => <li>{detail}</li>)}</ul></details></td>
                 <td>{record.dateRange}</td>
                 <td><div class="experience-tags">{record.technologies.map((technology) => <span>{technology}</span>)}</div></td>

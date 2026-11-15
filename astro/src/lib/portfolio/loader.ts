@@ -47,7 +47,7 @@ function experienceDocument(entry: (typeof experience)[number]): PortfolioDocume
       kind: "experience",
       id: entry.id,
       title: `${entry.role} — ${entry.employer}`,
-      path: "/#experience",
+      path: "/about/",
       url: entry.companyUrl,
     },
     experience: entry,

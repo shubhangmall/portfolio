@@ -2,7 +2,7 @@ import type { ExperienceRecord } from "../lib/portfolio/types";
 
 export interface ExperienceEntry extends ExperienceRecord {
   id: string;
-  companyUrl: string;
+  companyUrl?: string;
 }
 
 export const experience: ExperienceEntry[] = [
@@ -15,7 +15,7 @@ export const experience: ExperienceEntry[] = [
     details: [
       "Led cross-functional teams of seven engineers, made critical architectural decisions for scalable API design using Ruby on Rails, and drove the modernization of legacy systems while managing complex integrations with microservices for mortgage platform components.",
       "Spearheaded major UI/UX redesigns that directly impacted business metrics, achieving 33% increase in user satisfaction and 25% growth in client acquisitions, while collaborating with stakeholders to align technical solutions with strategic business objectives.",
-      "Championed the implementation of robust testing frameworks that eliminated 100% of known bugs, established best practices that improved deployment efficiency by 20%, and fostered a culture of continuous improvement across development teams.",
+      "Championed the implementation of robust testing frameworks that eliminated known bugs, established best practices that improved deployment efficiency by 20%, and fostered a culture of continuous improvement across development teams.",
     ],
     technologies: ["Ruby on Rails", "microservices", "API design"],
   },
@@ -39,7 +39,7 @@ export const experience: ExperienceEntry[] = [
     dateRange: "July 2021 - February 2023",
     companyUrl: "https://www.businesswire.com/news/home/20230222005850/en/CoreLogic-Acquires-Roostify-Expanding-Digital-Mortgage-Capabilities",
     details: [
-      "Led resolution of high-priority client escalations and complex technical issues by conducting comprehensive root cause analysis through code and server log investigation, ensuring 100% customer satisfaction while managing strategic support cases that directly impacted client relationships and business outcomes.",
+      "Led resolution of high-priority client escalations and complex technical issues by conducting comprehensive root cause analysis through code and server log investigation, maintaining high customer satisfaction while managing strategic support cases that directly impacted client relationships and business outcomes.",
       "Collaborated with DevOps, QA, and product teams to troubleshoot, fix, and deploy solutions across Ruby on Rails and Java environments, while contributing to new feature development and maintaining legacy applications using React, JavaScript, and TypeScript in fast-paced, deadline-driven scenarios.",
       "Developed comprehensive knowledge base resources and training programs that enhanced team capabilities, while streamlining support processes through Jira and Zendesk management, ultimately reducing escalation times and improving overall technical support efficiency across the organization.",
     ],
@@ -50,7 +50,6 @@ export const experience: ExperienceEntry[] = [
     employer: "Robocart.ai",
     role: "Developer",
     dateRange: "January 2021 - June 2021",
-    companyUrl: "https://www.meditab.com/",
     details: [
       "Delivered end-to-end website solutions by collaborating directly with clients to design and develop custom web applications using HTML, CSS, JavaScript, Python, and C++, while creating high-fidelity prototypes and conducting comprehensive quality assurance testing that ensured optimal user experience, performance, and cross-functional team alignment on tight project timelines.",
     ],

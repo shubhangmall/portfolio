@@ -16,4 +16,4 @@ Implemented modular AI agents for search planning, result aggregation, report wr
 
 The system uses traceable research workflows, providing users with links to review AI decision paths and results, enhancing transparency and reliability.
 
-The legacy page links to the portfolio’s internal `#deepresearch` section rather than an external project URL.
+No external project URL is documented for this project.

@@ -22,7 +22,6 @@ const { Content } = await render(project);
 const { title, summary, image, projectUrl, repositoryUrl, technologies } = project.data;
 const isEngineeringTeam = project.data.slug === "engineering-team";
 const isCareerChatbot = project.data.slug === "career-chatbot";
-const isSystemPresentation = ["agent-creator", "personal-sidekick", "stock-picker"].includes(project.data.slug);
 const isRemainingProject = !["deep-research", "engineering-team", "career-chatbot"].includes(project.data.slug);
 const labTrace = getLabTrace(project.data.slug);
 const displayTitles: Record<string, string> = {
@@ -47,7 +46,7 @@ const displayTitle = displayTitles[project.data.slug] ?? title;
           <p>{summary}</p>
         </header>
 
-        {!isEngineeringTeam && !isCareerChatbot && !isSystemPresentation && image && <img src={image} alt={`${title} project screenshot`} width={project.data.slug === "deep-research" ? 1311 : undefined} height={project.data.slug === "deep-research" ? 771 : undefined} loading="lazy" decoding="async" />}
+        {image && <img src={image} alt={`${title} project screenshot`} width={project.data.slug === "deep-research" ? 1311 : undefined} height={project.data.slug === "deep-research" ? 771 : undefined} loading="lazy" decoding="async" />}
 
         {isEngineeringTeam ? (
           <div class="engineering-hero-tools">
@@ -58,7 +57,7 @@ const displayTitle = displayTitles[project.data.slug] ?? title;
           <div class="career-hero-tools"><div class="career-tool-chips" aria-label="Technologies used">{technologies.map((technology) => <span>{technology}</span>)}</div><p class="career-link-note">No external project URL documented.</p></div>
         ) : <p><strong>Technologies:</strong> {technologies.join(", ")}</p>}
 
-        {!isEngineeringTeam && !isCareerChatbot && <nav aria-label="Project links">
+        {(projectUrl || repositoryUrl) && <nav aria-label="Project links">
           <ul>
             {projectUrl && <li><a href={projectUrl}>Project</a></li>}
             {repositoryUrl && <li><a href={repositoryUrl} target="_blank" rel="noreferrer">Repository</a></li>}
