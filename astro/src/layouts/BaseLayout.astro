@@ -8,7 +8,7 @@ interface Props {
 const {
   title,
   description = "Shubhang Mall — Software Engineer and Developer",
-  image = "/assets/og-image.jpg",
+  image = "/assets/profile.jpeg",
 } = Astro.props;
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? "https://shubhangmall.com").toString();
 const imageUrl = new URL(image, Astro.site ?? "https://shubhangmall.com").toString();
